@@ -61,7 +61,7 @@ def post_delete(request, pk):
         'post': post,
     })
 
-
+@login_required
 def post_list(request):
     qs = Post.objects.all() # QuerySet
     q = request.GET.get('q', '')

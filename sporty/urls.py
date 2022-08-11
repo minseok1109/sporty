@@ -6,7 +6,7 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('', RedirectView.as_view(
-        pattern_name = 'apply:post_lsit'    # url이 ''일때 'post/'로 넘어가는 기능
+        pattern_name = 'apply:post_list'    # url이 ''일때 'post/'로 넘어가는 기능
         ), name='root'),
     path('admin/', admin.site.urls),
     path('post/', include('apply.urls', namespace="apply")),

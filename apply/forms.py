@@ -6,5 +6,5 @@ import re
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ['title', 'content', 'photo', 'date', 'place']
+        fields = ['title', 'content', 'photo', 'date', 'personnel', 'place']
         # exclude = []
