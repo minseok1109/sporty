@@ -52,7 +52,6 @@ function Footer_li({ title, list }) {
           margin: 0;
         }
         span {
-          margin: 0.625rem;
           font-size: 1.5rem;
         }
         .test {
