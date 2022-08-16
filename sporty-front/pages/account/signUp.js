@@ -1,6 +1,8 @@
 import { useForm } from "react-hook-form";
 import Link from "next/link";
+import { useRouter } from "next/router";
 export default function SignUp() {
+  const router = useRouter();
   const onSubmit = (data) => console.log(data);
   const {
     register,
@@ -12,16 +14,18 @@ export default function SignUp() {
   console.log(testValue);
   return (
     <>
-      <header className='header'>
-        <div>
-          <img src="/Vector.png" alt="vector" />
-          <span>이미 계정이 있으신가요?</span>
-        </div>
-        <Link href="/account/login">
-          <a>로그인</a>
-        </Link>
-      </header>
       <div className="container">
+        <header>
+          <span onClick={() => router.back()}>
+            <img src="/Vector.png" alt="vector" />
+          </span>
+          <div>
+            <span>이미 계정이 있으신가요?</span>
+            <Link href="/account/login">
+              <a>로그인</a>
+            </Link>
+          </div>
+        </header>
         <div className="slogan">
           <h2>SPORTY에 오신 것을 환영합니다!</h2>
           <h2 className="small_title">같이 운동하러 가볼까요?</h2>
@@ -85,19 +89,27 @@ export default function SignUp() {
               },
             })}
           />
-          {errors?.password ? undefined : errors?.password_confirm && (
-            <small role="alert">{errors.password_confirm.message}</small>
-          )}
+          {errors?.password
+            ? undefined
+            : errors?.password_confirm && (
+                <small role="alert">{errors.password_confirm.message}</small>
+              )}
           <button type="submit" disabled={isSubmitting}>
             회원가입
           </button>
         </form>
 
         <style jsx>{`
-          .header {
+          header {
+            margin-top: 3rem;
             display: flex;
             justify-content: space-between;
-            background-color: red;
+            font-weight: 700;
+            width: 40rem;
+            padding: 1rem;
+          }
+          a {
+            color: #009ddc;
           }
           h2 {
             font-size: 48px;
