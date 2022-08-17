@@ -58,7 +58,7 @@ export default function Login() {
 
         {/* 보내는중이면 여러번 보내는거 불가능하게 */}
         <button type="submit" disabled={isSubmitting}>
-          회원가입
+          로그인
         </button>
       </form>
       <nav>
