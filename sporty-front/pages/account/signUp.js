@@ -12,7 +12,7 @@ export default function SignUp() {
   console.log(testValue);
   return (
     <>
-      <header className='header'>
+      <header className="header">
         <div>
           <img src="/Vector.png" alt="vector" />
           <span>이미 계정이 있으신가요?</span>
@@ -85,16 +85,18 @@ export default function SignUp() {
               },
             })}
           />
-          {errors?.password ? undefined : errors?.password_confirm && (
-            <small role="alert">{errors.password_confirm.message}</small>
-          )}
+          {errors?.password
+            ? undefined
+            : errors?.password_confirm && (
+                <small role="alert">{errors.password_confirm.message}</small>
+              )}
           <button type="submit" disabled={isSubmitting}>
             회원가입
           </button>
         </form>
 
         <style jsx>{`
-          .header {
+          header {
             display: flex;
             justify-content: space-between;
             background-color: red;
