@@ -9,11 +9,18 @@ function MyApp({ Component, pageProps, ...appProps }) {
   const is_login_signup = [`/account/signUp`, `/account/login`].includes(
     appProps.router.pathname
   );
+
+  const is_artticle_getPeople = [`/article`, `/getPeople`].includes(
+    appProps.router.pathname
+  );
+
   const HeaderComponent = is_login_signup ? React.Fragment : Navbar;
   const FooterComponent = is_login_signup ? React.Fragment : Footer;
+  const SearchBarComponent = is_artticle_getPeople ? SearchBar : React.Fragment;
   return (
     <>
       <HeaderComponent />
+      <SearchBarComponent />
       <Component {...pageProps} />
       <FooterComponent />
     </>
