@@ -1,6 +1,8 @@
 import { useForm } from "react-hook-form";
 import Link from "next/link";
+import { useRouter } from "next/router";
 export default function SignUp() {
+  const router = useRouter();
   const onSubmit = (data) => console.log(data);
   const {
     register,
@@ -96,10 +98,15 @@ export default function SignUp() {
         </form>
 
         <style jsx>{`
-          header {
+          .header {
             display: flex;
             justify-content: space-between;
-            background-color: red;
+            font-weight: 700;
+            width: 40rem;
+            padding: 1rem;
+          }
+          a {
+            color: #009ddc;
           }
           h2 {
             font-size: 48px;
