@@ -2,6 +2,7 @@ venv
 sporty-front/node_modules
 .env
 .
+sporty/settings/dev.py
 # Created by https://www.toptal.com/developers/gitignore/api/django,react
 # Edit at https://www.toptal.com/developers/gitignore?templates=django,react
 
