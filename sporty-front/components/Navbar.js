@@ -10,10 +10,10 @@ function Navbar() {
           <Link href="/">
             <a>홈</a>
           </Link>
-          <Link href="/article">
+          <Link href="/list">
             <a>게시글</a>
           </Link>
-          <Link href="/getPeople">
+          <Link href="/list/newlist">
             <a>모집하기</a>
           </Link>
         </nav>

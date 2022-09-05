@@ -1,6 +1,8 @@
 import Link from "next/link";
+import MainList from "../components/list/mainlist";
 
 export default function Home() {
+
   return (
     <>
       <section>
