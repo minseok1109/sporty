@@ -2,7 +2,8 @@ import React from "react";
 import "../styles/globals.css";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import "normalize.css/normalize.css";
+import SearchBar from "../components/SearchBar";
+// import "normalize.css/normalize.css";
 
 function MyApp({ Component, pageProps, ...appProps }) {
   // 로그인, 회원가입 페이지에서 헤더가 안보이게
