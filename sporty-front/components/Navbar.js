@@ -1,3 +1,4 @@
+import MypageDivider from "./MypageDivider";
 import Link from "next/link";
 function Navbar() {
   return (
@@ -18,14 +19,7 @@ function Navbar() {
           </Link>
         </nav>
         <input placeholder="종목을 입력하세요" />
-        <nav>
-          <Link href="/account/login">
-            <a>로그인</a>
-          </Link>
-          <Link href="/account/signUp">
-            <a>회원가입</a>
-          </Link>
-        </nav>
+        <MypageDivider />
       </header>
       <style jsx>{`
         .head {
