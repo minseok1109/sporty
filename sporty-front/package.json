@@ -11,16 +11,22 @@
   "dependencies": {
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
-    "@mui/material": "^5.10.4",
+    "@hookform/resolvers": "^2.9.7",
+    "@mui/icons-material": "^5.10.3",
+    "@mui/material": "^5.10.3",
+    "axios": "^0.27.2",
+    "axios-mock-adapter": "^1.21.2",
     "next": "12.2.3",
     "normalize.css": "^8.0.1",
     "react": "18.2.0",
     "react-date-picker": "^8.4.0",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.34.0",
-    "react-select": "^5.4.0"
+    "react-select": "^5.4.0",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
+    "@faker-js/faker": "^7.4.0",
     "eslint": "8.21.0",
     "eslint-config-next": "12.2.3"
   }

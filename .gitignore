@@ -2,6 +2,7 @@ venv
 sporty-front/node_modules
 .env
 .
+backend/backend/settings/dev.py
 # Created by https://www.toptal.com/developers/gitignore/api/django,react
 # Edit at https://www.toptal.com/developers/gitignore?templates=django,react
 
@@ -14,6 +15,7 @@ local_settings.py
 db.sqlite3
 db.sqlite3-journal
 media
+
 
 # If your build process includes running collectstatic, then you probably don't need or want to include staticfiles/
 # in your Git repository. Update and uncomment the following line accordingly.
@@ -192,3 +194,5 @@ sketch
 
 # End of https://www.toptal.com/developers/gitignore/api/django,react
 
+.idea
+backend/backend/settings

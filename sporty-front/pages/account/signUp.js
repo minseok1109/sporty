@@ -1,31 +1,58 @@
 import { useForm } from "react-hook-form";
-import Link from "next/link";
 import { useRouter } from "next/router";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as Yup from "yup";
+import Link from "next/link";
+import axios from "axios";
+
 export default function SignUp() {
   const router = useRouter();
-  const onSubmit = (data) => console.log(data);
+  // 회원가입 작성 후 axios를 사용해서 벡엔드로 전송하는 함수
+  const onSubmit = async (data) => {
+    await axios
+      .post("http://127.0.0.1:8000/accounts/signup/", data)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    reset();
+  };
+
+  // 각각 입력에 대한 스키마
+  const formSchema = Yup.object().shape({
+    email: Yup.string().required("이메일은 필수입력입니다.").email(),
+    password: Yup.string()
+      .required("비밀번호 입력은 필수입니다.")
+      .min(8, "8자리 이상 비밀번호를 사용하세요"),
+    password_confirm: Yup.string()
+      .required("비밀번호 입력은 필수입니다.")
+      .oneOf([Yup.ref("password")], "비밀번호가 다릅니다."),
+  });
+
+  const formOptions = { resolver: yupResolver(formSchema) };
+
   const {
     register,
     handleSubmit,
-    getValues,
+    reset,
     formState: { isSubmitting, isDirty, errors },
-  } = useForm();
-  const testValue = getValues(["password", "password_confirm"]);
-  console.log(testValue);
+  } = useForm(formOptions);
+
   return (
     <>
+      <header>
+        <div>
+          <img src="/Vector.png" alt="vector" onClick={() => router.back()} />
+
+          <span>이미 계정이 있으신가요?</span>
+        </div>
+        <Link href="/account/login">
+          <a>로그인</a>
+        </Link>
+      </header>
       <div className="container">
-        <header>
-          <span onClick={() => router.back()}>
-            <img src="/Vector.png" alt="vector" />
-          </span>
-          <div>
-            <span>이미 계정이 있으신가요?</span>
-            <Link href="/account/login">
-              <a>로그인</a>
-            </Link>
-          </div>
-        </header>
         <div className="slogan">
           <h2>SPORTY에 오신 것을 환영합니다!</h2>
           <h2 className="small_title">같이 운동하러 가볼까요?</h2>
@@ -39,13 +66,7 @@ export default function SignUp() {
             aria-invalid={
               !isDirty ? undefined : errors.email ? "true" : "false"
             }
-            {...register("email", {
-              required: "이메일은 필수입력입니다.",
-              pattern: {
-                value: /\S+@\S+\.\S+/,
-                message: "이메일 형식에 맞지않습니다.",
-              },
-            })}
+            {...register("email")}
           />
           {errors?.email && (
             <small role="alert">{errors?.email?.message}</small>
@@ -58,13 +79,7 @@ export default function SignUp() {
             aria-invalid={
               !isDirty ? undefined : errors.password ? "true" : "false"
             }
-            {...register("password", {
-              required: "비밀번호는 필수입력입니다.",
-              minLength: {
-                value: 8,
-                message: "8자리 이상 비밀번호를 사용하세요",
-              },
-            })}
+            {...register("password")}
           />
           {errors?.password && (
             <small role="alert">{errors?.password?.message}</small>
@@ -77,23 +92,11 @@ export default function SignUp() {
             aria-invalid={
               !isDirty ? undefined : errors.password_confirm ? "true" : "false"
             }
-            {...register("password_confirm", {
-              required: "비밀번호 확인은 필수입력입니다.",
-              minLength: {
-                value: 8,
-                message: "8자리 이상 비밀번호를 사용하세요",
-              },
-              validate: (password, password_confirm) => {
-                console.log(password === password_confirm);
-                password === password_confirm || "비밀번호가 일치하지않습니다.";
-              },
-            })}
+            {...register("password_confirm")}
           />
-          {errors?.password
-            ? undefined
-            : errors?.password_confirm && (
-                <small role="alert">{errors.password_confirm.message}</small>
-              )}
+          {errors?.password_confirm && (
+            <small role="alert">{errors?.password_confirm?.message}</small>
+          )}
           <button type="submit" disabled={isSubmitting}>
             회원가입
           </button>
@@ -101,7 +104,6 @@ export default function SignUp() {
 
         <style jsx>{`
           header {
-            margin-top: 3rem;
             display: flex;
             justify-content: space-between;
             font-weight: 700;
@@ -121,6 +123,9 @@ export default function SignUp() {
             height: 48px;
             border: 1px solid #c5c5c5;
             border-radius: 8px;
+          }
+          img {
+            cursor: pointer;
           }
 
           button {
