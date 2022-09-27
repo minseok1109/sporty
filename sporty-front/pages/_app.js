@@ -4,6 +4,7 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import SearchBar from "../components/SearchBar";
 // import "normalize.css/normalize.css";
+import { Container } from "@mui/material";
 
 function MyApp({ Component, pageProps, ...appProps }) {
   // 로그인, 회원가입 페이지에서 헤더가 안보이게
@@ -20,9 +21,12 @@ function MyApp({ Component, pageProps, ...appProps }) {
   const SearchBarComponent = is_artticle_getPeople ? SearchBar : React.Fragment;
   return (
     <>
-      <HeaderComponent />
-      <SearchBarComponent />
-      <Component {...pageProps} />
+      {" "}
+      <Container maxWidth="xl">
+        <HeaderComponent />
+        <SearchBarComponent />
+        <Component {...pageProps} />
+      </Container>
       <FooterComponent />
     </>
   );

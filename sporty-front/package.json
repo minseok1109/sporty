@@ -12,8 +12,8 @@
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
     "@hookform/resolvers": "^2.9.7",
-    "@mui/icons-material": "^5.10.3",
-    "@mui/material": "^5.10.3",
+    "@mui/icons-material": "^5.10.6",
+    "@mui/material": "^5.10.5",
     "axios": "^0.27.2",
     "axios-mock-adapter": "^1.21.2",
     "next": "12.2.3",
@@ -28,6 +28,7 @@
   "devDependencies": {
     "@faker-js/faker": "^7.4.0",
     "eslint": "8.21.0",
-    "eslint-config-next": "12.2.3"
+    "eslint-config-next": "12.2.3",
+    "eslint-plugin-react": "^7.31.8"
   }
 }

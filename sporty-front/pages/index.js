@@ -1,29 +1,49 @@
-import Link from "next/link";
+import SportsBasketballIcon from "@mui/icons-material/SportsBasketball";
+import SportsSoccerIcon from "@mui/icons-material/SportsSoccer";
+import DirectionsRunIcon from "@mui/icons-material/DirectionsRun";
+import Card from "@mui/material/Card";
+import Box from "@mui/material/Box";
+import { CardContent, Grid } from "@mui/material";
 
 export default function Home() {
   return (
-    <>
-      <section>
-        <div>농구도 배드민턴도 축구도 테니스도 야구도</div>
-        <div>이제 Sporty에서, 같이 하자!</div>
-        <input className="search" placeholder="이메일 주소" />
-        <Link href="/account/signUp">
-          <button type="submit">회원가입</button>
-        </Link>
-      </section>
-      <style jsx>{`
-        button {
-          background-color: #009ddc;
-          color: #ffffff;
-          border: 1px solid #ffffff;
-          border-radius: 10px;
-          width: 15rem;
-          height: 3.125rem;
-        }
-        input {
-          border: 1px solid #a04955;
-        }
-      `}</style>
-    </>
+    <Grid
+      container
+      direction="row"
+      justifyContent="center"
+      alignItems="center"
+      spacing={0}
+    >
+      <Grid xs={4}>
+        <Card
+          variant="outlined"
+          sx={{ maxWidth: 50, maxHeight: 50, textAlign: "center" }}
+        >
+          <CardContent>
+            <SportsBasketballIcon />
+          </CardContent>
+        </Card>
+      </Grid>
+      <Grid xs={4}>
+        <Card
+          variant="outlined"
+          sx={{ maxWidth: 50, maxHeight: 50, textAlign: "center" }}
+        >
+          <CardContent>
+            <SportsSoccerIcon />
+          </CardContent>
+        </Card>
+      </Grid>
+      <Grid xs={4}>
+        <Card
+          variant="outlined"
+          sx={{ maxWidth: 50, maxHeight: 50, textAlign: "center" }}
+        >
+          <CardContent>
+            <DirectionsRunIcon />
+          </CardContent>
+        </Card>
+      </Grid>
+    </Grid>
   );
 }
