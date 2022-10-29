@@ -1,6 +1,6 @@
 asgiref==3.5.2
 autopep8==1.6.0
-Django==3.0.14      # 4점대 버전에서 3점대 버전으로 다운드레이드함
+Django==3.2.4      # 4점대 버전에서 3점대 버전으로 다운드레이드함
 django-environ==0.9.0
 djangorestframework==3.13.1
 djangorestframework-jwt
