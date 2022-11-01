@@ -10,7 +10,6 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
-from datetime import timedelta
 from pathlib import Path
 import os
 
@@ -41,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # third apps
+    'corsheaders',
     'rest_framework',
 
     # local apps
@@ -86,7 +86,7 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': str(BASE_DIR / 'db.sqlite3'),
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
@@ -141,19 +141,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
-    ],
-
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
-    ],
-}
-
-JWT_AUTH = {
-    # 'JWT_SECRET_KEY': SECRET_KEY,   # FIXME: JET_SECRET_KEY
-    'JET_ALGORITHM': 'HS256',
-    'JWT_ALLOW_REFRESH': True,
-    'JWT_EXPIRATION_DELTA': timedelta(days=7),
-    'JET_REFRESH_EXPIRAION_DELTA': timedelta(days=28),
-
+    ]
 }
