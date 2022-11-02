@@ -53,7 +53,7 @@ export default function GetPeople() {
   //운동종목 State
   const on_change_sports = ({ sports_value }) => {
     set_selected_sports_option(sports_value);
-    console.log(vasports_valuelue);
+    console.log(sports_value);
   };
 
   //날짜 State
