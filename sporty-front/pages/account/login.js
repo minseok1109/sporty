@@ -9,7 +9,7 @@ export default function Login() {
   } = useForm();
   return (
     <div className="container">
-      <Link href="/">
+      <Link href="/" legacyBehavior>
         <div className="title">sporty</div>
       </Link>
       <form onSubmit={handleSubmit(onSubmit)} method="post">
@@ -62,13 +62,13 @@ export default function Login() {
         </button>
       </form>
       <nav>
-        <Link href="#">
+        <Link href="#" legacyBehavior>
           <a>비밀번호 찾기 | </a>
         </Link>
-        <Link href="#">
+        <Link href="#" legacyBehavior>
           <a>아이디 찾기 | </a>
         </Link>
-        <Link href="/account/signUp">
+        <Link href="/account/signUp" legacyBehavior>
           <a>회원가입</a>
         </Link>
       </nav>

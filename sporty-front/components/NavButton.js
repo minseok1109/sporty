@@ -6,11 +6,11 @@ export function NavButton() {
   return (
     <div>
       <Link href="/">
-        <a>홈</a>
+        홈
       </Link>
       <span> {">"} </span>
       <Link href={router.pathname}>
-        <a>{router.pathname === "/article" ? "게시글" : "모집하기"}</a>
+        {router.pathname === "/article" ? "게시글" : "모집하기"}
       </Link>
     </div>
   );
