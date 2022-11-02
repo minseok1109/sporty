@@ -8,7 +8,6 @@ import {
   Typography,
   Button,
   TextField,
-  Stack,
 } from "@mui/material";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
@@ -47,9 +46,8 @@ export default function Login() {
 
   const {
     handleSubmit,
-    reset,
     control,
-    formState: { isSubmitting, isDirty, errors },
+    formState: { isSubmitting,  errors },
   } = useForm(formOptions);
   return (
     <Container maxWidth="sm">
