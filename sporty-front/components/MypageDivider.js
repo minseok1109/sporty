@@ -37,13 +37,13 @@ function TemporaryDrawer() {
         {["로그인", "회원가입"].map((text, index) => (
           <ListItem key={text} disablePadding>
             {index === 0 ? (
-              <NextLink href="/account/login" passHref>
+              <NextLink href="/account/login" passHref legacyBehavior>
                 <ListItemButton component="a">
                   <Link underline="none">{text}</Link>
                 </ListItemButton>
               </NextLink>
             ) : (
-              <NextLink href="/account/signUp" passHref>
+              <NextLink href="/account/signUp" passHref legacyBehavior>
                 <ListItemButton component="a">
                   <Link underline="none">{text}</Link>
                 </ListItemButton>
