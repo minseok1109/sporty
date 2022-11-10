@@ -2,6 +2,7 @@ import Link from "next/link";
 
 export default function Home() {
   return <>
+
     <section>
       <div>농구도 배드민턴도 축구도 테니스도 야구도</div>
       <div>이제 Sporty에서, 같이 하자!</div>
