@@ -1,4 +1,6 @@
 import Link from "next/link";
+import React, { useState } from "react";
+import { useRouter } from "next/router";
 import { useForm, Controller } from "react-hook-form";
 import axios from "axios";
 import {
@@ -8,9 +10,13 @@ import {
   Typography,
   Button,
   TextField,
+  Stack,
+  Alert as MuiAlert,
+  Snackbar,
 } from "@mui/material";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
+import { setToken, useAppContext } from "../../store";
 
 const breadcrumbs = [
   <Link underline="hover" key="1" color="inherit" href="#">
@@ -25,16 +31,36 @@ const breadcrumbs = [
 ];
 
 export default function Login() {
+  const [open, setOpen] = useState(false);
+  const router = useRouter();
+  const { store, dispatch } = useAppContext();
+  console.log(store);
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+  };
   const onSubmit = async (data) => {
-    console.log(data);
-    await axios
-      .post("http://localhost:8000/accounts/token/", data)
-      .then((response) => console.log(response))
-      .catch((errors) => console.log(errors));
+    try {
+      const response = await axios.post(
+        "http://localhost:8000/accounts/token/",
+        data
+      );
+      const {
+        data: { token: jwtToken },
+      } = response;
+      await dispatch(setToken(jwtToken));
+      await router.push("/");
+    } catch (error) {
+      setOpen(true);
+    }
   };
 
   const formSchema = Yup.object().shape({
-    email: Yup.string()
+    username: Yup.string()
       .required("이메일은 필수입력입니다.")
       .email("이메일을 입력하세요"),
     password: Yup.string()
@@ -47,8 +73,12 @@ export default function Login() {
   const {
     handleSubmit,
     control,
-    formState: { isSubmitting,  errors },
+    formState: { isSubmitting, errors },
   } = useForm(formOptions);
+
+  const Alert = React.forwardRef(function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="outlined" {...props} />;
+  });
   return (
     <Container maxWidth="sm">
       <Link href="/">
@@ -64,7 +94,7 @@ export default function Login() {
       </Link>
       <form onSubmit={handleSubmit(onSubmit)} method="post">
         <Controller
-          name="email"
+          name="username"
           control={control}
           render={({ field }) => (
             <TextField
@@ -112,6 +142,15 @@ export default function Login() {
           {breadcrumbs}
         </Breadcrumbs>
       </Box>
+
+      {/* 로그인 실패시 알림 */}
+      <Stack spacing={2} sx={{ width: "100%" }}>
+        <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+          <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
+            아이디와 비밀번호를 확인하세요!
+          </Alert>
+        </Snackbar>
+      </Stack>
     </Container>
   );
 }
