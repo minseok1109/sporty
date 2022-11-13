@@ -1,119 +1,158 @@
 import Link from "next/link";
-import { useForm } from "react-hook-form";
+import React, { useState } from "react";
+import { useRouter } from "next/router";
+import { useForm, Controller } from "react-hook-form";
+import axios from "axios";
+import {
+  Breadcrumbs,
+  Box,
+  Container,
+  Typography,
+  Button,
+  TextField,
+  Stack,
+  Alert as MuiAlert,
+  Snackbar,
+} from "@mui/material";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as Yup from "yup";
+import { setToken, useAppContext } from "../../store";
+
+const breadcrumbs = [
+  <Link underline="hover" key="1" color="inherit" href="#">
+    아이디 찾기
+  </Link>,
+  <Link underline="hover" key="2" color="inherit" href="#">
+    비밀번호 찾기
+  </Link>,
+  <Link underline="hover" key="3" color="inherit" href="/account/signUp">
+    회원가입
+  </Link>,
+];
+
 export default function Login() {
-  const onSubmit = (data) => console.log(data);
+  const [open, setOpen] = useState(false);
+  const router = useRouter();
+  const { store, dispatch } = useAppContext();
+  console.log(store);
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+  };
+  const onSubmit = async (data) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8000/accounts/token/",
+        data
+      );
+      const {
+        data: { token: jwtToken },
+      } = response;
+      await dispatch(setToken(jwtToken));
+      await router.push("/");
+    } catch (error) {
+      setOpen(true);
+    }
+  };
+
+  const formSchema = Yup.object().shape({
+    username: Yup.string()
+      .required("이메일은 필수입력입니다.")
+      .email("이메일을 입력하세요"),
+    password: Yup.string()
+      .required("비밀번호 입력은 필수입니다.")
+      .min(8, "8자리 이상 비밀번호를 사용하세요"),
+  });
+
+  const formOptions = { resolver: yupResolver(formSchema) };
+
   const {
-    register,
     handleSubmit,
-    formState: { isSubmitting, isDirty, errors },
-  } = useForm();
+    control,
+    formState: { isSubmitting, errors },
+  } = useForm(formOptions);
+
+  const Alert = React.forwardRef(function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="outlined" {...props} />;
+  });
   return (
-    <div className="container">
-      <Link href="/" legacyBehavior>
-        <div className="title">sporty</div>
+
+    <Container maxWidth="sm">
+      <Link href="/">
+        <Typography
+          variant="h2"
+          fontWeight="700"
+          textAlign="center"
+          my={5}
+          sx={{ cursor: "pointer" }}
+        >
+          sporty
+        </Typography>
       </Link>
       <form onSubmit={handleSubmit(onSubmit)} method="post">
-        <label htmlFor="email">이메일</label>
-        <input
-          type="text"
-          id="email"
-          name="email"
-          aria-invalid={!isDirty ? undefined : errors.email ? "true" : "false"}
-          {
-            // 이메일 제대로 입력했는지 체크
-            ...register("email", {
-              required: "이메일은 필수입력입니다.",
-              pattern: {
-                value: /\S+@\S+\.\S+/,
-                message: "이메일 형식에 맞지않습니다.",
-              },
-            })
-          }
+        <Controller
+          name="username"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              sx={{ marginBottom: 5 }}
+              margin="dense"
+              fullWidth
+              required
+              label="이메일"
+              value={field.value || ""}
+              error={!!errors.email}
+              helperText={errors.email ? errors?.email?.message : ""}
+            />
+          )}
         />
-
-        {/* // 에러메세지 띄우는 부분 */}
-        {errors?.email && <small role="alert">{errors?.email?.message}</small>}
-        <label htmlFor="password">비밀번호</label>
-        <input
-          type="password"
-          id="password"
+        <Controller
           name="password"
-          aria-invalid={
-            !isDirty ? undefined : errors.password ? "true" : "false"
-          }
-          // 비밀번호 제대로 입력했는지 체크
-          {...register("password", {
-            required: "비밀번호는 필수입력입니다.",
-            // 최소 8자리 체크
-            minLength: {
-              value: 8,
-              message: "8자리 이상 비밀번호를 사용하세요",
-            },
-          })}
+          control={control}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              sx={{ marginBottom: 5 }}
+              margin="dense"
+              fullWidth
+              required
+              label="비밀번호"
+              type="password"
+              value={field.value || ""}
+              error={!!errors.password}
+              helperText={errors?.password ? errors?.password?.message : ""}
+            />
+          )}
         />
-        {/* 비밀번호 에러메시지 띄우는 부분 */}
-        {errors?.password && (
-          <small role="alert">errors?.password?.message</small>
-        )}
-
-        {/* 보내는중이면 여러번 보내는거 불가능하게 */}
-        <button type="submit" disabled={isSubmitting}>
+        <Button
+          variant="contained"
+          fullWidth
+          type="submit"
+          disabled={isSubmitting}
+        >
           로그인
-        </button>
+        </Button>
       </form>
-      <nav>
-        <Link href="#" legacyBehavior>
-          <a>비밀번호 찾기 | </a>
-        </Link>
-        <Link href="#" legacyBehavior>
-          <a>아이디 찾기 | </a>
-        </Link>
-        <Link href="/account/signUp" legacyBehavior>
-          <a>회원가입</a>
-        </Link>
-      </nav>
-      <style jsx>{`
-        .container {
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-          padding: 14px 16px;
-          gap: 4px;
-          height: auto;
-        }
-        input {
-          margin: 1rem;
-          width: 27.5rem;
-          height: 3rem;
-          border: 1px solid #c5c5c5;
-          border-radius: 8px;
-        }
-        form {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-        }
 
-        button {
-          background: #009ddc;
-          border-radius: 8px;
-          width: 440px;
-          height: 52px;
-          color: white;
-          margin-bottom: 4rem;
-        }
-        .title {
-          font-size: 5rem;
-          font-weight: 700;
-          font-family: "Lato";
-          margin: 1.5rem;
-          padding: 1.5rem;
-        }
-        .title:hover {
-          cursor: pointer;
-        }
-      `}</style>
-    </div>
+      <Box sx={{ display: "flex", justifyContent: "center", my: 3 }}>
+        <Breadcrumbs separator="|" aria-label="breadcrumb" color="text.primary">
+          {breadcrumbs}
+        </Breadcrumbs>
+      </Box>
+
+      {/* 로그인 실패시 알림 */}
+      <Stack spacing={2} sx={{ width: "100%" }}>
+        <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+          <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
+            아이디와 비밀번호를 확인하세요!
+          </Alert>
+        </Snackbar>
+      </Stack>
+    </Container>
   );
 }
