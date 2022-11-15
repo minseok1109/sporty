@@ -1,12 +1,15 @@
 import PostCard from "./LayOut/PostCard";
-import Button from '@mui/material/Button';
-export default function Post({ post }) {
+import BlackOutlinedButton from "../Buttons.js/BlackOutlinedButton";
 
+export default function Post({ post }) {
     const { author, title, location, description, date, exercise } = post;
     return (
         <>
-            <div className="button">
-                <Button variant="outlined">{exercise}</Button>
+            <div>
+                <BlackOutlinedButton exercise={exercise}>
+
+                </BlackOutlinedButton>
+
             </div>
             <div className="card">
                 <PostCard
@@ -18,13 +21,12 @@ export default function Post({ post }) {
                     deacription={description}
                 ></PostCard>
             </div>
+
             <style jsx>{`
-            button {
-                mt: 10rem;
-            }
-     
+            
     `}</style>
         </>
+
     );
 
 }

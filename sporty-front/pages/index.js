@@ -1,6 +1,16 @@
+import { Button } from "@mui/material";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import SimpleContainer from "../components/PostList/LayOut/Container";
+import PostList from "../components/PostList/PostList";
 
 export default function Home() {
+  const router = useRouter();
+  const handleClick = () => {
+    router.push("PostNew")
+
+  }
+
   return <>
 
     <section>
@@ -10,6 +20,13 @@ export default function Home() {
       <Link href="/account/signUp" legacyBehavior>
         <button type="submit">회원가입</button>
       </Link>
+
+
+      <SimpleContainer>
+        <Button onClick={handleClick}> 새 게시물 작성 </Button>
+        <PostList></PostList>
+      </SimpleContainer>
+
     </section>
     <style jsx>{`
       button {
