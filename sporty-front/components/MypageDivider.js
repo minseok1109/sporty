@@ -39,13 +39,13 @@ function TemporaryDrawer() {
             {index === 0 ? (
               <NextLink href="/account/login" passHref legacyBehavior>
                 <ListItemButton component="a">
-                  <Link underline="none">{text}</Link>
+                  <span>{text}</span>
                 </ListItemButton>
               </NextLink>
             ) : (
               <NextLink href="/account/signUp" passHref legacyBehavior>
                 <ListItemButton component="a">
-                  <Link underline="none">{text}</Link>
+                  <span>{text}</span>
                 </ListItemButton>
               </NextLink>
             )}
