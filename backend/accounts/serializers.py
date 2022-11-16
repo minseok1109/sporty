@@ -1,3 +1,4 @@
+from dataclasses import field
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 
@@ -16,4 +17,3 @@ class SignupSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['pk', 'email', 'password']
-        extra_kwargs = {'username': {'required': False}}
