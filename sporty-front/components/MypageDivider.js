@@ -7,7 +7,6 @@ import Divider from "@mui/material/Divider";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import NextLink from "next/link";
-import Link from "@mui/material/Link";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 function TemporaryDrawer() {
