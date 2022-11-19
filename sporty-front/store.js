@@ -20,7 +20,7 @@ export const AppProvider = ({ children }) => {
   const jwtToken = getStorageItem("jwtToken", "");
   const [store, dispatch] = useReducer(reducer, {
     jwtToken,
-    isAuthenticated: jwtToken.length > 0,
+    isAuthenticated: jwtToken?.length > 0,
   });
   return (
     <AppContext.Provider value={{ store, dispatch }}>

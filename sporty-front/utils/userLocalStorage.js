@@ -3,9 +3,11 @@ import { useState } from "react";
 export function getStorageItem(key, initialValue) {
   try {
     // Get from local storage by key
-    const item = window.localStorage.getItem(key);
-    // Parse stored json or if none return initialValue
-    return item ? JSON.parse(item) : initialValue;
+    if (typeof window !== "undefined") {
+      const item = window.localStorage.getItem(key);
+      // Parse stored json or if none return initialValue
+      return item ? JSON.parse(item) : initialValue;
+    }
   } catch (error) {
     // If error also return initialValue
     console.log(error);
@@ -15,7 +17,9 @@ export function getStorageItem(key, initialValue) {
 
 export function setStorageItem(key, value) {
   try {
-    window.localStorage.setItem(key, JSON.stringify(value));
+    if (typeof window !== "undefined") {
+      window.localStorage.setItem(key, JSON.stringify(value));
+    }
   } catch (error) {
     console.log(error);
   }

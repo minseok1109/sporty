@@ -237,3 +237,4 @@ yarn-error.log*
 .vercel
 .vscode
 .idea
+sporty-front/package-lock.json
