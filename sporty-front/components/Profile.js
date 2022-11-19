@@ -20,6 +20,9 @@ const postBreadcrumbs = [
   <Link underline="hover" key="2" color="inherit" href="#">
     신청한 글
   </Link>,
+  <Link underline="hover" key="3" color="inherit" href="/account/logOut">
+    로그아웃
+  </Link>,
 ];
 
 export default function Profile() {
@@ -47,7 +50,9 @@ export default function Profile() {
   let { username, email } = userData;
 
   return (
-    <Paper sx={{ maxWidth: 768, minWidth: 320, border: 1, my: 3 }}>
+    <Paper
+      sx={{ maxWidth: 768, minWidth: 320, maxHeight: 130, border: 1, my: 3 }}
+    >
       {showloginLink ? (
         <Box>
           <Avatar
@@ -79,7 +84,16 @@ export default function Profile() {
           </Box>
         </Box>
       ) : (
-        <Box sx={{ display: "flex", justifyContent: "center", my: 3 }}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            my: "auto",
+            alignItems: "center",
+            top: 50,
+            left: 50,
+          }}
+        >
           <Breadcrumbs
             separator="|"
             aria-label="breadcrumb"
