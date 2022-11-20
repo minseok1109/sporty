@@ -17,13 +17,7 @@ class Post(Timestampedmodel):
     description = models.CharField(max_length=100)
     date = models.DateTimeField(default=datetime.now, blank=False, null=True)
     location = models.CharField(max_length=100)
-
-    EXERCISE_TYPE = (
-        ('S', '축구'),
-        ('B', '농구'),
-        ('W', '걷기'),
-    )
-    exercise = models.CharField(max_length=10, choices=EXERCISE_TYPE)
+    exercise = models.CharField(max_length=10)
 
 
     def get_absolute_url(self):

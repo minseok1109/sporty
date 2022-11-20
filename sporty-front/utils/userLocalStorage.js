@@ -15,7 +15,11 @@ export function getStorageItem(key, initialValue) {
 
 export function setStorageItem(key, value) {
   try {
-    window.localStorage.setItem(key, JSON.stringify(value));
+    if (typeof window !== "undefined") {
+      window.localStorage.setItem(key, JSON.stringify(value));
+
+    }
+
   } catch (error) {
     console.log(error);
   }
