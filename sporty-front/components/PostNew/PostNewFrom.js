@@ -1,50 +1,38 @@
 import * as React from 'react';
 import TextField from '@mui/material/TextField';
-import { Button, FormGroup } from '@mui/material';
 import DateandTimePicker from '../TimePicker/DateTimePicker';
-import { FormControl, InputLabel, Input, FormHelperText } from '@mui/material/FormControl';
-import Axios from 'axios';
+import { Button, FormGroup, Box } from "@mui/material";
+import { useAppContext } from '../../store';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
 
-
-const exercises = [
-    {
-        value: '농구',
-        label: '농구',
-    },
-    {
-        value: '축구',
-        label: '축구',
-    },
-    {
-        value: '걷기',
-        label: '걷기',
-    },
-
-];
 
 
 export default function PostNewForm() {
-    const [exercise, setExercise] = React.useState('EUR');
+    const {
+        store: { jwtToken }
+    } = useAppContext();
 
-    const [fieldErrors, setFieldErrors] = React.useState({});
+    const history = useRouter();
 
-    const handleFinish = async fieldValues => {
-        const {
-            exercise,
-            title,
-            description
-        } = fieldValues;
+    const [fieldErrors, setFieldErrors] = useState({});
 
+
+    const onSubmit = async (fieldValues) => {
+        const { exercise, title, description, date, location } = fieldValues;
         const formData = new FormData();
         formData.append("exercise", exercise);
         formData.append("title", title);
         formData.append("description", description);
-
-
+        formData.append("date", date);
+        formData.append("location", location);
+        const headers = { Authorization: `JWT ${jwtToken}` };
         try {
-            const response = await Axios.post("http://localhost:8000/api/posts/", formData,);
+            const response = await axiosInstance.post("/api/posts/", formData, {
+                headers
+            });
             console.log("success response :", response);
-
+            history.push("/");
         } catch (error) {
             if (error.response) {
                 const { status, data: fieldsErrorMessages } = error.response;
@@ -52,87 +40,132 @@ export default function PostNewForm() {
                     notification.open({
                         message: "서버 오류",
                         description: `에러) ${status} 응답을 받았습니다. 서버 에러를 확인해주세요.`,
-
+                        icon: <FrownOutlined style={{ color: "#ff3333" }} />
                     });
                 } else {
                     setFieldErrors(parseErrorMessages(fieldsErrorMessages));
                 }
-            }
+            };
+
+            return (
+                <>
+                    <FormGroup>
+
+                        <form onSubmit={onSubmit} method="post">
+
+                            <Box
+                                component="form"
+                                sx={{
+                                    '& > :not(style)': { m: 1, width: '25ch' },
+                                }}
+                                noValidate
+                                autoComplete="off"
+                            >
+                                <TextField
+                                    id="outlined-basic"
+                                    sx={{ marginBottom: 5 }}
+                                    variant="outlined"
+                                    margin="normal"
+                                    fullWidth
+                                    required
+                                    label="운동"
+                                    name='exercise'
+                                    {...fieldErrors.exercise}
+                                    {...fieldErrors.non_field_errors}
+                                />
+                            </Box>
+
+
+                            <Box
+                                component="form"
+                                sx={{
+                                    '& > :not(style)': { m: 1, width: '25ch' },
+                                }}
+                                noValidate
+                                autoComplete="off"
+                            >
+                                <TextField
+                                    sx={{ marginBottom: 5 }}
+                                    id="outlined-multiline-static"
+                                    margin="normal"
+                                    fullWidth
+                                    required
+                                    name='title'
+                                    {...fieldErrors.title}
+                                    {...fieldErrors.non_field_errors}
+                                />
+                            </Box>
+
+                            <Box
+                                component="form"
+                                sx={{
+                                    '& > :not(style)': { m: 1, width: '25ch' },
+                                }}
+                                noValidate
+                                autoComplete="off"
+                            >
+                                <TextField
+                                    sx={{ marginBottom: 5 }}
+                                    id="outlined-multiline-static"
+                                    margin="normal"
+                                    fullWidth
+                                    required
+                                    name='description'
+                                    {...fieldErrors.description}
+                                    {...fieldErrors.non_field_errors}
+                                />
+                            </Box>
+
+                            <Box
+                                component="form"
+                                sx={{
+                                    '& > :not(style)': { m: 1, width: '25ch' },
+                                }}
+                                noValidate
+                                autoComplete="off"
+                            >
+                                <DateandTimePicker
+                                    name='date'
+                                    {...fieldErrors.date}
+                                    {...fieldErrors.non_field_errors}
+                                ></DateandTimePicker>
+                            </Box>
+
+                            <Box
+                                component="form"
+                                sx={{
+                                    '& > :not(style)': { m: 1, width: '25ch' },
+                                }}
+                                noValidate
+                                autoComplete="off"
+                            >
+                                <TextField
+                                    sx={{ marginBottom: 5 }}
+                                    id="outlined-multiline-static"
+                                    margin="normal"
+                                    fullWidth
+                                    required
+                                    name='location'
+                                    multiline
+                                    {...fieldErrors.location}
+                                    {...fieldErrors.non_field_errors}
+                                />
+                            </Box>
+                            <Button
+                                variant="outlined"
+                                fullWidth
+                                type="submit"
+
+                            >
+                                글쓰기
+                            </Button>
+
+                        </form>
+                    </FormGroup>
+
+
+                </>);
         }
-    };
+    }
 
-
-
-
-
-    return (
-        <>
-
-            <form onSubmit={handleFinish}>
-                <FormGroup>
-
-                    <TextField
-                        id="outlined-select-exercise-native"
-                        select
-                        label="운동"
-                        name='exercise'
-                        value={exercise}
-                        margin="normal"
-                        SelectProps={{
-                            native: true,
-                        }}
-                        helperText="운동 종목을 골라주세요"
-
-                    >
-                        {exercises.map((option) => (
-                            <option key={option.value} value={option.value}>
-                                {option.label}
-                            </option>
-                        ))}
-
-
-                    </TextField>
-
-
-
-                    <TextField
-                        id="outlined-basic"
-                        label="제목"
-                        variant="outlined"
-                        margin="normal"
-                        name='title'>
-
-                    </TextField>
-
-
-                    <TextField
-                        id="outlined-multiline-static"
-                        label="설명"
-                        name='description'
-                        multiline
-                        margin="normal"
-                        rows={4}
-                        defaultValue="만나는 사람:"
-
-
-
-                    >
-                    </TextField>
-
-
-
-
-
-
-                    <DateandTimePicker>
-                    </DateandTimePicker>
-
-                    <Button type="submit" variant='outlined'>
-                        작성
-                    </Button>
-                </FormGroup>
-
-            </form>
-
-        </>);
 }
