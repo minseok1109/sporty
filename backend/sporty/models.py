@@ -15,7 +15,7 @@ class Post(Timestampedmodel):
                                on_delete=models.CASCADE)
     title = models.CharField(max_length=50, null=True)
     description = models.CharField(max_length=100)
-    date = models.DateTimeField(default=datetime.now, blank=False, null=True)
+    date = models.CharField(max_length=50)
     location = models.CharField(max_length=100)
     exercise = models.CharField(max_length=10)
 
