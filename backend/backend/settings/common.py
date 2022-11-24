@@ -109,7 +109,7 @@ AUTH_PASSWORD_VALIDATORS = [
 AUTH_USER_MODEL = "accounts.User"
 
 
-LANGUAGE_CODE = 'ko-kr'
+LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'Asia/Seoul'
 
@@ -138,7 +138,7 @@ REST_FRAMEWORK = {
 }
 JWT_AUTH = {
     "JWT_SECRET_KEY": SECRET_KEY,
-    "JWT_ALGORITHM": "H256",
+    "JWT_ALGORITHM": "HS256",
     "JWT_ALLOW_REFRESH": True,
     "JWT_EXPIRATION_DELTA": timedelta(days=7),
     "JWT_REFRESH_EXPIRATION_DELTA": timedelta(days=28),
