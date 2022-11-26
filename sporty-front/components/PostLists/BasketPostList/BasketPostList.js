@@ -1,10 +1,10 @@
 import useAxios from "axios-hooks";
-import Post from "./Post";
+import BasketPost from "./BasketPost";
 
 
-export default function PostList() {
+export default function BasketPostList() {
   const [{ data: postList, loading, error }, refetch] = useAxios({
-    url: "http://localhost:8000/api/posts/"
+    url: "http://localhost:8000/api/basketposts/"
   });
   return (
     <>
@@ -14,12 +14,9 @@ export default function PostList() {
           로딩 중 에러가 발생했습니다.
         </div>}
         <button type="" onClick={() => refetch()}>새로고침</button>
-        {/* {postList.length === 0 && (
-                    
-                )} */}
         {postList &&
           postList.map(post => (
-            <Post post={post} key={post.id} />
+            <BasketPost post={post} key={post.id} />
 
           )
 
@@ -28,7 +25,7 @@ export default function PostList() {
 
       </div>
       <style jsx>{`
-     
+    
       }
     `}</style>
 

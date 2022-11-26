@@ -5,17 +5,17 @@ import Button from '@mui/material/Button';
 const theme = createTheme({
     palette: {
         neutral: {
-            main: '#64748B',
+            main: '#A56100',
             contrastText: '#fff',
         },
     },
 });
 
-export default function BlackOutlinedButton(props) {
+export default function BasketButton() {
     return (
         <ThemeProvider theme={theme}>
             <Button color="neutral" variant="contained">
-                {props.exercise}
+                농구
             </Button>
         </ThemeProvider>
     );

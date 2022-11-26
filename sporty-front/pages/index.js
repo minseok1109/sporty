@@ -1,10 +1,13 @@
 import Profile from "../components/Profile";
-import PostList from "../components/PostList/PostList";
+import BasketPostNew from "../components/PostFroms/BasketPostNew";
+import BasketPostList from "../components/PostLists/BasketPostList/BasketPostList";
 
 export default function Home() {
   return (<>
     <Profile />
-    <PostList></PostList>
+    <BasketPostNew></BasketPostNew>
+    <BasketPostList></BasketPostList>
+
   </>
   );
 
