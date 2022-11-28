@@ -4,39 +4,42 @@ import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
-import { pink, purple, red } from '@mui/material/colors';
-import PostDetail from "../PostDetail";
+import { purple } from '@mui/material/colors';
+import BasketPostDetail from "./BasketPostDetail";
 
-export default function PostCard(props) {
+export default function BasketPostCard(props) {
 
     return (
         <Card sx={{ maxWidth: 345 }}>
-            <CardHeader
+            <CardHeader>
                 avatar={
                     <Avatar sx={{ bgcolor: purple[300] }} aria-label="recipe">
-                        {props.author}
+                        {props.avatar}
                     </Avatar>
                 }
-
-            />
+                <div>
+                    {props.username}
+                </div>
+            </CardHeader>
 
             <CardContent>
                 <Typography variant="body2" color="text.secondary">
                     {props.title}
-                    {props.exercise}
-                    {props.location}
                     {props.date}
-                    {props.description}
+                    {props.location}
+                    {props.cruit}
                 </Typography>
             </CardContent>
-            <PostDetail
-                author={props.author}
+            <BasketPostDetail
+                username={props.username}
                 title={props.title}
-                exercise={props.exercise}
-                location={props.location}
                 date={props.date}
+                location={props.location}
+                level={props.level}
+                cruit={props.cruit}
+                gameinfo={props.gameinfo}
                 deacription={props.description}
-            ></PostDetail>
+            ></BasketPostDetail>
         </Card>
     );
 
