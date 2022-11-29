@@ -16,7 +16,7 @@ class BasketPost(Timestampedmodel):
     date = models.CharField(verbose_name='날짜' ,max_length=50)
     location = models.CharField(verbose_name='장소' ,max_length=100)
     level = models.CharField(verbose_name='실력', max_length=10)
-    cruit = models.IntegerField(verbose_name='모집인원', null=True)
+    cruit = models.CharField(verbose_name='모집인원', max_length=10)
     gameinfo = models.CharField(verbose_name='경기정보', max_length=20)
     description = models.CharField(verbose_name='설명', max_length=100)
     apply_user_set = models.ManyToManyField(
