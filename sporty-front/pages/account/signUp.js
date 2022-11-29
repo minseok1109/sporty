@@ -1,3 +1,4 @@
+import { useState, useRef } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -5,13 +6,18 @@ import * as Yup from "yup";
 import Link from "next/link";
 import axios from "axios";
 import { Box, Container, Typography, Button, TextField } from "@mui/material";
+import { useSnackbar } from "notistack";
+import { useUpdateEffect } from "react-use";
 
 export default function SignUp() {
+  const usernameInput = useRef(null);
+  const { enqueueSnackbar } = useSnackbar();
+  const [duplicatedError, setDuplicatedError] = useState({});
   const router = useRouter();
   // 회원가입 작성 후 axios를 사용해서 벡엔드로 전송하는 함수
   const onSubmit = async (values) => {
-    const { email, password } = values;
-    const data = { email, password };
+    const { username, password, nickname, school } = values;
+    const data = { username, password, nickname, school };
     await axios
       .post("http://127.0.0.1:8000/accounts/signup/", data)
       .then(() => {
@@ -19,27 +25,59 @@ export default function SignUp() {
         router.push("http://localhost:3000/account/login");
       })
       .catch((error) => {
-        console.log("failed");
+        const {
+          response: {
+            data: { username, nickname },
+          },
+        } = error;
         console.log(error);
+        setDuplicatedError({ username, nickname });
       });
   };
 
+  useUpdateEffect(() => {
+    const options = {
+      preventDuplicate: true,
+      autoHideDuration: 3000,
+      variant: "error",
+      anchorOrigin: {
+        vertical: "top",
+        horizontal: "center",
+      },
+    };
+
+    const { username, nickname } = duplicatedError;
+    if (username) {
+      enqueueSnackbar(
+        "존재하는 아이디입니다. 다른 아이디를 입력하세요.",
+        options
+      );
+      usernameInput.current.focus();
+    }
+    if (nickname) {
+      enqueueSnackbar(nickname, options);
+    }
+  }, [duplicatedError]);
+
+  //todo: 아이디가 이메일 말고 그냥 아이디로 /  중복 확인 / 닉네임 필수
+  //todo: 필수입력 옆에는 별표
+
   // 각각 입력에 대한 스키마
   const formSchema = Yup.object().shape({
-    email: Yup.string().required("이메일은 필수입력입니다.").email(),
+    username: Yup.string().required("아이디는 필수입력입니다."),
     password: Yup.string()
       .required("비밀번호 입력은 필수입니다.")
       .min(8, "8자리 이상 비밀번호를 사용하세요"),
     password_confirm: Yup.string()
       .required("비밀번호 입력은 필수입니다.")
       .oneOf([Yup.ref("password")], "비밀번호가 다릅니다."),
+    nickname: Yup.string().required("닉네임 입력은 필수입니다."),
   });
 
   const formOptions = { resolver: yupResolver(formSchema) };
 
   const {
     handleSubmit,
-    reset,
     control,
     formState: { isSubmitting, errors },
   } = useForm(formOptions);
@@ -64,7 +102,7 @@ export default function SignUp() {
           </Typography>
         </Link>
       </Box>
-      <Box sx={{ marginBottom: 5 }}>
+      <Box sx={{ marginBottom: 2 }}>
         <Typography variant="h2" fontWeight="700">
           SPORTY에 오신 것을 환영합니다!
         </Typography>
@@ -74,19 +112,20 @@ export default function SignUp() {
       </Box>
       <form onSubmit={handleSubmit(onSubmit)} method="post">
         <Controller
-          name="email"
+          name="username"
           control={control}
           render={({ field }) => (
             <TextField
               {...field}
-              sx={{ marginBottom: 5 }}
+              sx={{ marginBottom: 2 }}
               margin="dense"
               fullWidth
               required
-              label="이메일"
+              label="아이디"
               value={field.value || ""}
-              error={!!errors.email}
-              helperText={errors.email ? errors?.email?.message : ""}
+              error={!!errors.username}
+              helperText={errors.username ? errors?.username?.message : ""}
+              ref={usernameInput}
             />
           )}
         />
@@ -96,7 +135,7 @@ export default function SignUp() {
           render={({ field }) => (
             <TextField
               {...field}
-              sx={{ marginBottom: 5 }}
+              sx={{ marginBottom: 2 }}
               margin="dense"
               fullWidth
               required
@@ -114,7 +153,7 @@ export default function SignUp() {
           render={({ field }) => (
             <TextField
               {...field}
-              sx={{ marginBottom: 5 }}
+              sx={{ marginBottom: 2 }}
               margin="dense"
               fullWidth
               required
@@ -128,6 +167,41 @@ export default function SignUp() {
                   ? errors?.password_confirm?.message
                   : ""
               }
+            />
+          )}
+        />
+        <Controller
+          name="nickname"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              sx={{ marginBottom: 2 }}
+              margin="dense"
+              fullWidth
+              required
+              label="닉네임"
+              type="text"
+              value={field.value || ""}
+              error={!!errors?.nickname}
+              helperText={errors?.nickname ? errors?.nickname?.message : ""}
+            />
+          )}
+        />
+        <Controller
+          name="school"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              sx={{ marginBottom: 2 }}
+              margin="dense"
+              fullWidth
+              label="학교"
+              type="text"
+              value={field.value || ""}
+              error={!!errors?.school}
+              helperText={errors?.school ? errors?.school?.message : ""}
             />
           )}
         />
