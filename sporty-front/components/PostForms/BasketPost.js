@@ -3,7 +3,8 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import BasketPostForm from './BasketPostForm';
+import BasketPostNewForm from './BasketPostNewForm';
+
 
 const style = {
     position: 'absolute',
@@ -17,14 +18,14 @@ const style = {
     p: 4,
 };
 
-export default function BasketPostNew() {
+export default function BasketPost() {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
     return (
         <div>
-            <Button onClick={handleOpen} variant='outlined'>새 글 작성</Button>
+            <Button onClick={handleOpen} variant='outlined'>테스트 글 작성</Button>
             <Modal
                 open={open}
                 onClose={handleClose}
@@ -35,7 +36,7 @@ export default function BasketPostNew() {
                     <Typography id="modal-modal-title" variant="h6" component="h2">
                     </Typography>
                     <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                        <BasketPostForm></BasketPostForm>
+                        <BasketPostNewForm></BasketPostNewForm>
                     </Typography>
                 </Box>
             </Modal>
