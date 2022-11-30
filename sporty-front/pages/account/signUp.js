@@ -7,7 +7,7 @@ import Link from "next/link";
 import axios from "axios";
 import { Box, Container, Typography, Button, TextField } from "@mui/material";
 import { useSnackbar } from "notistack";
-import { useUpdateEffect } from "react-use";
+import useUpdateEffect from "react-use/lib/useUpdateEffect";
 
 export default function SignUp() {
   const usernameInput = useRef(null);
