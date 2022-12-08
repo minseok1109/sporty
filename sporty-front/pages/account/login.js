@@ -1,53 +1,23 @@
 import Link from "next/link";
-import React, { useState } from "react";
 import { useRouter } from "next/router";
 import { useForm, Controller } from "react-hook-form";
+import { useSnackbar } from "notistack";
 import axios from "axios";
-import {
-  Breadcrumbs,
-  Box,
-  Container,
-  Typography,
-  Button,
-  TextField,
-  Stack,
-  Alert as MuiAlert,
-  Snackbar,
-} from "@mui/material";
+import { Container, Typography, Button, TextField } from "@mui/material";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { setToken, useAppContext } from "../../store";
 
-const breadcrumbs = [
-  <Link underline="hover" key="1" color="inherit" href="#">
-    아이디 찾기
-  </Link>,
-  <Link underline="hover" key="2" color="inherit" href="#">
-    비밀번호 찾기
-  </Link>,
-  <Link underline="hover" key="3" color="inherit" href="/account/signUp">
-    회원가입
-  </Link>,
-];
-
 export default function Login() {
-  const [open, setOpen] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();
-  const { store, dispatch } = useAppContext();
-  console.log(store);
+  const { dispatch } = useAppContext();
 
-  const handleClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    setOpen(false);
-  };
   const onSubmit = async (data) => {
     try {
       const response = await axios.post(
         "http://localhost:8000/accounts/token/",
-        data
+        data,
       );
       const {
         data: { token: jwtToken },
@@ -55,14 +25,22 @@ export default function Login() {
       await dispatch(setToken(jwtToken));
       await router.push("/");
     } catch (error) {
-      setOpen(true);
+      const options = {
+        preventDuplicate: true,
+        autoHideDuration: 3000,
+        variant: "error",
+        anchorOrigin: {
+          vertical: "top",
+          horizontal: "center",
+        },
+      };
+      enqueueSnackbar("아이디와 비멀번호를 확인하세요", options);
+      console.log(error);
     }
   };
 
   const formSchema = Yup.object().shape({
-    username: Yup.string()
-      .required("이메일은 필수입력입니다.")
-      .email("이메일을 입력하세요"),
+    username: Yup.string().required("아이디는 필수입력입니다."),
     password: Yup.string()
       .required("비밀번호 입력은 필수입니다.")
       .min(8, "8자리 이상 비밀번호를 사용하세요"),
@@ -76,11 +54,7 @@ export default function Login() {
     formState: { isSubmitting, errors },
   } = useForm(formOptions);
 
-  const Alert = React.forwardRef(function Alert(props, ref) {
-    return <MuiAlert elevation={6} ref={ref} variant="outlined" {...props} />;
-  });
   return (
-
     <Container maxWidth="sm">
       <Link href="/">
         <Typography
@@ -93,6 +67,10 @@ export default function Login() {
           sporty
         </Typography>
       </Link>
+      <Typography sx={{ textAlign: "center", fontSize: 34 }}>로그인</Typography>
+      <Typography sx={{ textAlign: "center", fontSize: 14 }}>
+        SPROTy에 오신 것을 환영합니다.
+      </Typography>
       <form onSubmit={handleSubmit(onSubmit)} method="post">
         <Controller
           name="username"
@@ -100,11 +78,11 @@ export default function Login() {
           render={({ field }) => (
             <TextField
               {...field}
-              sx={{ marginBottom: 5 }}
+              sx={{ marginBottom: 2 }}
               margin="dense"
               fullWidth
               required
-              label="이메일"
+              label="아이디"
               value={field.value || ""}
               error={!!errors.email}
               helperText={errors.email ? errors?.email?.message : ""}
@@ -135,24 +113,13 @@ export default function Login() {
           type="submit"
           disabled={isSubmitting}
         >
-          로그인
+          SPORTy 로그인
         </Button>
       </form>
-
-      <Box sx={{ display: "flex", justifyContent: "center", my: 3 }}>
-        <Breadcrumbs separator="|" aria-label="breadcrumb" color="text.primary">
-          {breadcrumbs}
-        </Breadcrumbs>
-      </Box>
-
-      {/* 로그인 실패시 알림 */}
-      <Stack spacing={2} sx={{ width: "100%" }}>
-        <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-          <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
-            아이디와 비밀번호를 확인하세요!
-          </Alert>
-        </Snackbar>
-      </Stack>
+      <Typography>
+        아직 가입을 안하셨나요?
+        <Link href="/account/signUp">회원가입 하러가기</Link>
+      </Typography>
     </Container>
   );
 }
