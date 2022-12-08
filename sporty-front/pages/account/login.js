@@ -3,29 +3,10 @@ import { useRouter } from "next/router";
 import { useForm, Controller } from "react-hook-form";
 import { useSnackbar } from "notistack";
 import axios from "axios";
-import {
-  Breadcrumbs,
-  Box,
-  Container,
-  Typography,
-  Button,
-  TextField,
-} from "@mui/material";
+import { Container, Typography, Button, TextField } from "@mui/material";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { setToken, useAppContext } from "../../store";
-
-const breadcrumbs = [
-  <Link underline="hover" key="1" color="inherit" href="#">
-    아이디 찾기
-  </Link>,
-  <Link underline="hover" key="2" color="inherit" href="#">
-    비밀번호 찾기
-  </Link>,
-  <Link underline="hover" key="3" color="inherit" href="/account/signUp">
-    회원가입
-  </Link>,
-];
 
 export default function Login() {
   const { enqueueSnackbar } = useSnackbar();
@@ -36,7 +17,7 @@ export default function Login() {
     try {
       const response = await axios.post(
         "http://localhost:8000/accounts/token/",
-        data
+        data,
       );
       const {
         data: { token: jwtToken },
@@ -86,6 +67,10 @@ export default function Login() {
           sporty
         </Typography>
       </Link>
+      <Typography sx={{ textAlign: "center", fontSize: 34 }}>로그인</Typography>
+      <Typography sx={{ textAlign: "center", fontSize: 14 }}>
+        SPROTy에 오신 것을 환영합니다.
+      </Typography>
       <form onSubmit={handleSubmit(onSubmit)} method="post">
         <Controller
           name="username"
@@ -93,11 +78,11 @@ export default function Login() {
           render={({ field }) => (
             <TextField
               {...field}
-              sx={{ marginBottom: 5 }}
+              sx={{ marginBottom: 2 }}
               margin="dense"
               fullWidth
               required
-              label="이메일"
+              label="아이디"
               value={field.value || ""}
               error={!!errors.email}
               helperText={errors.email ? errors?.email?.message : ""}
@@ -128,15 +113,13 @@ export default function Login() {
           type="submit"
           disabled={isSubmitting}
         >
-          로그인
+          SPORTy 로그인
         </Button>
       </form>
-
-      <Box sx={{ display: "flex", justifyContent: "center", my: 3 }}>
-        <Breadcrumbs separator="|" aria-label="breadcrumb" color="text.primary">
-          {breadcrumbs}
-        </Breadcrumbs>
-      </Box>
+      <Typography>
+        아직 가입을 안하셨나요?
+        <Link href="/account/signUp">회원가입 하러가기</Link>
+      </Typography>
     </Container>
   );
 }

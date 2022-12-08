@@ -6,8 +6,8 @@ export default function Home() {
   return (
     <>
       <Profile />
-      <BasketPostNew></BasketPostNew>
-      <BasketPostList></BasketPostList>
+      <BasketPostNew />
+      <BasketPostList />
     </>
   );
 }

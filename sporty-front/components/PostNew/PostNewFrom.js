@@ -5,6 +5,7 @@ import { Button, FormGroup, Box } from "@mui/material";
 import { useAppContext } from "../../store";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { axiosInstance } from "../../api";
 
 export default function PostNewForm() {
   const {
@@ -43,115 +44,114 @@ export default function PostNewForm() {
           setFieldErrors(parseErrorMessages(fieldsErrorMessages));
         }
       }
-
-      return (
-        <>
-          <FormGroup>
-            <form onSubmit={onSubmit} method="post">
-              <Box
-                component="form"
-                sx={{
-                  "& > :not(style)": { m: 1, width: "25ch" },
-                }}
-                noValidate
-                autoComplete="off"
-              >
-                <TextField
-                  id="outlined-basic"
-                  sx={{ marginBottom: 5 }}
-                  variant="outlined"
-                  margin="normal"
-                  fullWidth
-                  required
-                  label="운동"
-                  name="exercise"
-                  {...fieldErrors.exercise}
-                  {...fieldErrors.non_field_errors}
-                />
-              </Box>
-
-              <Box
-                component="form"
-                sx={{
-                  "& > :not(style)": { m: 1, width: "25ch" },
-                }}
-                noValidate
-                autoComplete="off"
-              >
-                <TextField
-                  sx={{ marginBottom: 5 }}
-                  id="outlined-multiline-static"
-                  margin="normal"
-                  fullWidth
-                  required
-                  name="title"
-                  {...fieldErrors.title}
-                  {...fieldErrors.non_field_errors}
-                />
-              </Box>
-
-              <Box
-                component="form"
-                sx={{
-                  "& > :not(style)": { m: 1, width: "25ch" },
-                }}
-                noValidate
-                autoComplete="off"
-              >
-                <TextField
-                  sx={{ marginBottom: 5 }}
-                  id="outlined-multiline-static"
-                  margin="normal"
-                  fullWidth
-                  required
-                  name="description"
-                  {...fieldErrors.description}
-                  {...fieldErrors.non_field_errors}
-                />
-              </Box>
-
-              <Box
-                component="form"
-                sx={{
-                  "& > :not(style)": { m: 1, width: "25ch" },
-                }}
-                noValidate
-                autoComplete="off"
-              >
-                <DateandTimePicker
-                  name="date"
-                  {...fieldErrors.date}
-                  {...fieldErrors.non_field_errors}
-                ></DateandTimePicker>
-              </Box>
-
-              <Box
-                component="form"
-                sx={{
-                  "& > :not(style)": { m: 1, width: "25ch" },
-                }}
-                noValidate
-                autoComplete="off"
-              >
-                <TextField
-                  sx={{ marginBottom: 5 }}
-                  id="outlined-multiline-static"
-                  margin="normal"
-                  fullWidth
-                  required
-                  name="location"
-                  multiline
-                  {...fieldErrors.location}
-                  {...fieldErrors.non_field_errors}
-                />
-              </Box>
-              <Button variant="outlined" fullWidth type="submit">
-                글쓰기
-              </Button>
-            </form>
-          </FormGroup>
-        </>
-      );
     }
   };
+  return (
+    <>
+      <FormGroup>
+        <form onSubmit={onSubmit} method="post">
+          <Box
+            component="form"
+            sx={{
+              "& > :not(style)": { m: 1, width: "25ch" },
+            }}
+            noValidate
+            autoComplete="off"
+          >
+            <TextField
+              id="outlined-basic"
+              sx={{ marginBottom: 5 }}
+              variant="outlined"
+              margin="normal"
+              fullWidth
+              required
+              label="운동"
+              name="exercise"
+              {...fieldErrors.exercise}
+              {...fieldErrors.non_field_errors}
+            />
+          </Box>
+
+          <Box
+            component="form"
+            sx={{
+              "& > :not(style)": { m: 1, width: "25ch" },
+            }}
+            noValidate
+            autoComplete="off"
+          >
+            <TextField
+              sx={{ marginBottom: 5 }}
+              id="outlined-multiline-static"
+              margin="normal"
+              fullWidth
+              required
+              name="title"
+              {...fieldErrors.title}
+              {...fieldErrors.non_field_errors}
+            />
+          </Box>
+
+          <Box
+            component="form"
+            sx={{
+              "& > :not(style)": { m: 1, width: "25ch" },
+            }}
+            noValidate
+            autoComplete="off"
+          >
+            <TextField
+              sx={{ marginBottom: 5 }}
+              id="outlined-multiline-static"
+              margin="normal"
+              fullWidth
+              required
+              name="description"
+              {...fieldErrors.description}
+              {...fieldErrors.non_field_errors}
+            />
+          </Box>
+
+          <Box
+            component="form"
+            sx={{
+              "& > :not(style)": { m: 1, width: "25ch" },
+            }}
+            noValidate
+            autoComplete="off"
+          >
+            <DateandTimePicker
+              name="date"
+              {...fieldErrors.date}
+              {...fieldErrors.non_field_errors}
+            ></DateandTimePicker>
+          </Box>
+
+          <Box
+            component="form"
+            sx={{
+              "& > :not(style)": { m: 1, width: "25ch" },
+            }}
+            noValidate
+            autoComplete="off"
+          >
+            <TextField
+              sx={{ marginBottom: 5 }}
+              id="outlined-multiline-static"
+              margin="normal"
+              fullWidth
+              required
+              name="location"
+              multiline
+              {...fieldErrors.location}
+              {...fieldErrors.non_field_errors}
+            />
+          </Box>
+          <Button variant="outlined" fullWidth type="submit">
+            글쓰기
+          </Button>
+        </form>
+      </FormGroup>
+    </>
+  );
 }

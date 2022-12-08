@@ -1,6 +1,7 @@
 from dataclasses import field
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
+from rest_framework.validators import UniqueTogetherValidator
 
 User = get_user_model()
 
@@ -18,4 +19,16 @@ class SignupSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
+        validators = [
+            UniqueTogetherValidator(
+                queryset=User.objects.all(),
+                fields=('username', 'nickname')
+            )
+        ]
         fields = ['pk', 'username', 'password', 'nickname', 'school']
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = get_user_model()
+        fields = ['id', 'username', 'nickname', 'school']

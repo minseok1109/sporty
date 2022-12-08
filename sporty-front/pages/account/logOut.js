@@ -1,18 +1,18 @@
 import { useRouter } from "next/router";
-import { deleteToken, useAppContext } from "../../store";
 import { useEffect } from "react";
+import { deleteToken, useAppContext } from "../../store";
+
 function logOut() {
-  const { store, dispatch } = useAppContext();
+  const { dispatch } = useAppContext();
   const router = useRouter();
 
   useEffect(() => {
     dispatch(deleteToken());
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     router.push("/");
-  }, [store]);
-  return <></>;
+  }, [router]);
 }
 
 export default logOut;

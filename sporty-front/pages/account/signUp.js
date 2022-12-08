@@ -21,7 +21,7 @@ export default function SignUp() {
     await axios
       .post("http://127.0.0.1:8000/accounts/signup/", data)
       .then(() => {
-        //회원가입 성공하면 바로 로그인페이지로
+        // 회원가입 성공하면 바로 로그인페이지로
         router.push("http://localhost:3000/account/login");
       })
       .catch((error) => {
@@ -30,7 +30,6 @@ export default function SignUp() {
             data: { username, nickname },
           },
         } = error;
-        console.log(error);
         setDuplicatedError({ username, nickname });
       });
   };
@@ -50,7 +49,7 @@ export default function SignUp() {
     if (username) {
       enqueueSnackbar(
         "존재하는 아이디입니다. 다른 아이디를 입력하세요.",
-        options
+        options,
       );
       usernameInput.current.focus();
     }
@@ -59,8 +58,8 @@ export default function SignUp() {
     }
   }, [duplicatedError]);
 
-  //todo: 아이디가 이메일 말고 그냥 아이디로 /  중복 확인 / 닉네임 필수
-  //todo: 필수입력 옆에는 별표
+  // todo: 아이디가 이메일 말고 그냥 아이디로 /  중복 확인 / 닉네임 필수
+  // todo: 필수입력 옆에는 별표
 
   // 각각 입력에 대한 스키마
   const formSchema = Yup.object().shape({

@@ -29,13 +29,14 @@ export default function Profile() {
   let [userData, setUserData] = useState({});
   let [showloginLink, setshowloginLink] = useState(false);
   const { store } = useAppContext();
-  const { isAuthenticated } = store;
+  const { isAuthenticated, jwtToken } = store;
 
   useEffect(() => {
+    const header = { Authorization: `JWT ${jwtToken}` };
     const getUserData = () => {
-      fetch("https://jsonplaceholder.typicode.com/users/1")
+      fetch("http://localhost:8000/accounts/api/user", header)
         .then((response) => response.json())
-        .then((json) => setUserData(json));
+        .then((json) => console.log(json));
     };
     getUserData();
   }, []);
