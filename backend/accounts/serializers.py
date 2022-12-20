@@ -22,7 +22,7 @@ class SignupSerializer(serializers.ModelSerializer):
         validators = [
             UniqueTogetherValidator(
                 queryset=User.objects.all(),
-                fields=('username', 'nickname')
+                fields=['username', 'nickname']
             )
         ]
         fields = ['pk', 'username', 'password', 'nickname', 'school']
