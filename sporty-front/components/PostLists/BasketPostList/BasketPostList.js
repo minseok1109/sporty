@@ -21,6 +21,7 @@ export default function BasketPostList() {
     setPostList(originPostList);
   }, [originPostList]);
 
+  console.log("originPostList:", originPostList);
   const handleApply = async ({ post, isapply }) => {
     const apiUrl = `http://localhost:8000/api/basketposts/${post.id}/apply/`;
     const method = isapply ? "POST" : "DELETE";
