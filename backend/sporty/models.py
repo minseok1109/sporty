@@ -13,7 +13,8 @@ class BasketPost(Timestampedmodel):
     author = models.ForeignKey(settings.AUTH_USER_MODEL,verbose_name='작성자', related_name='my_basketballpost_set',
                                on_delete=models.CASCADE)
     title = models.CharField(verbose_name='제목', max_length=50, null=True)
-    date = models.CharField(verbose_name='날짜' ,max_length=50)
+    start_date_time = models.CharField(verbose_name='시작 날짜' ,max_length=50)
+    end_date_time = models.CharField(verbose_name='끝나는 날짜' ,max_length=50)
     location = models.CharField(verbose_name='장소' ,max_length=100)
     level = models.CharField(verbose_name='실력', max_length=10)
     cruit = models.CharField(verbose_name='모집인원', max_length=10)
