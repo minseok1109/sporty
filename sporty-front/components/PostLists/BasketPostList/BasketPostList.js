@@ -3,6 +3,7 @@ import useAxios from "axios-hooks";
 import BasketPostCard from "./BasketPostCard";
 import { useAppContext } from "../../../store";
 import { useEffect, useState } from "react";
+import { Box } from "@mui/material";
 
 export default function BasketPostList() {
   const [postList, setPostList] = useState([]);
@@ -15,13 +16,11 @@ export default function BasketPostList() {
 
   const [{ data: originPostList, loading, error }] = useAxios({
     url: "http://localhost:8000/api/basketposts/",
-    headers,
   });
   useEffect(() => {
     setPostList(originPostList);
   }, [originPostList]);
 
-  console.log("originPostList:", originPostList);
   const handleApply = async ({ post, isapply }) => {
     const apiUrl = `http://localhost:8000/api/basketposts/${post.id}/apply/`;
     const method = isapply ? "POST" : "DELETE";
@@ -45,9 +44,17 @@ export default function BasketPostList() {
       console.log("error: ", error);
     }
   };
+  console.log(postList);
   return (
     <>
-      <div>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "column",
+        }}
+      >
         {loading && <div>Loading</div>}
         {error && <div>로딩 중 에러가 발생했습니다.</div>}
         {postList &&
@@ -58,7 +65,7 @@ export default function BasketPostList() {
               handleApply={handleApply}
             />
           ))}
-      </div>
+      </Box>
     </>
   );
 }

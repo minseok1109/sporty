@@ -14,7 +14,7 @@ from .serializers import FreePostSerializer
 
 class BasketPostViewSet(ModelViewSet):
     queryset = BasketPost.objects.all().select_related(
-        "author")
+        "author").order_by('-created_at')
     serializer_class = BasketPostSerializer
     permission_classes = [AllowAny]  # FIXME 인증 적용
 

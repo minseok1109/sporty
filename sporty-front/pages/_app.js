@@ -8,19 +8,21 @@ import Header from "../components/Header";
 import { theme } from "../palette";
 import { Container } from "@mui/system";
 import { useRouter } from "next/router";
+import ComponentBottom from "../components/BottomNavigation/ComponentBottom";
 
 function MyApp({ Component, pageProps, ...appProps }) {
   const router = useRouter();
-  let notShowHeader = ["/account/login", "/BasketPost"];
+  let notShowHeader = ["/account/login", "/BasketPost", "/account/signUp"];
   let showHeader = notShowHeader.includes(router.pathname) ? false : true;
   return (
     <CssBaseline>
       <AppProvider>
         <SnackbarProvider>
           <ThemeProvider theme={theme}>
-            <Container>
+            <Container disableGutters={true} sx={{ maxHeight: 1 }}>
               {showHeader && <Header />}
               <Component {...pageProps} />
+              <ComponentBottom />
             </Container>
           </ThemeProvider>
         </SnackbarProvider>
