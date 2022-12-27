@@ -7,12 +7,17 @@ from .models import FreePost
 
 @admin.register(BasketPost)
 class BasketPostAdmin(admin.ModelAdmin):
-    list_display = ['title', 'start_date_time','end_date_time', 'location', 'level', 'cruit', 'gameinfo', 'description']
+    list_display = ['title', 'start_date_time', 'end_date_time',
+                    'location', 'level', 'cruit', 'gameinfo', 'description']
+
 
 @admin.register(WorkPost)
 class WorkPostAdmin(admin.ModelAdmin):
-    list_display = ['title', "date", 'location', 'purpose', 'cruit', 'description']
+    list_display = ['title', 'start_date_time', 'end_date_time',
+                    'location', 'purpose', 'cruit', 'description']
+
 
 @admin.register(FreePost)
 class FreePostAdmin(admin.ModelAdmin):
-    list_display = ['title', 'date', 'location', 'cruit', 'description']
+    list_display = ['title', 'start_date_time',
+                    'end_date_time', 'location', 'cruit', 'description']

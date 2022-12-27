@@ -9,7 +9,7 @@ class AuthorSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
         fields = [
-            'id', 'username', 'avatar','nickname'
+            'id', 'username', 'avatar', 'nickname'
         ]
 
 
@@ -27,16 +27,30 @@ class BasketPostSerializer(serializers.ModelSerializer):
         model = BasketPost
         fields = "__all__"
 
+
 class WorkPostSerializer(serializers.ModelSerializer):
     author = AuthorSerializer(read_only=True)
 
+    def is_apply_field(self, post):
+        if "request" in self.context:
+            user = self.context["request"].user
+            return post.apply_user_set.filter(pk=user.pk).exists()
+        return False
+
     class Meta:
         model = WorkPost
-        fields = ["id", "author", "created_at", "title", "date", "location", "cruit", "purpose", "description", "apply_user_set", "is_apply"]
+        fields = "__all__"
+
 
 class FreePostSerializer(serializers.ModelSerializer):
     author = AuthorSerializer(read_only=True)
 
+    def is_apply_field(self, post):
+        if "request" in self.context:
+            user = self.context["request"].user
+            return post.apply_user_set.filter(pk=user.pk).exists()
+        return False
+
     class Meta:
         model = FreePost
-        fields = ["id", "author", "created_at", "title", "date", "location", "cruit", "description", "apply_user_set", "is_apply"]
+        fields = "__all__"

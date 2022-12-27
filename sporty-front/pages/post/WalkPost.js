@@ -5,24 +5,21 @@ import { useRouter } from "next/router";
 import axios from "axios";
 import { useForm, Controller } from "react-hook-form";
 import dayjs from "dayjs";
-import { useState } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { DatePicker } from "antd";
 
-export default function BasketPostNewForm() {
+export default function WalkPostForm() {
   const { RangePicker } = DatePicker;
-  const [value, setValue] = useState(dayjs(new Date()).format("YYYY.MM.DD"));
   const router = useRouter();
 
   const formSchema = Yup.object().shape({
     title: Yup.string().required("제목은 필수입력입니다."),
     date: Yup.array().required("날짜를 입력해주세요."),
     location: Yup.string(),
-    level: Yup.string(),
-    cruit: Yup.number(),
-    gameinfo: Yup.string(),
     description: Yup.string(),
+    purpose: Yup.string(),
+    cruit: Yup.number(),
   });
 
   const formOptions = { resolver: yupResolver(formSchema) };
@@ -40,8 +37,7 @@ export default function BasketPostNewForm() {
   const onSubmit = async (values) => {
     const headers = { Authorization: `JWT ${jwtToken}` };
 
-    const { title, date, location, level, cruit, gameinfo, description } =
-      values;
+    const { title, date, location, cruit, purpose, description } = values;
 
     let [start_date_time, end_date_time] = date.map((d) =>
       d.format("YYYY-MM-DD HH:mm"),
@@ -52,13 +48,13 @@ export default function BasketPostNewForm() {
       start_date_time,
       end_date_time,
       location,
-      level,
+      purpose,
       cruit,
-      gameinfo,
       description,
     };
+    console.log(data);
     await axios
-      .post("http://localhost:8000/api/basketposts/", data, { headers })
+      .post("http://localhost:8000/api/workposts/", data, { headers })
       .then(() => {
         router.push("http://localhost:3000/");
       })
@@ -97,6 +93,11 @@ export default function BasketPostNewForm() {
             }}
             format="YYYY-MM-DD HH:mm"
             value={field.value || ""}
+            style={{
+              width: "100%",
+              height: "2.4375em",
+              padding: "16.5px 14px",
+            }}
           />
         )}
       />
@@ -119,7 +120,7 @@ export default function BasketPostNewForm() {
       />
 
       <Controller
-        name="level"
+        name="purpose"
         control={control}
         render={({ field }) => (
           <TextField
@@ -128,10 +129,10 @@ export default function BasketPostNewForm() {
             margin="dense"
             fullWidth
             required
-            label="난이도"
+            label="목표거리"
             value={field.value || ""}
-            error={!!errors.level}
-            helperText={errors.level ? errors?.level?.message : ""}
+            error={!!errors.purpose}
+            helperText={errors.purpose ? errors?.purpose?.message : ""}
           ></TextField>
         )}
       />
@@ -157,24 +158,6 @@ export default function BasketPostNewForm() {
               errors.cruit ? errors?.cruit?.message : "숫자만 입력하세요."
             }
           ></TextField>
-        )}
-      />
-
-      <Controller
-        name="gameinfo"
-        control={control}
-        render={({ field }) => (
-          <TextField
-            {...field}
-            sx={{ marginBottom: 2 }}
-            margin="dense"
-            fullWidth
-            required
-            label="게임 정보"
-            value={field.value || ""}
-            error={!!errors.gameinfo}
-            helperText={errors.gameinfo ? errors?.gameinfo?.message : ""}
-          />
         )}
       />
 
