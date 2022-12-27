@@ -18,7 +18,7 @@ function Header() {
       <Link href="/" underline="none" color="black">
         <Typography fontSize={30}>SPORTy</Typography>
       </Link>
-      <Button href="BasketPost">
+      <Button href="/post/FreePost">
         <AddIcon />
       </Button>
     </Box>
