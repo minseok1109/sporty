@@ -18,7 +18,7 @@ class UserViewSet(ModelViewSet):
     queryset = get_user_model().objects.all()
     serializer_class = UserSerializer
     authentication_classes = [JSONWebTokenAuthentication]
-    permission_classes = [IsAuthenticated]
+    permission_classes = []
 
     def get_serializer_context(self):
         context = super().get_serializer_context()
