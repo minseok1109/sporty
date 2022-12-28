@@ -2,7 +2,7 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
-import { Card, CardContent, CardHeader } from "@mui/material";
+import { Card, CardContent, CardHeader, Avatar } from "@mui/material";
 
 const style = {
   position: "absolute",
@@ -15,9 +15,8 @@ const style = {
   boxShadow: 24,
 };
 
-export default function BasketPostModal(props) {
+export default function PostModal(props) {
   const {
-    nickname,
     title,
     date,
     location,
@@ -25,9 +24,9 @@ export default function BasketPostModal(props) {
     cruit,
     gameinfo,
     description,
+    purpose,
     avatar,
   } = props;
-  console.log(props);
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -43,12 +42,18 @@ export default function BasketPostModal(props) {
       >
         <Box sx={style}>
           <Card sx={{ minWidth: 275 }}>
-            <CardHeader title={title} avatar={avatar} subheader={date} />
+            <CardHeader
+              title={title}
+              avatar={<Avatar src={avatar} />}
+              subheader={date}
+            />
+
             <CardContent>
               <Box>난이도: {level}</Box>
               <Box>장소: {location}</Box>
               <Box>모집인원: {cruit}</Box>
-              <Box>게임 정보: {gameinfo}</Box>
+              {gameinfo && <Box>게임 정보: {gameinfo}</Box>}
+              {purpose && <Box>목표 거리: {purpose}</Box>}
               <Box>설명: {description}</Box>
             </CardContent>
           </Card>

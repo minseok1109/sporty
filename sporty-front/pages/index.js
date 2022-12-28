@@ -1,8 +1,10 @@
-import BasketPostList from "../components/PostLists/BasketPostList/BasketPostList";
+import PostList from "../components/PostLists/PostList";
 export default function Home() {
   return (
     <>
-      <BasketPostList />
+      <PostList postListUrl={"basketposts"} />
+      <PostList postListUrl={"workposts"} />
+      <PostList postListUrl={"freeposts"} />
     </>
   );
 }

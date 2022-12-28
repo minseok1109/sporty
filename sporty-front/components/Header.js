@@ -1,6 +1,6 @@
 import { Typography, Box, Button, Link } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import AddIcon from "@mui/icons-material/Add";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 function Header() {
   const theme = useTheme();
@@ -18,8 +18,9 @@ function Header() {
       <Link href="/" underline="none" color="black">
         <Typography fontSize={30}>SPORTy</Typography>
       </Link>
-      <Button href="/post/FreePost">
-        <AddIcon />
+      {/* my page url 추가해야함 */}
+      <Button href="#">
+        <AccountCircleIcon color="action" fontSize="large" />
       </Button>
     </Box>
   );
