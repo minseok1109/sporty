@@ -1,11 +1,10 @@
-import React from "react";
-import BasketPostDetail from "./BasketPostDetail";
+import React, { useState } from "react";
 import PlaceIcon from "@mui/icons-material/Place";
 import AccessTimeFilledTwoToneIcon from "@mui/icons-material/AccessTimeFilledTwoTone";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import { UserOutlined } from "@ant-design/icons";
 import { Avatar } from "antd";
-import { Avatar as MuiAvatar } from "@mui/material";
+import { Avatar as MuiAvatar, CardActions, Collapse } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import dayjs from "dayjs";
 import {
@@ -17,6 +16,10 @@ import {
   Grid,
   Button,
 } from "@mui/material";
+import { useAppContext } from "../../store";
+import PersonIcon from "@mui/icons-material/Person";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import IconButton from "@mui/material/IconButton";
 
 const Item = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -29,7 +32,20 @@ const Item = styled(Box)(({ theme }) => ({
   color: theme.palette.text.primary,
 }));
 
-export default function BasketPostCard({ post, handleApply }) {
+const ExpandMore = styled((props) => {
+  const { expand, ...other } = props;
+  return <IconButton {...other} />;
+})(({ theme, expand }) => ({
+  transform: !expand ? "rotate(0deg)" : "rotate(180deg)",
+  marginLeft: "auto",
+  transition: theme.transitions.create("transform", {
+    duration: theme.transitions.duration.shortest,
+  }),
+}));
+
+export default function PostCard({ post, handleApply }) {
+  const { store } = useAppContext();
+  const { isAuthenticated } = store;
   const {
     author,
     title,
@@ -39,10 +55,14 @@ export default function BasketPostCard({ post, handleApply }) {
     level,
     cruit,
     gameinfo,
+    purpose,
     description,
     is_apply,
     created_at,
   } = post;
+
+  const isLongDesc = description.length <= 20 ? true : false;
+
   const startDate = dayjs(start_date_time);
   const endDate = dayjs(end_date_time);
   const { avatar, nickname } = author;
@@ -81,22 +101,23 @@ export default function BasketPostCard({ post, handleApply }) {
     <Card sx={{ maxWidth: 345, border: 1, margin: 2 }}>
       <CardHeader
         action={[
-          is_apply ? (
-            <Button
-              variant="outlined"
-              onClick={() => handleApply({ post, isapply: false })}
-            >
-              {" "}
-              취소하기{" "}
-            </Button>
-          ) : (
-            <Button
-              variant="outlined"
-              onClick={() => handleApply({ post, isapply: true })}
-            >
-              함께 하기
-            </Button>
-          ),
+          isAuthenticated &&
+            (is_apply ? (
+              <Button
+                variant="outlined"
+                onClick={() => handleApply({ post, isapply: false })}
+              >
+                {" "}
+                취소하기{" "}
+              </Button>
+            ) : (
+              <Button
+                variant="outlined"
+                onClick={() => handleApply({ post, isapply: true })}
+              >
+                함께 하기
+              </Button>
+            )),
         ]}
         avatar={
           avatar !== null ? (
@@ -111,16 +132,12 @@ export default function BasketPostCard({ post, handleApply }) {
       ></CardHeader>
 
       <CardContent sx={{ pt: 0.5 }}>
-        <Typography>{title}</Typography>
-        <Typography sx={{ color: "#3c3c43" }}>
-          {description.length <= 20
-            ? description
-            : `${description.substring(0, 20)}.....more`}
-        </Typography>
-
         <Grid container spacing={1}>
           <Grid item xs={6}>
-            <Item>{gameinfo}</Item>
+            <Item>
+              <PersonIcon sx={{ mr: 1 }} />
+              {cruit}명
+            </Item>
           </Grid>
           <Grid item xs={6}>
             <Item>
@@ -142,18 +159,46 @@ export default function BasketPostCard({ post, handleApply }) {
             </Item>
           </Grid>
         </Grid>
+        <Typography variant="h6" mt={1}>
+          {title}
+        </Typography>
+        <Typography sx={{ color: "#3c3c43" }}>
+          {isLongDesc ? (
+            description
+          ) : (
+            <ExpandedDescription description={description} />
+          )}
+        </Typography>
       </CardContent>
-      <BasketPostDetail
-        avatar={avatar}
-        username={nickname}
-        title={title}
-        date={created_at_date}
-        location={location}
-        level={level}
-        cruit={cruit}
-        gameinfo={gameinfo}
-        description={description}
-      />
     </Card>
+  );
+}
+
+export function ExpandedDescription({ description }) {
+  const [expanded, setExpanded] = useState(false);
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
+  };
+  return (
+    <>
+      {!expanded && (
+        <Typography>{description.substring(0, 20) + "...."}</Typography>
+      )}
+      <CardActions disableSpacing>
+        <ExpandMore
+          expand={expanded}
+          onClick={handleExpandClick}
+          aria-expanded={expanded}
+          aria-label="show more"
+        >
+          <ExpandMoreIcon />
+        </ExpandMore>
+      </CardActions>
+      <Collapse in={expanded} timeout="auto" unmountOnExit>
+        <CardContent>
+          <Typography sx={{ color: "#3c3c43" }}>{description}</Typography>
+        </CardContent>
+      </Collapse>
+    </>
   );
 }

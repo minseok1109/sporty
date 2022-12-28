@@ -1,7 +1,7 @@
 import { Paper, BottomNavigation, BottomNavigationAction } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-
+import AddIcon from "@mui/icons-material/Add";
+import ChatBubbleIcon from "@mui/icons-material/ChatBubble";
 export default function FixedLogInBottomNavigation() {
   return (
     <Paper
@@ -11,9 +11,14 @@ export default function FixedLogInBottomNavigation() {
       <BottomNavigation showLabels>
         <BottomNavigationAction label="Home" href="/" icon={<HomeIcon />} />
         <BottomNavigationAction
-          label="My page"
+          label="post"
+          href="/post/BasketPost"
+          icon={<AddIcon />}
+        />
+        <BottomNavigationAction
+          label="chat"
           href="#"
-          icon={<AccountCircleIcon />}
+          icon={<ChatBubbleIcon />}
         />
       </BottomNavigation>
     </Paper>
