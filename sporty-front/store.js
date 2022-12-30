@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useReducer } from "react";
 import { getStorageItem, setStorageItem } from "./utils/userLocalStorage";
 
-
 const AppContext = createContext();
 
 const reducer = (prevState, action) => {

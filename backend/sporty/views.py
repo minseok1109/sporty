@@ -1,9 +1,11 @@
 
 from rest_framework import status
 from rest_framework.decorators import action
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
+from rest_framework_jwt.authentication import JSONWebTokenAuthentication
+
 from .models import BasketPost
 from .serializers import BasketPostSerializer
 from .models import WorkPost
@@ -16,6 +18,7 @@ class BasketPostViewSet(ModelViewSet):
     queryset = BasketPost.objects.all().select_related(
         "author").order_by('-created_at')
     serializer_class = BasketPostSerializer
+    # authentication_classes = [JSONWebTokenAuthentication]
     permission_classes = [AllowAny]  # FIXME 인증 적용
 
     def get_serializer_context(self):

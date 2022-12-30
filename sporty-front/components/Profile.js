@@ -3,6 +3,7 @@ import { Paper, Avatar, Box, Typography, Breadcrumbs } from "@mui/material";
 import { blue } from "@mui/material/colors";
 import { useAppContext } from "../store";
 import Link from "next/link";
+import { jwtDecode } from 'jwt-js-decode';
 
 const accountBreadcrumbs = [
   <Link underline="hover" key="1" color="inherit" href="/account/login">
@@ -31,12 +32,15 @@ export default function Profile() {
   const { store } = useAppContext();
   const { isAuthenticated, jwtToken } = store;
 
+
+
   useEffect(() => {
     const header = { Authorization: `JWT ${jwtToken}` };
     const getUserData = () => {
       fetch("http://localhost:8000/accounts/api/user", header)
         .then((response) => response.json())
         .then((json) => console.log(json));
+
     };
     getUserData();
   }, []);
@@ -72,7 +76,10 @@ export default function Profile() {
           <Box component="div" sx={{ position: "relative", left: 100 }}>
             <Typography>아이디: {email}</Typography>
             <Typography>닉네임 : {username}</Typography>
-            <Typography>학교 : </Typography>
+            {jwtToken &&
+              jwtDecode((jwtToken)).payload.username
+            }
+            <Typography>학교 :{jwtToken}</Typography>
           </Box>
           <Box sx={{ display: "flex", justifyContent: "center", my: 3 }}>
             <Breadcrumbs
