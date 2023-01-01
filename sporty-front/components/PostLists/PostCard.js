@@ -20,7 +20,7 @@ import { useAppContext } from "../../store";
 import PersonIcon from "@mui/icons-material/Person";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import IconButton from "@mui/material/IconButton";
-
+import GroupAddIcon from "@mui/icons-material/GroupAdd";
 const Item = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
   ...theme.typography.body2,
@@ -52,14 +52,13 @@ export default function PostCard({ post, handleApply }) {
     start_date_time,
     end_date_time,
     location,
-    level,
     cruit,
-    gameinfo,
-    purpose,
     description,
     is_apply,
     created_at,
+    apply_user_set,
   } = post;
+  let [applyUserCount, setApplyUserCount] = useState(apply_user_set.length);
 
   const isLongDesc = description.length <= 20 ? true : false;
 
@@ -105,15 +104,20 @@ export default function PostCard({ post, handleApply }) {
             (is_apply ? (
               <Button
                 variant="outlined"
-                onClick={() => handleApply({ post, isapply: false })}
+                onClick={() => {
+                  handleApply({ post, isapply: false });
+                  setApplyUserCount((prev) => prev - 1);
+                }}
               >
-                {" "}
-                취소하기{" "}
+                취소하기
               </Button>
             ) : (
               <Button
                 variant="outlined"
-                onClick={() => handleApply({ post, isapply: true })}
+                onClick={() => {
+                  handleApply({ post, isapply: true });
+                  setApplyUserCount((prev) => prev + 1);
+                }}
               >
                 함께 하기
               </Button>
@@ -158,17 +162,23 @@ export default function PostCard({ post, handleApply }) {
               {game_end_minute}
             </Item>
           </Grid>
+          <Grid item xs={6}>
+            <Item>
+              <GroupAddIcon sx={{ mr: 1 }} />
+              {applyUserCount}
+            </Item>
+          </Grid>
         </Grid>
         <Typography variant="h6" mt={1}>
           {title}
         </Typography>
-        <Typography sx={{ color: "#3c3c43" }}>
+        <Box sx={{ color: "#3c3c43" }}>
           {isLongDesc ? (
             description
           ) : (
             <ExpandedDescription description={description} />
           )}
-        </Typography>
+        </Box>
       </CardContent>
     </Card>
   );
@@ -196,7 +206,7 @@ export function ExpandedDescription({ description }) {
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-          <Typography sx={{ color: "#3c3c43" }}>{description}</Typography>
+          <Box sx={{ color: "#3c3c43" }}>{description}</Box>
         </CardContent>
       </Collapse>
     </>

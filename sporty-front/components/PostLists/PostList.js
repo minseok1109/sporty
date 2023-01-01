@@ -15,7 +15,7 @@ export default function BasketPostList({ postListUrl }) {
   const headers = { Authorization: `JWT ${jwtToken}` };
 
   const [{ data: originPostList, loading, error }] = useAxios({
-    url: `http://localhost:8000/api/${postListUrl}/`,
+    url: `http://localhost:8000/api/${postListUrl}`,
   });
 
   useEffect(() => {
@@ -45,22 +45,20 @@ export default function BasketPostList({ postListUrl }) {
     }
   };
   return (
-    <>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          flexDirection: "column",
-        }}
-      >
-        {loading && <div>Loading</div>}
-        {error && <div>로딩 중 에러가 발생했습니다.</div>}
-        {postList &&
-          postList.map((post) => (
-            <PostCard post={post} key={post.id} handleApply={handleApply} />
-          ))}
-      </Box>
-    </>
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "column",
+      }}
+    >
+      {loading && <div>Loading</div>}
+      {error && <div>로딩 중 에러가 발생했습니다.</div>}
+      {postList &&
+        postList.map((post) => (
+          <PostCard post={post} key={post.id} handleApply={handleApply} />
+        ))}
+    </Box>
   );
 }

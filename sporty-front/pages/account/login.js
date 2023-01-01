@@ -11,8 +11,8 @@ import { setToken, useAppContext } from "../../store";
 export default function Login() {
   const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();
-  const { dispatch } = useAppContext();
-
+  const { store, dispatch } = useAppContext();
+  const { isAuthenticated } = store;
   const onSubmit = async (data) => {
     try {
       const response = await axios.post(

@@ -20,7 +20,7 @@ class BasketPost(Timestampedmodel):
     location = models.CharField(verbose_name='장소', max_length=100)
     level = models.CharField(verbose_name='실력', max_length=10)
     cruit = models.CharField(verbose_name='모집인원', max_length=10)
-    gameinfo = models.CharField(verbose_name='경기정보', max_length=20)
+    hasBall = models.BooleanField(verbose_name="공 여부", default=False)
     description = models.CharField(verbose_name='설명', max_length=100)
     apply_user_set = models.ManyToManyField(
         settings.AUTH_USER_MODEL, blank=True, related_name="apply_basketpost_set"
@@ -40,7 +40,7 @@ class WorkPost(Timestampedmodel):
     start_date_time = models.CharField(verbose_name='시작 날짜', max_length=50)
     end_date_time = models.CharField(verbose_name='끝나는 날짜', max_length=50)
     location = models.CharField(verbose_name='장소', max_length=100)
-    purpose = models.CharField(verbose_name='목표거리', max_length=10)
+    isRunning = models.BooleanField(verbose_name='목표거리', default=False)
     cruit = models.IntegerField(verbose_name='모집인원', null=True)
     description = models.CharField(verbose_name='설명', max_length=100)
     apply_user_set = models.ManyToManyField(

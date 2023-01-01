@@ -1,5 +1,13 @@
 import * as React from "react";
-import { Button, TextField } from "@mui/material";
+import {
+  Button,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  Radio,
+  RadioGroup,
+  TextField,
+} from "@mui/material";
 import { useAppContext } from "../../store";
 import { useRouter } from "next/router";
 import axios from "axios";
@@ -18,7 +26,7 @@ export default function WalkPostForm() {
     date: Yup.array().required("날짜를 입력해주세요."),
     location: Yup.string(),
     description: Yup.string(),
-    purpose: Yup.string(),
+    isRunning: Yup.boolean(),
     cruit: Yup.number(),
   });
 
@@ -37,7 +45,7 @@ export default function WalkPostForm() {
   const onSubmit = async (values) => {
     const headers = { Authorization: `JWT ${jwtToken}` };
 
-    const { title, date, location, cruit, purpose, description } = values;
+    const { title, date, location, cruit, isRunning, description } = values;
 
     let [start_date_time, end_date_time] = date.map((d) =>
       d.format("YYYY-MM-DD HH:mm"),
@@ -48,11 +56,10 @@ export default function WalkPostForm() {
       start_date_time,
       end_date_time,
       location,
-      purpose,
       cruit,
       description,
+      isRunning,
     };
-    console.log(data);
     await axios
       .post("http://localhost:8000/api/workposts/", data, { headers })
       .then(() => {
@@ -63,6 +70,7 @@ export default function WalkPostForm() {
         console.log(error);
       });
   };
+  //Todo: 걷기여부 입력필드 추가
   return (
     <form component="form" onSubmit={handleSubmit(onSubmit)} method="post">
       <Controller
@@ -95,7 +103,6 @@ export default function WalkPostForm() {
             value={field.value || ""}
             style={{
               width: "100%",
-              height: "2.4375em",
               padding: "16.5px 14px",
             }}
           />
@@ -120,20 +127,28 @@ export default function WalkPostForm() {
       />
 
       <Controller
-        name="purpose"
+        name="isRunning"
         control={control}
         render={({ field }) => (
-          <TextField
+          <FormControl
             {...field}
-            sx={{ marginBottom: 2 }}
-            margin="dense"
             fullWidth
+            sx={{
+              border: "1px solid #d9d9d9",
+              p: "9px 14px",
+              borderRadius: 3,
+            }}
             required
-            label="목표거리"
-            value={field.value || ""}
-            error={!!errors.purpose}
-            helperText={errors.purpose ? errors?.purpose?.message : ""}
-          ></TextField>
+            margin="dense"
+            error={!!errors.isRunning}
+            helperText={errors.isRunning ? errors?.isRunning?.message : ""}
+          >
+            <FormLabel>달리기 여부</FormLabel>
+            <RadioGroup row>
+              <FormControlLabel value={true} control={<Radio />} label="O" />
+              <FormControlLabel value={false} control={<Radio />} label="X" />
+            </RadioGroup>
+          </FormControl>
         )}
       />
 

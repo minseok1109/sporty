@@ -40,11 +40,9 @@ class BasketPostViewSet(ModelViewSet):
         return Response(status.HTTP_204_NO_CONTENT)
 
 
-
-
 class WorkPostViewSet(ModelViewSet):
     queryset = WorkPost.objects.all().select_related(
-        "author")
+        "author").order_by('-created_at')
     serializer_class = WorkPostSerializer
     permission_classes = [AllowAny]  # FIXME 인증 적용
 
@@ -65,10 +63,9 @@ class WorkPostViewSet(ModelViewSet):
         return Response(status.HTTP_204_NO_CONTENT)
 
 
-
 class FreePostViewSet(ModelViewSet):
     queryset = FreePost.objects.all().select_related(
-        "author")
+        "author").order_by('-created_at')
     serializer_class = FreePostSerializer
     permission_classes = [AllowAny]  # FIXME 인증 적용
 
