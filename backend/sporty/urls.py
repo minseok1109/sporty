@@ -12,9 +12,3 @@ router.register('freeposts', views.FreePostViewSet)
 urlpatterns = [
     path('api/', include(router.urls)),
 ]
-
-if settings.DEBUG:
-    import debug_toolbar
-    urlpatterns += [
-        path(r'^__debug__/', include(debug_toolbar.urls)),
-    ]

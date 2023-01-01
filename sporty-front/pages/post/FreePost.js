@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Button, Container, TextField } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import { useAppContext } from "../../store";
 import { useRouter } from "next/router";
 import axios from "axios";
@@ -62,109 +62,104 @@ export default function FreePostForm() {
       });
   };
   return (
-    <Container>
-      <form component="form" onSubmit={handleSubmit(onSubmit)} method="post">
-        <Controller
-          name="title"
-          control={control}
-          render={({ field }) => (
-            <TextField
-              {...field}
-              sx={{ marginBottom: 2 }}
-              margin="dense"
-              fullWidth
-              required
-              label="제목"
-              value={field.value || ""}
-              error={!!errors.title}
-              helperText={errors.title ? errors?.title?.message : ""}
-            />
-          )}
-        />
-        <Controller
-          name="date"
-          control={control}
-          render={({ field }) => (
-            <RangePicker
-              {...field}
-              showTime={{
-                format: "HH:mm",
-              }}
-              format="YYYY-MM-DD HH:mm"
-              value={field.value || ""}
-              style={{
-                width: "100%",
-                height: "2.4375em",
-                padding: "16.5px 14px",
-              }}
-            />
-          )}
-        />
-        <Controller
-          name="location"
-          control={control}
-          render={({ field }) => (
-            <TextField
-              {...field}
-              sx={{ marginBottom: 2 }}
-              margin="dense"
-              fullWidth
-              required
-              label="장소"
-              value={field.value || ""}
-              error={!!errors.location}
-              helperText={errors.location ? errors?.location?.message : ""}
-            />
-          )}
-        />
+    <form component="form" onSubmit={handleSubmit(onSubmit)} method="post">
+      <Controller
+        name="title"
+        control={control}
+        render={({ field }) => (
+          <TextField
+            {...field}
+            sx={{ marginBottom: 2 }}
+            margin="dense"
+            fullWidth
+            required
+            label="제목"
+            value={field.value || ""}
+            error={!!errors.title}
+            helperText={errors.title ? errors?.title?.message : ""}
+          />
+        )}
+      />
+      <Controller
+        name="date"
+        control={control}
+        render={({ field }) => (
+          <RangePicker
+            {...field}
+            showTime={{
+              format: "HH:mm",
+            }}
+            format="YYYY-MM-DD HH:mm"
+            value={field.value || ""}
+            style={{
+              width: "100%",
+              padding: "16.5px 14px",
+            }}
+          />
+        )}
+      />
+      <Controller
+        name="location"
+        control={control}
+        render={({ field }) => (
+          <TextField
+            {...field}
+            sx={{ marginBottom: 2 }}
+            margin="dense"
+            fullWidth
+            required
+            label="장소"
+            value={field.value || ""}
+            error={!!errors.location}
+            helperText={errors.location ? errors?.location?.message : ""}
+          />
+        )}
+      />
 
-        <Controller
-          name="cruit"
-          control={control}
-          render={({ field }) => (
-            <TextField
-              {...field}
-              sx={{ marginBottom: 2 }}
-              margin="dense"
-              fullWidth
-              required
-              type="number"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              label="인원 수"
-              value={field.value || ""}
-              error={!!errors.cruit}
-              helperText={
-                errors.cruit ? errors?.cruit?.message : "숫자만 입력하세요."
-              }
-            ></TextField>
-          )}
-        />
+      <Controller
+        name="cruit"
+        control={control}
+        render={({ field }) => (
+          <TextField
+            {...field}
+            sx={{ marginBottom: 2 }}
+            margin="dense"
+            fullWidth
+            required
+            type="number"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            label="인원 수"
+            value={field.value || ""}
+            error={!!errors.cruit}
+            helperText={
+              errors.cruit ? errors?.cruit?.message : "숫자만 입력하세요."
+            }
+          ></TextField>
+        )}
+      />
 
-        <Controller
-          name="description"
-          control={control}
-          render={({ field }) => (
-            <TextField
-              {...field}
-              sx={{ marginBottom: 2 }}
-              margin="dense"
-              fullWidth
-              required
-              label="추가 설명"
-              value={field.value || ""}
-              error={!!errors.description}
-              helperText={
-                errors.description ? errors?.description?.message : ""
-              }
-            />
-          )}
-        />
-        <Button type="submit" variant="outlined" disabled={isSubmitting}>
-          작성하기
-        </Button>
-      </form>
-    </Container>
+      <Controller
+        name="description"
+        control={control}
+        render={({ field }) => (
+          <TextField
+            {...field}
+            sx={{ marginBottom: 2 }}
+            margin="dense"
+            fullWidth
+            required
+            label="추가 설명"
+            value={field.value || ""}
+            error={!!errors.description}
+            helperText={errors.description ? errors?.description?.message : ""}
+          />
+        )}
+      />
+      <Button type="submit" variant="outlined" disabled={isSubmitting}>
+        작성하기
+      </Button>
+    </form>
   );
 }

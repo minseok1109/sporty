@@ -1,6 +1,5 @@
-import { Typography, Box, Button, Link } from "@mui/material";
+import { Typography, Box, Button, Link, Avatar } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 function Header() {
   const theme = useTheme();
@@ -18,9 +17,9 @@ function Header() {
       <Link href="/" underline="none" color="black">
         <Typography fontSize={30}>SPORTy</Typography>
       </Link>
-      {/* my page url 추가해야함 */}
+      {/* my page url 추가해야함  유저정보도 가져와야함*/}
       <Button href="#">
-        <AccountCircleIcon color="action" fontSize="large" />
+        <Avatar />
       </Button>
     </Box>
   );

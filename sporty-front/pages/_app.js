@@ -12,15 +12,19 @@ import ComponentBottom from "../components/BottomNavigation/ComponentBottom";
 
 function MyApp({ Component, pageProps, ...appProps }) {
   const router = useRouter();
-  let notShowHeader = ["/account/login", "/BasketPost", "/account/signUp"];
-  let showHeader = notShowHeader.includes(router.pathname) ? false : true;
+  let notShowHeader = ["/account/login", "/account/signUp", "/PostFormList"];
+  let showHeader = notShowHeader.includes(router.pathname);
+  let isPostFormUrl = router.pathname.includes("/post");
   return (
     <CssBaseline>
       <AppProvider>
         <SnackbarProvider>
           <ThemeProvider theme={theme}>
-            <Container disableGutters={true} sx={{ maxHeight: 1 }}>
-              {showHeader && <Header />}
+            {!showHeader && <Header />}
+            <Container
+              disableGutters={!isPostFormUrl}
+              sx={{ maxHeight: 1, pb: "60px" }}
+            >
               <Component {...pageProps} />
               <ComponentBottom />
             </Container>
