@@ -1,11 +1,9 @@
-
+from django.db.models import Q
 from rest_framework import status
 from rest_framework.decorators import action
-from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
-from rest_framework_jwt.authentication import JSONWebTokenAuthentication
-
 from .models import BasketPost
 from .serializers import BasketPostSerializer
 from .models import WorkPost
@@ -30,6 +28,8 @@ class BasketPostViewSet(ModelViewSet):
         serializer.save(author=self.request.user)
         return super().perform_create(serializer)
 
+
+
     @action(detail=True, methods=["POST"])
     def apply(self, request, pk):
         post = self.get_object()
@@ -41,6 +41,17 @@ class BasketPostViewSet(ModelViewSet):
         post = self.get_object()
         post.apply_user_set.remove(self.request.user)
         return Response(status.HTTP_204_NO_CONTENT)
+
+class SelfBasketPost(BasketPostViewSet):
+    queryset = BasketPost.objects.all()
+    serializer_class = BasketPostSerializer
+
+    def get_queryset(self):
+        qs = super(BasketPostViewSet, self).get_queryset()
+        qs = qs.filter(
+            Q(author=self.request.user)
+        )
+        return qs
 
 
 class WorkPostViewSet(ModelViewSet):
@@ -65,6 +76,17 @@ class WorkPostViewSet(ModelViewSet):
         post.apply_user_set.remove(self.request.user)
         return Response(status.HTTP_204_NO_CONTENT)
 
+class SelfWorkPost(BasketPostViewSet):
+    queryset = WorkPost.objects.all()
+    serializer_class = WorkPostSerializer
+
+    def get_queryset(self):
+        qs = super(WorkPostViewSet, self).get_queryset()
+        qs = qs.filter(
+            Q(author=self.request.user)
+        )
+        return qs
+
 
 class FreePostViewSet(ModelViewSet):
     queryset = FreePost.objects.all().select_related(
@@ -87,3 +109,14 @@ class FreePostViewSet(ModelViewSet):
         post = self.get_object()
         post.apply_user_set.remove(self.request.user)
         return Response(status.HTTP_204_NO_CONTENT)
+
+class SelfFreePost(FreePostViewSet):
+    queryset = FreePost.objects.all()
+    serializer_class = FreePostSerializer
+
+    def get_queryset(self):
+        qs = super(FreePostViewSet, self).get_queryset()
+        qs = qs.filter(
+            Q(author=self.request.user)
+        )
+        return qs

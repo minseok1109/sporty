@@ -8,6 +8,9 @@ router = DefaultRouter()
 router.register('basketposts', views.BasketPostViewSet)
 router.register('workposts', views.WorkPostViewSet)
 router.register('freeposts', views.FreePostViewSet)
+router.register('selfbasketposts', views.SelfBasketPost)
+router.register('selfworkposts', views.SelfWorkPost)
+router.register('selffreeposts', views.SelfFreePost)
 
 urlpatterns = [
     path('api/', include(router.urls)),
