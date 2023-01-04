@@ -4,6 +4,8 @@ import PostCard from "./PostCard";
 import { useAppContext } from "../../store";
 import { useEffect, useState } from "react";
 import { Box } from "@mui/material";
+import { getUser, useUserDispatch, useUserState } from "../../userStore";
+import jwt_decode from "jwt-decode";
 
 export default function BasketPostList({ postListUrl }) {
   const [postList, setPostList] = useState([]);
@@ -44,6 +46,18 @@ export default function BasketPostList({ postListUrl }) {
       console.log("error: ", error);
     }
   };
+
+  const state = useUserState();
+  const dispatch = useUserDispatch();
+  const { data: user } = state.user;
+
+  useEffect(() => {
+    if (jwtToken) {
+      const { user_id } = jwt_decode(jwtToken);
+      getUser(dispatch, user_id);
+    }
+  }, [dispatch, jwtToken]);
+
   return (
     <Box
       sx={{
@@ -57,7 +71,12 @@ export default function BasketPostList({ postListUrl }) {
       {error && <div>로딩 중 에러가 발생했습니다.</div>}
       {postList &&
         postList.map((post) => (
-          <PostCard post={post} key={post.id} handleApply={handleApply} />
+          <PostCard
+            user={user}
+            post={post}
+            key={post.id}
+            handleApply={handleApply}
+          />
         ))}
     </Box>
   );

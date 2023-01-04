@@ -1,7 +1,8 @@
 import { Typography, Box, Button, Link, Avatar } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-
+import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 function Header() {
+  let avartar;
   const theme = useTheme();
   return (
     <Box
@@ -12,14 +13,20 @@ function Header() {
         justifyContent: "space-between",
         borderBottom: 1,
         padding: 3,
+        borderRadius: "0px 0px 30px 30px",
       }}
     >
       <Link href="/" underline="none" color="black">
-        <Typography fontSize={30}>SPORTy</Typography>
+        <Typography fontSize={30} color="#ffff">
+          SPORTY
+        </Typography>
       </Link>
-      {/* my page url 추가해야함  유저정보도 가져와야함*/}
-      <Button href="#">
-        <Avatar />
+      <Button href="/account/MyPage">
+        {avartar ? (
+          <Avatar />
+        ) : (
+          <AccountCircleOutlinedIcon color="disabled" fontSize="large" />
+        )}
       </Button>
     </Box>
   );

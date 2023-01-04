@@ -1,49 +1,37 @@
 import { useEffect, useState } from "react";
-import { Paper, Avatar, Box, Typography, Breadcrumbs } from "@mui/material";
-import { blue } from "@mui/material/colors";
+import { Paper, Avatar, Grid, Typography, Badge, Box } from "@mui/material";
 import { useAppContext } from "../store";
-import Link from "next/link";
-import { jwtDecode } from 'jwt-js-decode';
+import jwt_decode from "jwt-decode";
+import { styled } from "@mui/material/styles";
+import CameraAltOutlinedIcon from "@mui/icons-material/CameraAltOutlined";
+import { useUserState, useUserDispatch, getUser } from "../userStore";
 
-const accountBreadcrumbs = [
-  <Link underline="hover" key="1" color="inherit" href="/account/login">
-    로그인
-  </Link>,
-  <Link underline="hover" key="2" color="inherit" href="/account/signUp">
-    회원가입
-  </Link>,
-];
+//아바타 카메라 뱃지
+const SmallAvatar = styled(Avatar)(({ theme }) => ({
+  width: 22,
+  height: 22,
+  border: `2px solid ${theme.palette.background.paper}`,
+}));
 
-const postBreadcrumbs = [
-  <Link underline="hover" key="1" color="inherit" href="#">
-    내가 쓴 글
-  </Link>,
-  <Link underline="hover" key="2" color="inherit" href="#">
-    신청한 글
-  </Link>,
-  <Link underline="hover" key="3" color="inherit" href="/account/logOut">
-    로그아웃
-  </Link>,
-];
+const Item = styled(Box)(({ theme }) => ({
+  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
+  color: theme.palette.text.secondary,
+  marginRight: 5,
+}));
 
 export default function Profile() {
-  let [userData, setUserData] = useState({});
   let [showloginLink, setshowloginLink] = useState(false);
   const { store } = useAppContext();
   const { isAuthenticated, jwtToken } = store;
 
-
+  const state = useUserState();
+  const dispatch = useUserDispatch();
+  const { data: user, loading, error } = state.user;
 
   useEffect(() => {
-    const header = { Authorization: `JWT ${jwtToken}` };
-    const getUserData = () => {
-      fetch("http://localhost:8000/accounts/api/user", header)
-        .then((response) => response.json())
-        .then((json) => console.log(json));
-
-    };
-    getUserData();
-  }, []);
+    const { user_id } = jwt_decode(jwtToken);
+    getUser(dispatch, user_id);
+  }, [dispatch, jwtToken]);
 
   useEffect(() => {
     const getIsAuthenticated = () => {
@@ -52,65 +40,60 @@ export default function Profile() {
     getIsAuthenticated();
   }, [showloginLink]);
 
-  let { username, email } = userData;
-
   return (
-    <Paper
-      sx={{ maxWidth: 768, minWidth: 320, maxHeight: 130, border: 1, my: 3 }}
+    <Grid
+      container
+      direction="row"
+      justifyContent="flex-start"
+      alignItems="center"
+      my={3}
+      p={1}
+      spacing={1}
     >
-      {showloginLink ? (
-        <Box>
-          <Avatar
-            variant="outlined"
-            elevation="3"
-            sx={{
-              bgcolor: blue[500],
-              margin: 2,
-              width: 56,
-              height: 56,
-              position: "absolute",
-            }}
-          >
-            S
-          </Avatar>
-          <Box component="div" sx={{ position: "relative", left: 100 }}>
-            <Typography>아이디: {email}</Typography>
-            <Typography>닉네임 : {username}</Typography>
-            {jwtToken &&
-              jwtDecode((jwtToken)).payload.username
-            }
-            <Typography>학교 :{jwtToken}</Typography>
-          </Box>
-          <Box sx={{ display: "flex", justifyContent: "center", my: 3 }}>
-            <Breadcrumbs
-              separator="|"
-              aria-label="breadcrumb"
-              color="text.primary"
+      <Grid item xs={2}>
+        <Item>
+          {user?.avatar ? (
+            <Badge
+              overlap="circular"
+              anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+              badgeContent={
+                <SmallAvatar>
+                  <CameraAltOutlinedIcon />
+                </SmallAvatar>
+              }
             >
-              {postBreadcrumbs}
-            </Breadcrumbs>
-          </Box>
-        </Box>
-      ) : (
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            my: "auto",
-            alignItems: "center",
-            top: 50,
-            left: 50,
-          }}
-        >
-          <Breadcrumbs
-            separator="|"
-            aria-label="breadcrumb"
-            color="text.primary"
-          >
-            {accountBreadcrumbs}
-          </Breadcrumbs>
-        </Box>
-      )}
-    </Paper>
+              <Avatar
+                variant="square"
+                src={user?.avatar}
+                sx={{
+                  border: "5px solid #00AD70",
+                  width: 56,
+                  height: 56,
+                  borderRadius: 2,
+                }}
+              />
+            </Badge>
+          ) : (
+            <Badge
+              overlap="circular"
+              anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+              badgeContent={
+                <SmallAvatar>
+                  <CameraAltOutlinedIcon />
+                </SmallAvatar>
+              }
+            >
+              <Avatar />
+            </Badge>
+          )}
+        </Item>
+      </Grid>
+      <Grid item xs={6} justifyContent="center">
+        <Item>
+          <Typography variant="h6">{user?.nickname}</Typography>
+          <Typography>@{user?.username}</Typography>
+        </Item>
+      </Grid>
+    </Grid>
   );
 }

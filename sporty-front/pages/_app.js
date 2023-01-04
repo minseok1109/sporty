@@ -9,27 +9,38 @@ import { theme } from "../palette";
 import { Container } from "@mui/system";
 import { useRouter } from "next/router";
 import ComponentBottom from "../components/BottomNavigation/ComponentBottom";
+import { UserProvieder } from "../userStore";
 
 function MyApp({ Component, pageProps, ...appProps }) {
   const router = useRouter();
-  let notShowHeader = ["/account/login", "/account/signUp", "/PostFormList"];
+  let notShowHeader = [
+    "/account/login",
+    "/account/signUp",
+    "/PostFormList",
+    "/account/MyPage",
+  ];
+
+  let needConPadding = ["/post", "/account/MyPage"];
   let showHeader = notShowHeader.includes(router.pathname);
-  let isPostFormUrl = router.pathname.includes("/post");
+
+  let needContainerPadding = needConPadding.includes(router.pathname);
   return (
     <CssBaseline>
       <AppProvider>
-        <SnackbarProvider>
-          <ThemeProvider theme={theme}>
-            {!showHeader && <Header />}
-            <Container
-              disableGutters={!isPostFormUrl}
-              sx={{ maxHeight: 1, pb: "60px" }}
-            >
-              <Component {...pageProps} />
-              <ComponentBottom />
-            </Container>
-          </ThemeProvider>
-        </SnackbarProvider>
+        <UserProvieder>
+          <SnackbarProvider>
+            <ThemeProvider theme={theme}>
+              {!showHeader && <Header />}
+              <Container
+                disableGutters={!needContainerPadding}
+                sx={{ maxHeight: 1, pb: "60px" }}
+              >
+                <Component {...pageProps} />
+                <ComponentBottom />
+              </Container>
+            </ThemeProvider>
+          </SnackbarProvider>
+        </UserProvieder>
       </AppProvider>
     </CssBaseline>
   );
