@@ -19,6 +19,7 @@ export default function Home() {
       children: <PostList postListUrl={"freeposts"} />,
     },
   ];
+
   return (
     <Tabs
       defaultActiveKey="1"

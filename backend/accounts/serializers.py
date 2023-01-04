@@ -32,7 +32,8 @@ class SignupSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
-        fields = ['id', 'username', 'nickname', 'school']
+        fields = ['id', 'username', 'nickname', 'avatar', 'school']
+
 
 class ChatDataSerializer(serializers.ModelSerializer):
     class Meta:

@@ -28,8 +28,6 @@ class BasketPostViewSet(ModelViewSet):
         serializer.save(author=self.request.user)
         return super().perform_create(serializer)
 
-
-
     @action(detail=True, methods=["POST"])
     def apply(self, request, pk):
         post = self.get_object()
@@ -41,6 +39,7 @@ class BasketPostViewSet(ModelViewSet):
         post = self.get_object()
         post.apply_user_set.remove(self.request.user)
         return Response(status.HTTP_204_NO_CONTENT)
+
 
 class SelfBasketPost(BasketPostViewSet):
     queryset = BasketPost.objects.all()
@@ -76,7 +75,8 @@ class WorkPostViewSet(ModelViewSet):
         post.apply_user_set.remove(self.request.user)
         return Response(status.HTTP_204_NO_CONTENT)
 
-class SelfWorkPost(BasketPostViewSet):
+
+class SelfWorkPost(WorkPostViewSet):
     queryset = WorkPost.objects.all()
     serializer_class = WorkPostSerializer
 
@@ -109,6 +109,7 @@ class FreePostViewSet(ModelViewSet):
         post = self.get_object()
         post.apply_user_set.remove(self.request.user)
         return Response(status.HTTP_204_NO_CONTENT)
+
 
 class SelfFreePost(FreePostViewSet):
     queryset = FreePost.objects.all()

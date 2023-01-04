@@ -21,6 +21,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import IconButton from "@mui/material/IconButton";
 import GroupAddIcon from "@mui/icons-material/GroupAdd";
+
 const Item = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
   ...theme.typography.body2,
@@ -43,7 +44,7 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-export default function PostCard({ post, handleApply }) {
+export default function PostCard({ post, handleApply, user }) {
   const { store } = useAppContext();
   const { isAuthenticated } = store;
   const {
@@ -58,6 +59,8 @@ export default function PostCard({ post, handleApply }) {
     created_at,
     apply_user_set,
   } = post;
+
+  //신청한 사람 수
   let [applyUserCount, setApplyUserCount] = useState(apply_user_set.length);
 
   const isLongDesc = description.length <= 20 ? true : false;
@@ -66,7 +69,11 @@ export default function PostCard({ post, handleApply }) {
   const endDate = dayjs(end_date_time);
   const { avatar, nickname } = author;
   const created_at_date = dayjs(created_at).format("YYYY.MM.DD");
-
+  const isSameUserWihtPost = user?.id === author?.id;
+  console.log(
+    "🚀 ~ file: PostCard.js:73 ~ PostCard ~ isSameUserWihtPost",
+    isSameUserWihtPost,
+  );
   //오늘 날짜
   const now_date = dayjs(new Date());
   const subtract_date = now_date.diff(created_at_date, "d");
@@ -100,7 +107,8 @@ export default function PostCard({ post, handleApply }) {
     <Card sx={{ maxWidth: 345, border: 1, margin: 2 }}>
       <CardHeader
         action={[
-          isAuthenticated &&
+          !isSameUserWihtPost &&
+            isAuthenticated &&
             (is_apply ? (
               <Button
                 variant="outlined"
