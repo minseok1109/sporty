@@ -70,10 +70,6 @@ export default function PostCard({ post, handleApply, user }) {
   const { avatar, nickname } = author;
   const created_at_date = dayjs(created_at).format("YYYY.MM.DD");
   const isSameUserWihtPost = user?.id === author?.id;
-  console.log(
-    "🚀 ~ file: PostCard.js:73 ~ PostCard ~ isSameUserWihtPost",
-    isSameUserWihtPost,
-  );
   //오늘 날짜
   const now_date = dayjs(new Date());
   const subtract_date = now_date.diff(created_at_date, "d");

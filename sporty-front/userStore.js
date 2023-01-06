@@ -44,6 +44,8 @@ function userReducer(state, action) {
         ...state,
         error: error(action.error),
       };
+    case "LOG_OUT":
+      return initialState;
     default:
       throw new Error(`Unhanded action type: ${action.type}`);
   }

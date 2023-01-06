@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export function getStorageItem(key, initialValue) {
   try {
@@ -7,9 +7,7 @@ export function getStorageItem(key, initialValue) {
     const item = window.localStorage.getItem(key);
     return item ? JSON.parse(item) : initialValue;
 
-
     // Parse stored json or if none return initialValue
-
   } catch (error) {
     // If error also return initialValue
     console.log(error);
@@ -19,7 +17,9 @@ export function getStorageItem(key, initialValue) {
 
 export function setStorageItem(key, value) {
   try {
-    window.localStorage.setItem(key, JSON.stringify(value));
+    if (window) {
+      window.localStorage.setItem(key, JSON.stringify(value));
+    }
   } catch (error) {
     console.log(error);
   }
