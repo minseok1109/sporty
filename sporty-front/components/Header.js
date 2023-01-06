@@ -1,8 +1,8 @@
 import { Typography, Box, Button, Link, Avatar } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
+
 function Header() {
-  let avartar;
   const theme = useTheme();
   return (
     <Box
@@ -22,11 +22,7 @@ function Header() {
         </Typography>
       </Link>
       <Button href="/account/MyPage">
-        {avartar ? (
-          <Avatar />
-        ) : (
-          <AccountCircleOutlinedIcon color="disabled" fontSize="large" />
-        )}
+        <AccountCircleOutlinedIcon color="disabled" fontSize="large" />
       </Button>
     </Box>
   );

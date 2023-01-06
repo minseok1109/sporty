@@ -3,7 +3,7 @@ import useAxios from "axios-hooks";
 import PostCard from "./PostCard";
 import { useAppContext } from "../../store";
 import { useEffect, useState } from "react";
-import { Box } from "@mui/material";
+import { Box, Link } from "@mui/material";
 import { getUser, useUserDispatch, useUserState } from "../../userStore";
 import jwt_decode from "jwt-decode";
 
@@ -17,7 +17,7 @@ export default function BasketPostList({ postListUrl }) {
   const headers = { Authorization: `JWT ${jwtToken}` };
 
   const [{ data: originPostList, loading, error }] = useAxios({
-    url: `http://localhost:8000/api/${postListUrl}`,
+    url: `http://127.0.0.1:8000/api/${postListUrl}`,
   });
 
   useEffect(() => {
@@ -25,7 +25,7 @@ export default function BasketPostList({ postListUrl }) {
   }, [originPostList]);
 
   const handleApply = async ({ post, isapply }) => {
-    const apiUrl = `http://localhost:8000/api/${postListUrl}/${post.id}/apply/`;
+    const apiUrl = `http://127.0.0.1:8000/api/${postListUrl}/${post.id}/apply/`;
     const method = isapply ? "POST" : "DELETE";
     try {
       const response = await axios({
@@ -57,7 +57,6 @@ export default function BasketPostList({ postListUrl }) {
       getUser(dispatch, user_id);
     }
   }, [dispatch, jwtToken]);
-
   return (
     <Box
       sx={{
@@ -70,13 +69,19 @@ export default function BasketPostList({ postListUrl }) {
       {loading && <div>Loading</div>}
       {error && <div>로딩 중 에러가 발생했습니다.</div>}
       {postList &&
-        postList.map((post) => (
-          <PostCard
-            user={user}
-            post={post}
+        postList.map((post, index) => (
+          <Link
             key={post.id}
-            handleApply={handleApply}
-          />
+            href={`/post/DetailPage/${post.id}`}
+            underline="none"
+          >
+            <PostCard
+              user={user}
+              post={post}
+              key={index}
+              handleApply={handleApply}
+            />
+          </Link>
         ))}
     </Box>
   );
