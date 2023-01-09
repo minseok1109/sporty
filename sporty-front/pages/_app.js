@@ -19,11 +19,16 @@ function MyApp({ Component, pageProps, ...appProps }) {
     "/PostFormList",
     "/account/MyPage",
   ];
-
-  let needConPadding = ["/post", "/account/MyPage"];
   let showHeader = notShowHeader.includes(router.pathname);
 
+  let needConPadding = [
+    "/post/BasketPost",
+    "/post/FreePost",
+    "/post/WalkPost",
+    "/account/MyPage",
+  ];
   let needContainerPadding = needConPadding.includes(router.pathname);
+
   return (
     <CssBaseline>
       <AppProvider>

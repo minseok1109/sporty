@@ -1,9 +1,6 @@
-import { Paper, BottomNavigation, BottomNavigationAction } from "@mui/material";
-import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
-import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
-import ChatBubbleIcon from "@mui/icons-material/ChatBubble";
-import Link from "next/link";
-export default function FixedLogInBottomNavigation() {
+import React from "react";
+
+function ApplyBottomNavgation() {
   return (
     <Paper
       sx={{
@@ -40,3 +37,5 @@ export default function FixedLogInBottomNavigation() {
     </Paper>
   );
 }
+
+export default ApplyBottomNavgation;

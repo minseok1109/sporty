@@ -14,14 +14,15 @@ class Timestampedmodel(models.Model):
 class BasketPost(Timestampedmodel):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='작성자', related_name='my_basketballpost_set',
                                on_delete=models.CASCADE)
-    title = models.CharField(verbose_name='제목', max_length=50, null=True)
     start_date_time = models.CharField(verbose_name='시작 날짜', max_length=50)
-    end_date_time = models.CharField(verbose_name='끝나는 날짜', max_length=50)
     location = models.CharField(verbose_name='장소', max_length=100)
+    amountOfGym = models.IntegerField(verbose_name="참가비", default=0)
     level = models.CharField(verbose_name='실력', max_length=10)
-    cruit = models.CharField(verbose_name='모집인원', max_length=10)
-    hasBall = models.BooleanField(verbose_name="공 여부", default=False)
+    cruit = models.IntegerField(verbose_name='모집인원')
+    sex = models.CharField(verbose_name="성별", default='', max_length=5)
     description = models.CharField(verbose_name='설명', max_length=100)
+    questionToApplyer = models.CharField(
+        verbose_name="신청자한테 궁금한 점", max_length=50, default='')
     apply_user_set = models.ManyToManyField(
         settings.AUTH_USER_MODEL, blank=True, related_name="apply_basketpost_set"
     )
@@ -36,13 +37,16 @@ class BasketPost(Timestampedmodel):
 class WorkPost(Timestampedmodel):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='작성자', related_name='my_workpost_set',
                                on_delete=models.CASCADE)
-    title = models.CharField(verbose_name='제목', max_length=50, null=True)
     start_date_time = models.CharField(verbose_name='시작 날짜', max_length=50)
-    end_date_time = models.CharField(verbose_name='끝나는 날짜', max_length=50)
     location = models.CharField(verbose_name='장소', max_length=100)
-    isRunning = models.BooleanField(verbose_name='목표거리', default=False)
     cruit = models.IntegerField(verbose_name='모집인원', null=True)
+    amountOfGym = models.IntegerField(verbose_name="참가비", default=0)
+    sex = models.CharField(verbose_name="성별", default='', max_length=5)
+    isRunning = models.CharField(
+        verbose_name='달리기 여부', default="", max_length=4)
     description = models.CharField(verbose_name='설명', max_length=100)
+    questionToApplyer = models.CharField(
+        verbose_name="신청자한테 궁금한 점", max_length=50, default='')
     apply_user_set = models.ManyToManyField(
         settings.AUTH_USER_MODEL, blank=True, related_name="apply_workpost_set"
     )
@@ -57,11 +61,11 @@ class WorkPost(Timestampedmodel):
 class FreePost(Timestampedmodel):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='작성자', related_name='my_freepost_set',
                                on_delete=models.CASCADE)
-    title = models.CharField(verbose_name='제목', max_length=50, null=True)
     start_date_time = models.CharField(verbose_name='시작 날짜', max_length=50)
-    end_date_time = models.CharField(verbose_name='끝나는 날짜', max_length=50)
     location = models.CharField(verbose_name='장소', max_length=100)
     cruit = models.IntegerField(verbose_name='모집인원', null=True)
+    amountOfGym = models.IntegerField(verbose_name="참가비", default=0)
+    sex = models.CharField(verbose_name="성별", default='', max_length=5)
     description = models.CharField(verbose_name='설명', max_length=100)
     apply_user_set = models.ManyToManyField(
         settings.AUTH_USER_MODEL, blank=True, related_name="apply_freepost_set"

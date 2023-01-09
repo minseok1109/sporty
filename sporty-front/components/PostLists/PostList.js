@@ -72,7 +72,7 @@ export default function BasketPostList({ postListUrl }) {
         postList.map((post, index) => (
           <Link
             key={post.id}
-            href={`/post/DetailPage/${post.id}`}
+            href={`/post/DetailPage/${postListUrl}/${post.id}`}
             underline="none"
           >
             <PostCard

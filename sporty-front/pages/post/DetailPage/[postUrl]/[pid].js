@@ -20,9 +20,12 @@ function DetailPage({ data, applyUserData }) {
     level,
     location,
     apply_user_set,
-    hasBall,
     cruit,
+    sex,
+    amountOfGym,
+    isRunning,
   } = data;
+  console.log("🚀 ~ file: [pid].js:28 ~ DetailPage ~ data", data);
   const createdDate = dayjs(created_at);
   const todayDate = dayjs(new Date());
   const subtractDate = dayjs(createdDate).subtract(todayDate).get("D");
@@ -35,6 +38,7 @@ function DetailPage({ data, applyUserData }) {
     borderLeft: 6,
     borderLeftColor: "#14C57B",
   };
+
   return (
     <>
       <Card sx={{ maxWidth: 345, margin: 2, borderRadius: 3 }} elevation={5}>
@@ -72,19 +76,27 @@ function DetailPage({ data, applyUserData }) {
         <Grid item xs={6}>
           <Paper elevation={3} sx={paperStyle}>
             <Box component="div">성별</Box>
-            <Box>남성</Box>
+            <Box>{sex}</Box>
           </Paper>
         </Grid>
         <Grid item xs={6}>
-          <Paper elevation={3} sx={paperStyle}>
-            <Box>실력</Box>
-            <Box>{level}</Box>
-          </Paper>
+          {level && (
+            <Paper elevation={3} sx={paperStyle}>
+              <Box>실력</Box>
+              <Box>{level}</Box>
+            </Paper>
+          )}
+          {isRunning && (
+            <Paper elevation={3} sx={paperStyle}>
+              <Box>달리기 여부</Box>
+              <Box>{isRunning}</Box>
+            </Paper>
+          )}
         </Grid>
         <Grid item xs={6}>
           <Paper elevation={3} sx={paperStyle}>
             <Box>참가비</Box>
-            <Box>무료</Box>
+            <Box>{amountOfGym === 0 ? "무료" : amountOfGym}</Box>
           </Paper>
         </Grid>
       </Grid>
@@ -130,10 +142,11 @@ function DetailPage({ data, applyUserData }) {
 }
 
 export async function getServerSideProps(context) {
-  const { pid } = context.query;
+  const { pid, postUrl } = context.query;
+
   let applyUserData = null;
   const response = await axios({
-    url: `http://127.0.0.1:8000/api/basketposts/${pid}`,
+    url: `http://127.0.0.1:8000/api/${postUrl}/${pid}`,
     method: "GET",
   });
   const data = await response.data;
