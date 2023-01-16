@@ -20,6 +20,7 @@ function MyApp({ Component, pageProps, ...appProps }) {
     "/PostFormList",
     "/account/MyPage",
     "/post/DetailPage/[postUrl]/[pid]",
+    "/UploadProfile",
   ];
   let isShowHeader = notShowHeader.includes(router.pathname);
 

@@ -6,11 +6,14 @@ import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import Link from "next/link";
 import axios from "axios";
 import { useAppContext } from "../../store";
+import { useRouter } from "next/router";
 
 function MyPage() {
+  // console.log("render");
   const { store } = useAppContext();
   let [postList, setPostList] = useState({});
   const { jwtToken } = store;
+  const router = useRouter();
 
   useEffect(() => {
     const headers = { Authorization: `JWT ${jwtToken}` };
@@ -40,7 +43,12 @@ function MyPage() {
   return (
     <>
       <Grid container direction="row" alignItems="baseline" mt={1} py={2}>
-        <Grid xs={2} textAlign="center" item={true}>
+        <Grid
+          xs={2}
+          textAlign="center"
+          item={true}
+          onClick={() => router.back()}
+        >
           <CloseIcon />
         </Grid>
         <Grid xs={8} fontSize={30} textAlign="center" item={true}>

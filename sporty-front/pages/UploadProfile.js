@@ -1,0 +1,132 @@
+import { Avatar, Badge, Button, Grid, TextField } from "@mui/material";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import { useRouter } from "next/router";
+import { useUserState } from "../userStore";
+import { styled } from "@mui/material/styles";
+import CameraAltOutlinedIcon from "@mui/icons-material/CameraAltOutlined";
+import { useForm, Controller } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as Yup from "yup";
+import React, { useState } from "react";
+
+function UploadProfile() {
+  const formSchema = Yup.object().shape({
+    nickname: Yup.string().required("닉네임 입력은 필수입니다."),
+  });
+
+  const formOptions = {
+    resolver: yupResolver(formSchema),
+    defaultValues: { nickname: "" },
+  };
+  const {
+    handleSubmit,
+    control,
+    watch,
+    formState: { errors },
+  } = useForm(formOptions);
+
+  const router = useRouter();
+  const state = useUserState();
+  console.log("🚀 ~ file: UploadProfile.js:30 ~ UploadProfile ~ state", state);
+  const { data: user } = state.user;
+
+  const SmallAvatar = styled(Avatar)(({ theme }) => ({
+    width: 22,
+    height: 22,
+    border: `2px solid ${theme.palette.background.paper}`,
+  }));
+
+  const onsubmit = (value) => {
+    console.log(value);
+  };
+
+  console.log(watch("nickname"));
+
+  return (
+    <>
+      <Grid container direction="row" alignItems="center" mt={1} py={2}>
+        <Grid xs={2} textAlign="center" item={true}>
+          <Button onClick={() => router.back()} color="black">
+            <ArrowBackIosIcon />
+          </Button>
+        </Grid>
+        <Grid xs={8} fontSize={30} textAlign="center" item={true}>
+          프로필 수정
+        </Grid>
+        <Grid xs={12} textAlign="center" mt={5} item={true}>
+          {user?.avatar ? (
+            <Badge
+              overlap="circular"
+              anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+              badgeContent={
+                <SmallAvatar>
+                  <CameraAltOutlinedIcon />
+                </SmallAvatar>
+              }
+            >
+              <Avatar
+                variant="square"
+                src={user?.avatar}
+                sx={{
+                  border: "5px solid #00AD70",
+                  width: 100,
+                  height: 100,
+                  borderRadius: 2,
+                }}
+              />
+            </Badge>
+          ) : (
+            <Badge
+              overlap="circular"
+              anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+              badgeContent={
+                <SmallAvatar>
+                  <CameraAltOutlinedIcon />
+                </SmallAvatar>
+              }
+            >
+              <Avatar
+                sx={{
+                  border: "5px solid #00AD70",
+                  width: 100,
+                  height: 100,
+                  borderRadius: 2,
+                }}
+              />
+            </Badge>
+          )}
+        </Grid>
+        <Grid xs={12} textAlign="center" mt={5} item={true}>
+          <form
+            id="nickname_edit"
+            onSubmit={handleSubmit(onsubmit)}
+            method="post"
+            component="form"
+          >
+            <Controller
+              name="nickname"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  sx={{ marginBottom: 2, width: "80%" }}
+                  margin="dense"
+                  required
+                  value={field.value || ""}
+                  error={!!errors.nickname}
+                  helperText={
+                    errors.nickname
+                      ? errors?.nickname?.message
+                      : `닉네임으로 표시됩니다. ${watch("nickname").length}/10`
+                  }
+                />
+              )}
+            />{" "}
+          </form>
+        </Grid>
+      </Grid>
+    </>
+  );
+}
+
+export default UploadProfile;

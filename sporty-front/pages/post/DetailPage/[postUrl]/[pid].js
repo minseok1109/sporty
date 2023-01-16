@@ -1,7 +1,6 @@
 import {
   Avatar,
   Box,
-  Button,
   Card,
   CardContent,
   CardHeader,
@@ -11,10 +10,7 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import dayjs from "dayjs";
-import { useEffect } from "react";
 import DetailHeader from "../../../../components/DetailHeader";
-import { setHeader, useUserDispatch } from "../../../../userStore";
-import { useRouter } from "next/router";
 
 function DetailPage({ data, applyUserData }) {
   const {
@@ -30,10 +26,11 @@ function DetailPage({ data, applyUserData }) {
     amountOfGym,
     isRunning,
   } = data;
-  const router = useRouter();
+
   const createdDate = dayjs(created_at);
   const todayDate = dayjs(new Date());
   const subtractDate = dayjs(todayDate).diff(createdDate, "day");
+
   const paperStyle = {
     display: "flex",
     justifyContent: "center",
@@ -42,12 +39,6 @@ function DetailPage({ data, applyUserData }) {
     borderLeft: 6,
     borderLeftColor: "#14C57B",
   };
-
-  const dispatch = useUserDispatch();
-
-  useEffect(() => {
-    setHeader(dispatch, { location, start_date_time });
-  }, []);
 
   return (
     <>
