@@ -12,6 +12,7 @@ export default function PostCard({ post }) {
   const { avatar, nickname } = author;
 
   const game_start_date = startDate.format("YYYY.MM.DD");
+  const game_start_hour = startDate.get("hour");
 
   return (
     <Card sx={{ width: 345, border: 1, margin: 2 }}>
@@ -32,7 +33,7 @@ export default function PostCard({ post }) {
             />
           )
         }
-        title={`${game_start_date}시`}
+        title={`${game_start_date} ${game_start_hour}시`}
         fontWeight={700}
         titleTypographyProps={{ fontSize: 16 }}
         subheader={location}

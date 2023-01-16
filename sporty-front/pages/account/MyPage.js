@@ -1,11 +1,4 @@
-import {
-  Box,
-  List,
-  ListItem,
-  Divider,
-  ListItemText,
-  Grid,
-} from "@mui/material";
+import { List, ListItem, Divider, ListItemText, Grid } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import Profile from "../../components/Profile";
@@ -47,10 +40,10 @@ function MyPage() {
   return (
     <>
       <Grid container direction="row" alignItems="baseline" mt={1} py={2}>
-        <Grid xs={2} textAlign="center">
+        <Grid xs={2} textAlign="center" item={true}>
           <CloseIcon />
         </Grid>
-        <Grid xs={8} fontSize={30} textAlign="center">
+        <Grid xs={8} fontSize={30} textAlign="center" item={true}>
           내 프로필
         </Grid>
       </Grid>
@@ -71,12 +64,12 @@ function MyPage() {
           />
           <NavigateNextIcon />
         </ListItem>
-        <Divider variant="inset" component="li" />
+        <Divider variant="fullWidth" component="li" />
         <ListItem alignItems="center">
           <ListItemText primary="내가 신청한 글" secondary="3개의 글" />
           <NavigateNextIcon />
         </ListItem>
-        <Divider variant="inset" component="li" />
+        <Divider variant="fullWidth" component="li" />
         <Link href="/account/logOut">
           <ListItem alignItems="center">
             <ListItemText primary="로그아웃" />

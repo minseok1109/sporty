@@ -5,9 +5,11 @@ export const theme = createTheme({
     header: {
       background: "#04764E",
     },
-    neutral: {
-      main: "#A56100",
-      contrastText: "#fff",
+    white: {
+      main: "#ffffff",
+    },
+    green: {
+      main: "#04764E",
     },
   },
 });

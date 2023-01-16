@@ -4,8 +4,6 @@ import PostCard from "./PostCard";
 import { useAppContext } from "../../store";
 import { useEffect, useState } from "react";
 import { Box, Link } from "@mui/material";
-import { getUser, useUserDispatch, useUserState } from "../../userStore";
-import jwt_decode from "jwt-decode";
 
 export default function BasketPostList({ postListUrl }) {
   const [postList, setPostList] = useState([]);
@@ -47,16 +45,6 @@ export default function BasketPostList({ postListUrl }) {
     }
   };
 
-  const state = useUserState();
-  const dispatch = useUserDispatch();
-  const { data: user } = state.user;
-
-  useEffect(() => {
-    if (jwtToken) {
-      const { user_id } = jwt_decode(jwtToken);
-      getUser(dispatch, user_id);
-    }
-  }, [dispatch, jwtToken]);
   return (
     <Box
       sx={{
@@ -75,12 +63,7 @@ export default function BasketPostList({ postListUrl }) {
             href={`/post/DetailPage/${postListUrl}/${post.id}`}
             underline="none"
           >
-            <PostCard
-              user={user}
-              post={post}
-              key={index}
-              handleApply={handleApply}
-            />
+            <PostCard post={post} key={index} handleApply={handleApply} />
           </Link>
         ))}
     </Box>

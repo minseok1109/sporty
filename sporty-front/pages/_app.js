@@ -1,7 +1,7 @@
 import React from "react";
 import "../styles/globals.css";
 import { AppProvider } from "../store";
-import { CssBaseline } from "@mui/material";
+import { Button, CssBaseline } from "@mui/material";
 import { SnackbarProvider } from "notistack";
 import { ThemeProvider } from "@mui/material/styles";
 import Header from "../components/Header";
@@ -13,13 +13,15 @@ import { UserProvieder } from "../userStore";
 
 function MyApp({ Component, pageProps, ...appProps }) {
   const router = useRouter();
+  let headerProps = {};
   let notShowHeader = [
     "/account/login",
     "/account/signUp",
     "/PostFormList",
     "/account/MyPage",
+    "/post/DetailPage/[postUrl]/[pid]",
   ];
-  let showHeader = notShowHeader.includes(router.pathname);
+  let isShowHeader = notShowHeader.includes(router.pathname);
 
   let needConPadding = [
     "/post/BasketPost",
@@ -29,13 +31,42 @@ function MyApp({ Component, pageProps, ...appProps }) {
   ];
   let needContainerPadding = needConPadding.includes(router.pathname);
 
+  if (router.pathname === "/") {
+    headerProps = {
+      title: "SPORTY",
+    };
+  }
+  if (
+    router.pathname.startsWith("/post/") &&
+    router.pathname.endsWith("Post")
+  ) {
+    headerProps = {
+      title: "매치 글쓰기",
+      prev: (
+        <Button onClick={() => router.back()} color="white">
+          X
+        </Button>
+      ),
+      finish: (
+        <Button
+          type="submit"
+          form="postForm"
+          color="white"
+          sx={{ fontSize: "16px" }}
+        >
+          완료
+        </Button>
+      ),
+    };
+  }
+
   return (
     <CssBaseline>
       <AppProvider>
         <UserProvieder>
           <SnackbarProvider>
             <ThemeProvider theme={theme}>
-              {!showHeader && <Header />}
+              {!isShowHeader && <Header {...headerProps} />}
               <Container
                 disableGutters={!needContainerPadding}
                 sx={{ maxHeight: 1, pb: "60px" }}

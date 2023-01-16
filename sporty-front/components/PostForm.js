@@ -1,6 +1,5 @@
-import * as React from "react";
+import React, { cloneElement } from "react";
 import {
-  Button,
   FormControl,
   FormControlLabel,
   FormLabel,
@@ -24,22 +23,36 @@ export default function PostForm(props) {
 
   const baseSchema = Yup.object({
     date: Yup.string().required("날짜를 입력해주세요."),
-    location: Yup.string(),
-    cruit: Yup.number(),
+    location: Yup.string().required("장소를 입력하세요."),
+    cruit: Yup.number().required("인원 수를 입력하세요."),
     amountOfGym: Yup.number().required("참가비를 입력하세요."),
-    description: Yup.string(),
+    sex: Yup.string().required("성별을 입력하세요."),
+    description: Yup.string().required("설명을 입력하세요."),
     questionToApplyer: Yup.string(),
   });
 
-  baseSchema.shape(props?.extendSchema);
+  const extendPropsSchema = baseSchema.concat(props?.extendSchema);
+  const defaultValuesKey = Object.keys(extendPropsSchema.fields).reduce(
+    (acc, curr) => {
+      return {
+        ...acc,
+        [curr]: null,
+      };
+    },
+    {},
+  );
 
-  const formOptions = { resolver: yupResolver(baseSchema) };
-
+  const formOptions = {
+    resolver: yupResolver(extendPropsSchema),
+    defaultValues: defaultValuesKey,
+  };
   const {
     handleSubmit,
     control,
-    formState: { isSubmitting, errors },
+    watch,
+    formState: { errors },
   } = useForm(formOptions);
+
   const {
     store: { jwtToken },
   } = useAppContext();
@@ -68,7 +81,12 @@ export default function PostForm(props) {
   return (
     <>
       <SelectPostPage />
-      <form component="form" onSubmit={handleSubmit(onSubmit)} method="post">
+      <form
+        component="form"
+        onSubmit={handleSubmit(onSubmit)}
+        method="post"
+        id="postForm"
+      >
         <Controller
           name="date"
           control={control}
@@ -187,16 +205,16 @@ export default function PostForm(props) {
                   label="여성"
                 />
                 <FormControlLabel
-                  value="상관없음"
+                  value="혼성"
                   control={<Radio />}
-                  label="상관없음"
+                  label="혼성"
                 />
               </RadioGroup>
             </FormControl>
           )}
         />
         {props.children &&
-          React.cloneElement(props.children, {
+          cloneElement(props.children, {
             control: control,
             errors: errors,
           })}
@@ -243,9 +261,6 @@ export default function PostForm(props) {
             </>
           )}
         />
-        <Button type="submit" variant="outlined" disabled={isSubmitting}>
-          작성하기
-        </Button>
       </form>
     </>
   );

@@ -27,7 +27,7 @@ export default function FixedLogInBottomNavigation() {
           component="a"
           LinkComponent={Link}
           href="/PostFormList"
-          icon={<AddCircleRoundedIcon color="primary" fontSize="large" />}
+          icon={<AddCircleRoundedIcon color="green" fontSize="large" />}
         />
         <BottomNavigationAction
           label="채팅"
