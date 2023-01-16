@@ -26,7 +26,7 @@ export default function Profile() {
 
   const state = useUserState();
   const dispatch = useUserDispatch();
-  const { data: user, loading, error } = state.user;
+  const { data: user } = state.user;
 
   useEffect(() => {
     const { user_id } = jwt_decode(jwtToken);
@@ -83,7 +83,14 @@ export default function Profile() {
                 </SmallAvatar>
               }
             >
-              <Avatar />
+              <Avatar
+                sx={{
+                  border: "5px solid #00AD70",
+                  width: 56,
+                  height: 56,
+                  borderRadius: 2,
+                }}
+              />
             </Badge>
           )}
         </Item>

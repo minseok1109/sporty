@@ -7,6 +7,11 @@ const initialState = {
     data: null,
     error: null,
   },
+  post: {
+    loading: false,
+    data: null,
+    error: null,
+  },
 };
 
 const loadingState = {
@@ -46,6 +51,17 @@ function userReducer(state, action) {
       };
     case "LOG_OUT":
       return initialState;
+
+    case "SET_HEADER_LOADING":
+      return {
+        ...state,
+        post: loadingState,
+      };
+    case "SET_HEADER":
+      return {
+        ...state,
+        post: success(action.data),
+      };
     default:
       throw new Error(`Unhanded action type: ${action.type}`);
   }
@@ -90,5 +106,14 @@ export async function getUser(dispatch, id) {
     dispatch({ type: "GET_USER_SUCCESS", data: response.data });
   } catch (error) {
     dispatch({ type: "GET_USER_ERROR", error: e });
+  }
+}
+
+export async function setHeader(dispatch, data) {
+  dispatch({ type: "SET_HEADER_LOADING" });
+  try {
+    await dispatch({ type: "SET_HEADER", data });
+  } catch (error) {
+    await dispatch({ type: "GET_USER_ERROR", error: e });
   }
 }
