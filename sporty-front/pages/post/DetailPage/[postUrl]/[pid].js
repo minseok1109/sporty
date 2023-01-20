@@ -13,10 +13,19 @@ import axios from "axios";
 import dayjs from "dayjs";
 import { useEffect } from "react";
 import DetailHeader from "../../../../components/DetailHeader";
-import { setHeader, useUserDispatch } from "../../../../userStore";
-import { useRouter } from "next/router";
+import {
+  setHeader,
+  useUserDispatch,
+  useUserState,
+} from "../../../../userStore";
+import ApplyBottomNavigation from "../../../../components/BottomNavigation/ApplyBottomNavigation";
 
-function DetailPage({ data, applyUserData }) {
+function DetailPage({ data, applyUserData, pid, postUrl }) {
+  console.log(
+    "🚀 ~ file: [pid].js:24 ~ DetailPage ~ applyUserData",
+    applyUserData,
+  );
+  //글 데이터
   const {
     author: { avatar, nickname },
     created_at,
@@ -30,7 +39,7 @@ function DetailPage({ data, applyUserData }) {
     amountOfGym,
     isRunning,
   } = data;
-  const router = useRouter();
+
   const createdDate = dayjs(created_at);
   const todayDate = dayjs(new Date());
   const subtractDate = dayjs(todayDate).diff(createdDate, "day");
@@ -44,7 +53,15 @@ function DetailPage({ data, applyUserData }) {
   };
 
   const dispatch = useUserDispatch();
-
+  const state = useUserState();
+  const { data: user } = state.user;
+  const isApplyDisabled = applyUserData?.some(
+    (applyUser) => applyUser?.id === user?.id,
+  );
+  console.log(
+    "🚀 ~ file: [pid].js:61 ~ DetailPage ~ isApplyDisabled",
+    isApplyDisabled,
+  );
   useEffect(() => {
     setHeader(dispatch, { location, start_date_time });
   }, []);
@@ -148,13 +165,18 @@ function DetailPage({ data, applyUserData }) {
             </Card>
           );
         })}
+      <ApplyBottomNavigation
+        pid={pid}
+        postUrl={postUrl}
+        disabled={isApplyDisabled}
+      />
     </>
   );
 }
 
 export async function getServerSideProps(context) {
   const { pid, postUrl } = context.query;
-
+  console.log(context.query);
   let applyUserData = null;
   const response = await axios({
     url: `http://127.0.0.1:8000/api/${postUrl}/${pid}`,
@@ -173,6 +195,6 @@ export async function getServerSideProps(context) {
       }),
     );
   }
-  return { props: { data, applyUserData } };
+  return { props: { data, applyUserData, pid, postUrl } };
 }
 export default DetailPage;

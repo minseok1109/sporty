@@ -1,7 +1,23 @@
 import PostList from "../components/PostLists/PostList";
 import { Tabs } from "antd";
+import { useAppContext } from "../store";
+import jwt_decode from "jwt-decode";
+import { useEffect } from "react";
+import { useUserDispatch, getUser } from "../userStore";
 
 export default function Home() {
+  const { store } = useAppContext();
+  const { jwtToken } = store;
+
+  const dispatch = useUserDispatch();
+
+  useEffect(() => {
+    if (jwtToken) {
+      const { user_id } = jwt_decode(jwtToken);
+      getUser(dispatch, user_id);
+    }
+  }, [dispatch, jwtToken]);
+
   const postListArr = [
     {
       label: "농구",

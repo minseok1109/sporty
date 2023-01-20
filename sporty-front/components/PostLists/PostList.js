@@ -1,18 +1,11 @@
-import axios from "axios";
 import useAxios from "axios-hooks";
 import PostCard from "./PostCard";
-import { useAppContext } from "../../store";
 import { useEffect, useState } from "react";
-import { Box, Link } from "@mui/material";
+import { Box } from "@mui/material";
+import Link from "next/link";
 
 export default function BasketPostList({ postListUrl }) {
   const [postList, setPostList] = useState([]);
-
-  const {
-    store: { jwtToken },
-  } = useAppContext();
-
-  const headers = { Authorization: `JWT ${jwtToken}` };
 
   const [{ data: originPostList, loading, error }] = useAxios({
     url: `http://127.0.0.1:8000/api/${postListUrl}`,
@@ -21,29 +14,6 @@ export default function BasketPostList({ postListUrl }) {
   useEffect(() => {
     setPostList(originPostList);
   }, [originPostList]);
-
-  const handleApply = async ({ post, isapply }) => {
-    const apiUrl = `http://127.0.0.1:8000/api/${postListUrl}/${post.id}/apply/`;
-    const method = isapply ? "POST" : "DELETE";
-    try {
-      const response = await axios({
-        url: apiUrl,
-        method,
-        headers,
-      });
-      console.log("response:", response);
-
-      setPostList((prevList) => {
-        return prevList.map((currentPost) =>
-          currentPost === post
-            ? { ...currentPost, is_apply: isapply }
-            : currentPost,
-        );
-      });
-    } catch (error) {
-      console.log("error: ", error);
-    }
-  };
 
   return (
     <Box
@@ -60,10 +30,15 @@ export default function BasketPostList({ postListUrl }) {
         postList.map((post, index) => (
           <Link
             key={post.id}
-            href={`/post/DetailPage/${postListUrl}/${post.id}`}
-            underline="none"
+            href={{
+              pathname: "/post/DetailPage/[postUrl]/[pid]",
+            }}
+            as={{ pathname: `/post/DetailPage/${postListUrl}/${post.id}` }}
+            legacyBehavior
           >
-            <PostCard post={post} key={index} handleApply={handleApply} />
+            <a>
+              <PostCard post={post} key={index} />
+            </a>
           </Link>
         ))}
     </Box>
