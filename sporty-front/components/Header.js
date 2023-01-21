@@ -1,6 +1,8 @@
-import { Typography, Box, Button, Link, Avatar } from "@mui/material";
+import { Typography, Box } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
+
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
+import Link from "next/link";
 function Header(props) {
   const theme = useTheme();
 
@@ -25,9 +27,11 @@ function Header(props) {
         </Link>
         {props?.finish}
         {props.title === "SPORTY" && (
-          <Button href="/account/MyPage">
-            <AccountCircleOutlinedIcon color="disabled" fontSize="large" />
-          </Button>
+          <Link href="/account/MyPage" legacyBehavior>
+            <a>
+              <AccountCircleOutlinedIcon color="disabled" fontSize="large" />
+            </a>
+          </Link>
         )}
       </Box>
     );

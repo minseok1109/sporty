@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { Paper, Avatar, Grid, Typography, Badge, Box } from "@mui/material";
 import { useAppContext } from "../store";
-import jwt_decode from "jwt-decode";
 import { styled } from "@mui/material/styles";
 import CameraAltOutlinedIcon from "@mui/icons-material/CameraAltOutlined";
-import { useUserState, useUserDispatch, getUser } from "../userStore";
+import { useUserState } from "../userStore";
+import Link from "next/link";
 
 //아바타 카메라 뱃지
 const SmallAvatar = styled(Avatar)(({ theme }) => ({
@@ -20,26 +20,8 @@ const Item = styled(Box)(({ theme }) => ({
 }));
 
 export default function Profile() {
-  let [showloginLink, setshowloginLink] = useState(false);
-  const { store } = useAppContext();
-  const { isAuthenticated, jwtToken } = store;
-
   const state = useUserState();
-  const dispatch = useUserDispatch();
   const { data: user } = state.user;
-
-  useEffect(() => {
-    const { user_id } = jwt_decode(jwtToken);
-    getUser(dispatch, user_id);
-  }, [dispatch, jwtToken]);
-
-  useEffect(() => {
-    const getIsAuthenticated = () => {
-      isAuthenticated ? setshowloginLink(true) : setshowloginLink(false);
-    };
-    getIsAuthenticated();
-  }, [showloginLink]);
-
   return (
     <Grid
       container

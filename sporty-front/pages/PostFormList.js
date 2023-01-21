@@ -1,4 +1,4 @@
-import { Button, Grid, Stack } from "@mui/material";
+import { Button, Grid } from "@mui/material";
 import Link from "next/link";
 import React from "react";
 
@@ -12,19 +12,25 @@ function PostFormList() {
       style={{ minHeight: "100vh" }}
     >
       <Grid item xs>
-        <Button variant="contained" sx={style}>
-          <Link href="/post/BasketPost">농구</Link>
-        </Button>
+        <Link href="/post/BasketPost">
+          <Button variant="contained" sx={style} LinkComponent>
+            농구
+          </Button>
+        </Link>
       </Grid>
       <Grid item xs>
-        <Button variant="contained" sx={style}>
-          <Link href="/post/WalkPost">걷기</Link>
-        </Button>
+        <Link href="/post/WalkPost">
+          <Button variant="contained" sx={style} LinkComponent>
+            걷기
+          </Button>
+        </Link>
       </Grid>
       <Grid item xs>
-        <Button variant="contained" sx={style}>
-          <Link href="/post/FreePost">기타</Link>
-        </Button>
+        <Link href="/post/FreePost">
+          <Button variant="contained" sx={style} LinkComponent>
+            기타
+          </Button>
+        </Link>
       </Grid>
     </Grid>
   );
