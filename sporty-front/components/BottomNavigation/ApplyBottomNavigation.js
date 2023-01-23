@@ -4,11 +4,12 @@ import { useAppContext } from "../../store";
 import axios from "axios";
 import { useRouter } from "next/router";
 
-function ApplyBottomNavigation({ pid, postUrl, disabled }) {
-  console.log(
-    "🚀 ~ file: ApplyBottomNavigation.js:8 ~ ApplyBottomNavigation ~ disabled",
-    disabled,
-  );
+function ApplyBottomNavigation({
+  pid,
+  postUrl,
+  isApplyDisabled,
+  isLogInUserPost,
+}) {
   const {
     store: { jwtToken },
   } = useAppContext();
@@ -16,16 +17,17 @@ function ApplyBottomNavigation({ pid, postUrl, disabled }) {
   const handleApply = async () => {
     const headers = { Authorization: `JWT ${jwtToken}` };
     const apiUrl = `http://127.0.0.1:8000/api/${postUrl}/${pid}/apply/`;
-    const method = "POST";
+    const method = isApplyDisabled ? "DELETE" : "POST";
+
     try {
-      const response = await axios({
+      await axios({
         url: apiUrl,
         method,
         headers,
       });
-      await router.reload();
+      await router.push(`/post/DetailPage/${postUrl}/${pid}`);
     } catch (error) {
-      console.log("error: ", error);
+      console.error("error: ", error);
     }
   };
   return (
@@ -45,9 +47,9 @@ function ApplyBottomNavigation({ pid, postUrl, disabled }) {
         size="large"
         sx={{ m: 3 }}
         onClick={() => handleApply()}
-        disabled={disabled}
+        disabled={isLogInUserPost}
       >
-        신청하기
+        {isApplyDisabled ? "취소하기" : "신청하기"}
       </Button>
     </Paper>
   );

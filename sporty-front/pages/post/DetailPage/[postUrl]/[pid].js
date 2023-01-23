@@ -1,7 +1,6 @@
 import {
   Avatar,
   Box,
-  Button,
   Card,
   CardContent,
   CardHeader,
@@ -21,13 +20,10 @@ import {
 import ApplyBottomNavigation from "../../../../components/BottomNavigation/ApplyBottomNavigation";
 
 function DetailPage({ data, applyUserData, pid, postUrl }) {
-  console.log(
-    "🚀 ~ file: [pid].js:24 ~ DetailPage ~ applyUserData",
-    applyUserData,
-  );
   //글 데이터
+  //postUserId: 글 쓴  사람 아이디
   const {
-    author: { avatar, nickname },
+    author: { id: postUserId, avatar, nickname },
     created_at,
     start_date_time,
     description,
@@ -55,13 +51,10 @@ function DetailPage({ data, applyUserData, pid, postUrl }) {
   const dispatch = useUserDispatch();
   const state = useUserState();
   const { data: user } = state.user;
-  const isApplyDisabled = applyUserData?.some(
-    (applyUser) => applyUser?.id === user?.id,
+  let isApplyDisabled = apply_user_set.some(
+    (appluUser) => appluUser === user?.id,
   );
-  console.log(
-    "🚀 ~ file: [pid].js:61 ~ DetailPage ~ isApplyDisabled",
-    isApplyDisabled,
-  );
+  const isLogInUserPost = postUserId === user?.id;
   useEffect(() => {
     setHeader(dispatch, { location, start_date_time });
   }, []);
@@ -140,7 +133,13 @@ function DetailPage({ data, applyUserData, pid, postUrl }) {
           return (
             <Card
               key={id}
-              sx={{ maxWidth: 345, margin: 2, borderRadius: 3 }}
+              sx={{
+                maxWidth: 345,
+                margin: 2,
+                borderRadius: 3,
+                pb: 3,
+                zIndex: 1,
+              }}
               elevation={5}
             >
               <CardHeader
@@ -168,7 +167,8 @@ function DetailPage({ data, applyUserData, pid, postUrl }) {
       <ApplyBottomNavigation
         pid={pid}
         postUrl={postUrl}
-        disabled={isApplyDisabled}
+        isApplyDisabled={isApplyDisabled}
+        isLogInUserPost={isLogInUserPost}
       />
     </>
   );
@@ -176,8 +176,9 @@ function DetailPage({ data, applyUserData, pid, postUrl }) {
 
 export async function getServerSideProps(context) {
   const { pid, postUrl } = context.query;
-  console.log(context.query);
+
   let applyUserData = null;
+
   const response = await axios({
     url: `http://127.0.0.1:8000/api/${postUrl}/${pid}`,
     method: "GET",
