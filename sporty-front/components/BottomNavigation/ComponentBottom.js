@@ -3,11 +3,11 @@ import React, { useEffect, useState } from "react";
 import { useAppContext } from "../../store";
 import FixedLogInBottomNavigation from "./FixedBottomNavigation";
 import NotLoginBottomNavigation from "./NotLoginBottomNavigation";
-
 function ComponentBottom() {
   const router = useRouter();
   let [islogIn, setIsLogIn] = useState(false);
   const { store } = useAppContext();
+  const isUploadProfilePage = router.pathname === "/UploadProfile";
   const isDetailPage = router.pathname === "/post/DetailPage/[postUrl]/[pid]";
   useEffect(() => {
     const { isAuthenticated } = store;

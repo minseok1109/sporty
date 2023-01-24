@@ -9,10 +9,10 @@ import { useAppContext } from "../../store";
 import { useRouter } from "next/router";
 
 function MyPage() {
-  const router = useRouter();
   const { store } = useAppContext();
   let [postList, setPostList] = useState({});
   const { jwtToken } = store;
+  const router = useRouter();
 
   useEffect(() => {
     const headers = { Authorization: `JWT ${jwtToken}` };

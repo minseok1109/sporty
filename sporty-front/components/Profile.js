@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { Paper, Avatar, Grid, Typography, Badge, Box } from "@mui/material";
+import { useEffect, useState, memo } from "react";
+import { Avatar, Grid, Typography, Badge, Box } from "@mui/material";
 import { useAppContext } from "../store";
 import { styled } from "@mui/material/styles";
 import CameraAltOutlinedIcon from "@mui/icons-material/CameraAltOutlined";
@@ -19,7 +19,7 @@ const Item = styled(Box)(({ theme }) => ({
   marginRight: 5,
 }));
 
-export default function Profile() {
+function Profile() {
   const state = useUserState();
   const { data: user } = state.user;
   return (
@@ -33,52 +33,56 @@ export default function Profile() {
       spacing={1}
     >
       <Grid item xs={2}>
-        <Item>
-          {user?.avatar ? (
-            <Badge
-              overlap="circular"
-              anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-              badgeContent={
-                <SmallAvatar>
-                  <CameraAltOutlinedIcon />
-                </SmallAvatar>
-              }
-            >
-              <Avatar
-                variant="square"
-                src={user?.avatar}
-                sx={{
-                  border: "5px solid #00AD70",
-                  width: 56,
-                  height: 56,
-                  borderRadius: 2,
-                }}
-              />
-            </Badge>
-          ) : (
-            <Badge
-              overlap="circular"
-              anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-              badgeContent={
-                <SmallAvatar>
-                  <CameraAltOutlinedIcon />
-                </SmallAvatar>
-              }
-            >
-              <Avatar
-                sx={{
-                  border: "5px solid #00AD70",
-                  width: 56,
-                  height: 56,
-                  borderRadius: 2,
-                }}
-              />
-            </Badge>
-          )}
-        </Item>
+        <Link href="/UploadProfile">
+          <a>
+            <Item>
+              {user?.avatar ? (
+                <Badge
+                  overlap="circular"
+                  anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+                  badgeContent={
+                    <SmallAvatar>
+                      <CameraAltOutlinedIcon />
+                    </SmallAvatar>
+                  }
+                >
+                  <Avatar
+                    variant="square"
+                    src={user?.avatar}
+                    sx={{
+                      border: "5px solid #00AD70",
+                      width: 56,
+                      height: 56,
+                      borderRadius: 2,
+                    }}
+                  />
+                </Badge>
+              ) : (
+                <Badge
+                  overlap="circular"
+                  anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+                  badgeContent={
+                    <SmallAvatar>
+                      <CameraAltOutlinedIcon />
+                    </SmallAvatar>
+                  }
+                >
+                  <Avatar
+                    sx={{
+                      border: "5px solid #00AD70",
+                      width: 56,
+                      height: 56,
+                      borderRadius: 2,
+                    }}
+                  />
+                </Badge>
+              )}
+            </Item>
+          </a>
+        </Link>
       </Grid>
       <Grid item xs={6} justifyContent="center">
-        <Item>
+        <Item pl={3}>
           <Typography variant="h6">{user?.nickname}</Typography>
           <Typography>@{user?.username}</Typography>
         </Item>
@@ -86,3 +90,5 @@ export default function Profile() {
     </Grid>
   );
 }
+
+export default memo(Profile);

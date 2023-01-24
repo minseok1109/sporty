@@ -10,7 +10,14 @@ export const theme = createTheme({
     },
     green: {
       main: "#04764E",
-      contrastText: "#ffffff",
+      contrastText: "#ffff",
+    },
+    black: {
+      main: "#000000",
+    },
+    gray: {
+      main: "#DADADA",
+      contrastText: "#979797",
     },
   },
 });

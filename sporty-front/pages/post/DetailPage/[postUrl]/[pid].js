@@ -10,7 +10,6 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import dayjs from "dayjs";
-import { useEffect } from "react";
 import DetailHeader from "../../../../components/DetailHeader";
 import {
   setHeader,
@@ -18,6 +17,7 @@ import {
   useUserState,
 } from "../../../../userStore";
 import ApplyBottomNavigation from "../../../../components/BottomNavigation/ApplyBottomNavigation";
+import { useEffect } from "react";
 
 function DetailPage({ data, applyUserData, pid, postUrl }) {
   //글 데이터
@@ -39,6 +39,7 @@ function DetailPage({ data, applyUserData, pid, postUrl }) {
   const createdDate = dayjs(created_at);
   const todayDate = dayjs(new Date());
   const subtractDate = dayjs(todayDate).diff(createdDate, "day");
+
   const paperStyle = {
     display: "flex",
     justifyContent: "center",

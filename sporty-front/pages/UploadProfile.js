@@ -1,6 +1,7 @@
 import { Avatar, Badge, Button, Grid, TextField } from "@mui/material";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { useRouter } from "next/router";
+import { useUserState } from "../userStore";
 import { styled } from "@mui/material/styles";
 import CameraAltOutlinedIcon from "@mui/icons-material/CameraAltOutlined";
 import { useForm, Controller } from "react-hook-form";
@@ -25,6 +26,8 @@ function UploadProfile() {
   } = useForm(formOptions);
 
   const router = useRouter();
+  const state = useUserState();
+  const { data: user } = state.user;
 
   const SmallAvatar = styled(Avatar)(({ theme }) => ({
     width: 22,
