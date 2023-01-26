@@ -1,6 +1,6 @@
 import { Paper, Button } from "@mui/material";
 import React from "react";
-import { useAppContext } from "../../store";
+import { useStoreState } from "../../store";
 import axios from "axios";
 import { useRouter } from "next/router";
 
@@ -10,9 +10,8 @@ function ApplyBottomNavigation({
   isApplyDisabled,
   isLogInUserPost,
 }) {
-  const {
-    store: { jwtToken },
-  } = useAppContext();
+  const store = useStoreState();
+  const { jwtToken } = store;
   const router = useRouter();
   const handleApply = async () => {
     const headers = { Authorization: `JWT ${jwtToken}` };

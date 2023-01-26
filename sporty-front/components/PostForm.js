@@ -8,7 +8,7 @@ import {
   RadioGroup,
   TextField,
 } from "@mui/material";
-import { useAppContext } from "../store";
+import { useStoreState } from "../store";
 import { useRouter } from "next/router";
 import axios from "axios";
 import { useForm, Controller } from "react-hook-form";
@@ -53,10 +53,8 @@ export default function PostForm(props) {
     formState: { errors },
   } = useForm(formOptions);
 
-  const {
-    store: { jwtToken },
-  } = useAppContext();
-
+  const state = useStoreState();
+  const { jwtToken } = state;
   const onSubmit = async (values) => {
     const headers = { Authorization: `JWT ${jwtToken}` };
 

@@ -1,12 +1,12 @@
 import PostList from "../components/PostLists/PostList";
 import { Tabs } from "antd";
-import { useAppContext } from "../store";
+import { useStoreState } from "../store";
 import jwt_decode from "jwt-decode";
 import { useEffect } from "react";
 import { useUserDispatch, getUser } from "../userStore";
 
 export default function Home() {
-  const { store } = useAppContext();
+  const store = useStoreState();
   const { jwtToken } = store;
 
   const dispatch = useUserDispatch();

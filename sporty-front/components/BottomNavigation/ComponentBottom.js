@@ -1,12 +1,12 @@
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import { useAppContext } from "../../store";
+import { useStoreState } from "../../store";
 import FixedLogInBottomNavigation from "./FixedBottomNavigation";
 import NotLoginBottomNavigation from "./NotLoginBottomNavigation";
 function ComponentBottom() {
   const router = useRouter();
   let [islogIn, setIsLogIn] = useState(false);
-  const { store } = useAppContext();
+  const store = useStoreState();
   const isUploadProfilePage = router.pathname === "/UploadProfile";
   const isDetailPage = router.pathname === "/post/DetailPage/[postUrl]/[pid]";
   useEffect(() => {

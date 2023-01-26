@@ -3,17 +3,25 @@ import PostCard from "./PostCard";
 import { useEffect, useState } from "react";
 import { Box } from "@mui/material";
 import Link from "next/link";
+import Loading from "../Loading";
+import axios from "axios";
 
-export default function BasketPostList({ postListUrl }) {
+export default function PostList({ postListUrl, headers }) {
   const [postList, setPostList] = useState([]);
-
-  const [{ data: originPostList, loading, error }] = useAxios({
-    url: `http://127.0.0.1:8000/api/${postListUrl}`,
-  });
+  const [loading, setLoading] = useState(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    setPostList(originPostList);
-  }, [originPostList]);
+    setLoading(true);
+    axios({
+      url: `http://127.0.0.1:8000/api/${postListUrl}`,
+      method: "GET",
+      headers,
+    })
+      .then((res) => setPostList(res.data))
+      .then(() => setLoading(false))
+      .catch((e) => setError(e));
+  }, []);
 
   return (
     <Box
@@ -24,7 +32,7 @@ export default function BasketPostList({ postListUrl }) {
         flexDirection: "column",
       }}
     >
-      {loading && <div>Loading</div>}
+      {loading && <Loading />}
       {error && <div>로딩 중 에러가 발생했습니다.</div>}
       {postList &&
         postList.map((post, index) => (

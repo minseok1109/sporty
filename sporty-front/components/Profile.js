@@ -1,6 +1,5 @@
-import { useEffect, useState, memo } from "react";
+import { memo } from "react";
 import { Avatar, Grid, Typography, Badge, Box } from "@mui/material";
-import { useAppContext } from "../store";
 import { styled } from "@mui/material/styles";
 import CameraAltOutlinedIcon from "@mui/icons-material/CameraAltOutlined";
 import { useUserState } from "../userStore";
@@ -20,6 +19,7 @@ const Item = styled(Box)(({ theme }) => ({
 }));
 
 function Profile() {
+  console.log("profile rendering");
   const state = useUserState();
   const { data: user } = state.user;
   return (

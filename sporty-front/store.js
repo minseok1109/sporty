@@ -1,8 +1,6 @@
 import React, { createContext, useContext, useReducer } from "react";
 import { getStorageItem, setStorageItem } from "./utils/userLocalStorage";
 
-const AppContext = createContext();
-
 const reducer = (prevState, action) => {
   const { type } = action;
   if (type === SET_TOKEN) {
@@ -16,20 +14,41 @@ const reducer = (prevState, action) => {
   return prevState;
 };
 
+const stateContext = createContext(null);
+const dispatchContext = createContext(null);
+
 export const AppProvider = ({ children }) => {
   const jwtToken = getStorageItem("jwtToken", "");
   const [store, dispatch] = useReducer(reducer, {
     jwtToken,
     isAuthenticated: jwtToken?.length > 0,
   });
+
   return (
-    <AppContext.Provider value={{ store, dispatch }}>
-      {children}
-    </AppContext.Provider>
+    <stateContext.Provider value={store}>
+      <dispatchContext.Provider value={dispatch}>
+        {children}
+      </dispatchContext.Provider>
+    </stateContext.Provider>
   );
 };
 
-export const useAppContext = () => useContext(AppContext);
+export const useStoreState = () => {
+  console.log("store rendergin");
+  const state = useContext(stateContext);
+  if (!state) {
+    throw new Error("Cannot find UserProvider");
+  }
+  return state;
+};
+
+export function useStoreDispatch() {
+  const dispatch = useContext(dispatchContext);
+  if (!dispatch) {
+    throw new Error("Cannot find UsersProvider");
+  }
+  return dispatch;
+}
 
 //Actions
 const SET_TOKEN = "APP/TOKEN";
