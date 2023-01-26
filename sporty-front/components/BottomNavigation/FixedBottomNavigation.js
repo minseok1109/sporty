@@ -1,9 +1,4 @@
-import {
-  Paper,
-  BottomNavigation,
-  BottomNavigationAction,
-  Button,
-} from "@mui/material";
+import { Paper, BottomNavigation, BottomNavigationAction } from "@mui/material";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
 import ChatBubbleIcon from "@mui/icons-material/ChatBubble";
@@ -24,6 +19,7 @@ export default function FixedLogInBottomNavigation() {
         <Link href="/" legacyBehavior>
           <BottomNavigationAction
             label="매치"
+            showLabel
             component="a"
             icon={<HomeOutlinedIcon />}
           />
@@ -32,12 +28,19 @@ export default function FixedLogInBottomNavigation() {
           <BottomNavigationAction
             label=""
             component="a"
-            icon={<AddCircleRoundedIcon color="green" fontSize="large" />}
+            showLabel
+            icon={
+              <AddCircleRoundedIcon
+                color="green"
+                sx={{ width: "48px", height: "48px" }}
+              />
+            }
           />
         </Link>
         <Link href="chatting" legacyBehavior>
           <BottomNavigationAction
             label="채팅"
+            showLabel
             component="a"
             LinkComponent={Link}
             icon={<ChatBubbleIcon />}

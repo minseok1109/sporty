@@ -6,12 +6,12 @@ import axios from "axios";
 import { Container, Typography, Button, TextField } from "@mui/material";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
-import { setToken, useAppContext } from "../../store";
+import { setToken, useStoreDispatch } from "../../store";
 
 export default function Login() {
   const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();
-  const { store, dispatch } = useAppContext();
+  const dispatch = useStoreDispatch();
   const onSubmit = async (data) => {
     try {
       const response = await axios.post(

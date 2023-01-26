@@ -10,7 +10,7 @@ import { Container } from "@mui/system";
 import { useRouter } from "next/router";
 import ComponentBottom from "../components/BottomNavigation/ComponentBottom";
 import { UserProvieder } from "../userStore";
-
+import { ConfigProvider } from "antd";
 function MyApp({ Component, pageProps, ...appProps }) {
   const router = useRouter();
   let headerProps = {};
@@ -35,9 +35,9 @@ function MyApp({ Component, pageProps, ...appProps }) {
   if (router.pathname === "/") {
     headerProps = {
       title: "SPORTY",
+      href: "/",
     };
-  }
-  if (
+  } else if (
     router.pathname.startsWith("/post/") &&
     router.pathname.endsWith("Post")
   ) {
@@ -59,6 +59,11 @@ function MyApp({ Component, pageProps, ...appProps }) {
         </Button>
       ),
     };
+  } else if (router.pathname === "/MyPost") {
+    headerProps = {
+      title: "내가 쓴 글",
+      href: "/MyPost",
+    };
   }
 
   return (
@@ -67,14 +72,24 @@ function MyApp({ Component, pageProps, ...appProps }) {
         <UserProvieder>
           <SnackbarProvider>
             <ThemeProvider theme={theme}>
-              {!isShowHeader && <Header {...headerProps} />}
-              <Container
-                disableGutters={!needContainerPadding}
-                sx={{ maxHeight: 1, pb: "60px" }}
+              <ConfigProvider
+                theme={{
+                  components: {
+                    Tabs: {
+                      colorPrimary: "#04764E",
+                    },
+                  },
+                }}
               >
-                <Component {...pageProps} />
-                <ComponentBottom />
-              </Container>
+                {!isShowHeader && <Header {...headerProps} />}
+                <Container
+                  disableGutters={!needContainerPadding}
+                  sx={{ maxHeight: 1, pb: "60px" }}
+                >
+                  <Component {...pageProps} />
+                  <ComponentBottom />
+                </Container>
+              </ConfigProvider>
             </ThemeProvider>
           </SnackbarProvider>
         </UserProvieder>

@@ -1,39 +1,35 @@
 import { List, ListItem, Divider, ListItemText, Grid } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, memo } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import Profile from "../../components/Profile";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import Link from "next/link";
 import axios from "axios";
-import { useAppContext } from "../../store";
+import { useStoreState } from "../../store";
 import { useRouter } from "next/router";
 
 function MyPage() {
-  const { store } = useAppContext();
   let [postList, setPostList] = useState({});
-  const { jwtToken } = store;
   const router = useRouter();
-
+  console.log("rendering");
+  const store = useStoreState();
+  const { jwtToken } = store;
   useEffect(() => {
     const headers = { Authorization: `JWT ${jwtToken}` };
-    const getPostData = async () => {
-      let postList = ["selfbasketposts", "selfworkposts", "selffreeposts"].map(
-        (url) => {
-          let apiUrl = `http://localhost:8000/api/${url}`;
-          return axios({ url: apiUrl, method: "GET", headers })
-            .then((res) => res.data)
-            .then((item) =>
-              setPostList((prev) => {
-                return { ...prev, [url]: item };
-              }),
-            );
-        },
-      );
-      return postList;
+    const getPostData = () => {
+      ["selfbasketposts", "selfworkposts", "selffreeposts"].map((url) => {
+        let apiUrl = `http://localhost:8000/api/${url}`;
+        return axios({ url: apiUrl, method: "GET", headers })
+          .then((res) => res.data)
+          .then((item) =>
+            setPostList((prev) => {
+              return { ...prev, [url]: item };
+            }),
+          );
+      });
     };
     getPostData();
   }, []);
-
   //내가 쓴 글 갯수
   let postListLength = Object.values(postList).reduce((acc, curr) => {
     return (acc += curr.length);
@@ -64,7 +60,10 @@ function MyPage() {
           my: 6,
         }}
       >
-        <ListItem alignItems="center">
+        <ListItem
+          alignItems="center"
+          onClick={() => router.push({ pathname: "/MyPost" })}
+        >
           <ListItemText
             primary="내가 쓴 글"
             secondary={`${postListLength}개의 글`}
@@ -87,4 +86,4 @@ function MyPage() {
   );
 }
 
-export default MyPage;
+export default memo(MyPage);

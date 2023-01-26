@@ -1,6 +1,7 @@
 import { Paper, BottomNavigation, BottomNavigationAction } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import Link from "next/link";
 
 export default function NotLoginBottomNavigation() {
   return (
@@ -9,17 +10,30 @@ export default function NotLoginBottomNavigation() {
       elevation={3}
     >
       <BottomNavigation showLabels>
-        <BottomNavigationAction label="Home" href="/" icon={<HomeIcon />} />
-        <BottomNavigationAction
-          label="Log In"
-          href="/account/login"
-          icon={<AccountCircleIcon />}
-        />
-        <BottomNavigationAction
-          label="Sign Up"
-          href="/account/signUp"
-          icon={<AccountCircleIcon />}
-        />
+        <Link href="/" legacyBehavior>
+          <BottomNavigationAction
+            component="a"
+            label="홈"
+            showLabel
+            icon={<HomeIcon />}
+          />
+        </Link>
+        <Link href="/account/login" legacyBehavior>
+          <BottomNavigationAction
+            component="a"
+            label="로그인"
+            showLabel
+            icon={<AccountCircleIcon />}
+          />
+        </Link>
+        <Link href="/account/signUp" legacyBehavior>
+          <BottomNavigationAction
+            component="a"
+            label="회원가입"
+            showLabel
+            icon={<AccountCircleIcon />}
+          />
+        </Link>
       </BottomNavigation>
     </Paper>
   );

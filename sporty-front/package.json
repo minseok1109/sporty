@@ -21,6 +21,7 @@
     "axios-hooks": "^4.0.0",
     "constants": "^0.0.2",
     "dayjs": "^1.11.6",
+    "framer-motion": "^8.5.2",
     "jwt-decode": "^3.1.2",
     "next": "^12.3.4",
     "normalize.css": "^8.0.1",

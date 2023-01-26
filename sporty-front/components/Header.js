@@ -20,8 +20,8 @@ function Header(props) {
         }}
       >
         {props?.prev}
-        <Link href="/" underline="none" color="black">
-          <Typography fontSize={30} color="#ffff">
+        <Link href={props?.href} underline="none" color="black">
+          <Typography fontSize={30} color="#ffff" fontWeight={600}>
             {props?.title}
           </Typography>
         </Link>
