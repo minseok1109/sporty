@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
-from .models import BasketPost
+from .models import BasketPost, BasketComment, WorkComment, FreeComment
 from .models import WorkPost
 from .models import FreePost
 
@@ -54,3 +54,24 @@ class FreePostSerializer(serializers.ModelSerializer):
     class Meta:
         model = FreePost
         fields = "__all__"
+
+class BasketCommentSerializer(serializers.ModelSerializer):
+    author = AuthorSerializer(read_only=True)
+
+    class Meta:
+        model = BasketComment
+        fields = ["id", "author", "message", "created_at"]
+
+class WorkCommentSerializer(serializers.ModelSerializer):
+    author = AuthorSerializer(read_only=True)
+
+    class Meta:
+        model = WorkComment
+        fields = ["id", "author", "message", "created_at"]
+
+class FreeCommentSerializer(serializers.ModelSerializer):
+    author = AuthorSerializer(read_only=True)
+
+    class Meta:
+        model = FreeComment
+        fields = ["id", "author", "message", "created_at"]

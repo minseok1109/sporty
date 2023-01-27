@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
-from .models import BasketPost
+from .models import BasketPost, BasketComment
 from .models import WorkPost
 from .models import FreePost
 
@@ -21,3 +21,7 @@ class WorkPostAdmin(admin.ModelAdmin):
 class FreePostAdmin(admin.ModelAdmin):
     list_display = ['start_date_time',
                     'location', 'cruit', 'amountOfGym', 'sex', 'description']
+
+@admin.register(BasketComment)
+class BasketCommentAdmin(admin.ModelAdmin):
+    pass
