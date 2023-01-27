@@ -11,6 +11,8 @@ import { useRouter } from "next/router";
 import ComponentBottom from "../components/BottomNavigation/ComponentBottom";
 import { UserProvieder } from "../userStore";
 import { ConfigProvider } from "antd";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+
 function MyApp({ Component, pageProps, ...appProps }) {
   const router = useRouter();
   let headerProps = {};
@@ -63,6 +65,11 @@ function MyApp({ Component, pageProps, ...appProps }) {
     headerProps = {
       title: "내가 쓴 글",
       href: "/MyPost",
+    };
+  } else if (router.pathname === "/ApplyPost") {
+    headerProps = {
+      title: "내가 신청한 글",
+      href: "/ApplyPost",
     };
   }
 

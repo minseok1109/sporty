@@ -34,7 +34,6 @@ export const AppProvider = ({ children }) => {
 };
 
 export const useStoreState = () => {
-  console.log("store rendergin");
   const state = useContext(stateContext);
   if (!state) {
     throw new Error("Cannot find UserProvider");

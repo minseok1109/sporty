@@ -19,12 +19,18 @@ function Header(props) {
           borderRadius: "0px 0px 30px 30px",
         }}
       >
-        {props?.prev}
-        <Link href={props?.href} underline="none" color="black">
+        {props?.prev && props?.prev}
+        {props.href ? (
+          <Link href={props?.href} underline="none" color="black">
+            <Typography fontSize={30} color="#ffff" fontWeight={600}>
+              {props?.title}
+            </Typography>
+          </Link>
+        ) : (
           <Typography fontSize={30} color="#ffff" fontWeight={600}>
             {props?.title}
           </Typography>
-        </Link>
+        )}
         {props?.finish}
         {props.title === "SPORTY" && (
           <Link href="/account/MyPage" legacyBehavior>
