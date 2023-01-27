@@ -23,6 +23,15 @@ export default function PostList({ postListUrl, headers }) {
       .catch((e) => setError(e));
   }, []);
 
+  const changeUrl = {
+    selfbasketposts: "basketposts",
+    selfworkposts: "workposts",
+    selffreeposts: "freeposts",
+    applybasketposts: "basketposts",
+    applyworkposts: "workposts",
+    applyFreeposts: "freeposts",
+  };
+
   return (
     <Box
       sx={{
@@ -40,8 +49,11 @@ export default function PostList({ postListUrl, headers }) {
             key={post.id}
             href={{
               pathname: "/post/DetailPage/[postUrl]/[pid]",
+              query: {
+                postUrl: changeUrl[postListUrl] || postListUrl,
+                pid: post.id,
+              },
             }}
-            as={{ pathname: `/post/DetailPage/${postListUrl}/${post.id}` }}
             legacyBehavior
           >
             <a>

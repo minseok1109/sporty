@@ -3,7 +3,7 @@ import { useStoreState } from "../store";
 import PostList from "../components/PostLists/PostList";
 import { Tabs } from "antd";
 
-function MyPost() {
+function ApplyPost() {
   const store = useStoreState();
 
   const { jwtToken } = store;
@@ -12,17 +12,17 @@ function MyPost() {
     {
       label: "농구",
       key: "1",
-      children: <PostList postListUrl={"selfbasketposts"} headers={headers} />,
+      children: <PostList postListUrl={"applybasketposts"} headers={headers} />,
     },
     {
       label: "걷기",
       key: "2",
-      children: <PostList postListUrl={"selfworkposts"} headers={headers} />,
+      children: <PostList postListUrl={"applyworkposts"} headers={headers} />,
     },
     {
       label: "기타",
       key: "3",
-      children: <PostList postListUrl={"selffreeposts"} headers={headers} />,
+      children: <PostList postListUrl={"applyFreeposts"} headers={headers} />,
     },
   ];
 
@@ -41,4 +41,4 @@ function MyPost() {
   );
 }
 
-export default MyPost;
+export default ApplyPost;
