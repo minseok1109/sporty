@@ -10,7 +10,8 @@
         "plugin:react/recommended",
         "airbnb",
         "plugin:prettier/recommended",
-        "next/babel"
+        "next/babel",
+        "next/core-web-vitals"
     ],
     "settings": {
         "react": {

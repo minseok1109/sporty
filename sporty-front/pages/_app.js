@@ -1,6 +1,5 @@
 import React from "react";
 import "../styles/globals.css";
-import { AppProvider } from "../store";
 import { Button, CssBaseline } from "@mui/material";
 import { SnackbarProvider } from "notistack";
 import { ThemeProvider } from "@mui/material/styles";
@@ -8,12 +7,15 @@ import Header from "../components/Header";
 import { theme } from "../palette";
 import { Container } from "@mui/system";
 import { useRouter } from "next/router";
-import ComponentBottom from "../components/BottomNavigation/ComponentBottom";
-import { UserProvieder } from "../userStore";
+// import ComponentBottom from "../components/BottomNavigation/ComponentBottom";
 import { ConfigProvider } from "antd";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { SessionProvider } from "next-auth/react";
 
-function MyApp({ Component, pageProps, ...appProps }) {
+function MyApp({
+  Component,
+  pageProps: { session, ...pageProps },
+  ...appProps
+}) {
   const router = useRouter();
   let headerProps = {};
   let notShowHeader = [
@@ -75,32 +77,30 @@ function MyApp({ Component, pageProps, ...appProps }) {
 
   return (
     <CssBaseline>
-      <AppProvider>
-        <UserProvieder>
-          <SnackbarProvider>
-            <ThemeProvider theme={theme}>
-              <ConfigProvider
-                theme={{
-                  components: {
-                    Tabs: {
-                      colorPrimary: "#04764E",
-                    },
+      <SessionProvider session={session}>
+        <SnackbarProvider>
+          <ThemeProvider theme={theme}>
+            <ConfigProvider
+              theme={{
+                components: {
+                  Tabs: {
+                    colorPrimary: "#04764E",
                   },
-                }}
+                },
+              }}
+            >
+              {!isShowHeader && <Header {...headerProps} />}
+              <Container
+                disableGutters={!needContainerPadding}
+                sx={{ maxHeight: 1, pb: "60px" }}
               >
-                {!isShowHeader && <Header {...headerProps} />}
-                <Container
-                  disableGutters={!needContainerPadding}
-                  sx={{ maxHeight: 1, pb: "60px" }}
-                >
-                  <Component {...pageProps} />
-                  <ComponentBottom />
-                </Container>
-              </ConfigProvider>
-            </ThemeProvider>
-          </SnackbarProvider>
-        </UserProvieder>
-      </AppProvider>
+                <Component {...pageProps} />
+                {/* <ComponentBottom /> */}
+              </Container>
+            </ConfigProvider>
+          </ThemeProvider>
+        </SnackbarProvider>
+      </SessionProvider>
     </CssBaseline>
   );
 }

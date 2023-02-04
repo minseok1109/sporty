@@ -1,14 +1,14 @@
 import SendbirdApp from "@sendbird/uikit-react/App";
 import "@sendbird/uikit-react/dist/index.css";
 import { useEffect, useState } from "react";
-import { useStoreState } from "../../store";
+import { useUserState } from "../../userStore";
 import jwt_decode from "jwt-decode";
 
 export default function Chat() {
   const store = useStoreState();
-  const { jwtToken } = store;
+  const { accessToken } = store;
   useEffect(() => {
-    const header = { Authorization: `JWT ${jwtToken}` };
+    const header = { Authorization: `Bearer ${accessToken}` };
     const getUserData = () => {
       fetch("http://localhost:8000/accounts/api/user", header)
         .then((response) => response.json())

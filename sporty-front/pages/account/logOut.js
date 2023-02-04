@@ -1,17 +1,14 @@
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import { deleteToken, useStoreDispatch } from "../../store";
-import { useUserDispatch } from "../../userStore";
-
+import userStore from "../../store";
+import axios from "axios";
 function logOut() {
-  const dispatch = useStoreDispatch();
   const router = useRouter();
-  const UserDispatch = useUserDispatch();
 
   useEffect(() => {
-    dispatch(deleteToken());
-    UserDispatch({ type: "LOG_OUT" });
-  }, [dispatch, UserDispatch]);
+    const t = axios.post("http://localhost:3000/api/logout").then((res) => res);
+    console.log(t);
+  }, []);
 
   useEffect(() => {
     router.push("/");

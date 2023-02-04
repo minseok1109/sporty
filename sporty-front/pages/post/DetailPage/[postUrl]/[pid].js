@@ -11,13 +11,8 @@ import {
 import axios from "axios";
 import dayjs from "dayjs";
 import DetailHeader from "../../../../components/DetailHeader";
-import {
-  setHeader,
-  useUserDispatch,
-  useUserState,
-} from "../../../../userStore";
 import ApplyBottomNavigation from "../../../../components/BottomNavigation/ApplyBottomNavigation";
-import { useEffect } from "react";
+// import userStore from "../../../../store";
 
 function DetailPage({ data, applyUserData, pid, postUrl }) {
   //글 데이터
@@ -35,7 +30,7 @@ function DetailPage({ data, applyUserData, pid, postUrl }) {
     amountOfGym,
     isRunning,
   } = data;
-
+  // const user = userStore((state) => state.user);
   const createdDate = dayjs(created_at);
   const todayDate = dayjs(new Date());
   const subtractDate = dayjs(todayDate).diff(createdDate, "day");
@@ -49,17 +44,12 @@ function DetailPage({ data, applyUserData, pid, postUrl }) {
     borderLeftColor: "#14C57B",
   };
 
-  const dispatch = useUserDispatch();
-  const state = useUserState();
-  const { data: user } = state.user;
-  let isApplyDisabled = apply_user_set.some(
-    (appluUser) => appluUser === user?.id,
-  );
-  const isLogInUserPost = postUserId === user?.id;
-  useEffect(() => {
-    setHeader(dispatch, { location, start_date_time });
-  }, []);
-
+  // let isApplyDisabled = apply_user_set.some(
+  //   (appluUser) => appluUser === user.id,
+  // );
+  // const isLogInUserPost = postUserId === user.id;
+  let isApplyDisabled = false;
+  let isLogInUserPost = false;
   return (
     <>
       <DetailHeader location={location} start_date_time={start_date_time} />

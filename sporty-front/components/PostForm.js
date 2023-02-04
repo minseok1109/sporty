@@ -8,7 +8,7 @@ import {
   RadioGroup,
   TextField,
 } from "@mui/material";
-import { useStoreState } from "../store";
+import userStore from "../store";
 import { useRouter } from "next/router";
 import axios from "axios";
 import { useForm, Controller } from "react-hook-form";
@@ -53,10 +53,9 @@ export default function PostForm(props) {
     formState: { errors },
   } = useForm(formOptions);
 
-  const state = useStoreState();
-  const { jwtToken } = state;
+  const accessToken = userStore((state) => state.accessToken);
   const onSubmit = async (values) => {
-    const headers = { Authorization: `JWT ${jwtToken}` };
+    const headers = { Authorization: `Bearer ${accessToken}` };
 
     const { date } = values;
     let start_date_time = dayjs(date).format("YYYY-MM-DD HH:mm");
@@ -66,7 +65,7 @@ export default function PostForm(props) {
       ...values,
     };
     await axios
-      .post(`http://localhost:8000/api/${props.toPost}/`, data, { headers })
+      .post(`http://localhost:8000/api/${props.toPost}/`, data, headers)
       .then(() => {
         router.push("http://localhost:3000/");
       })

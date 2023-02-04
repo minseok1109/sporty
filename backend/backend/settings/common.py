@@ -142,6 +142,9 @@ SIMPLE_JWT = {
     "BLACKLIST_AFTER_ROTATION": True,
     "AUTH_HEADER_TYPES": ('Bearer', ),
     "AUTH_TOKEN_CLASSES": ('rest_framework_simplejwt.tokens.AccessToken', ),
+    'SIGNING_KEY': env('SECRET_KEY'),
+    'USER_ID_FIELD': 'id',
+
 }
 
-CORS_ALLOWED_ORIGINS = ['http://localhost:3000',]
+CORS_ALLOWED_ORIGINS = ['http://localhost:3000', ]
