@@ -1,13 +1,13 @@
 import React from "react";
-import { useStoreState } from "../store";
+import { useUserState } from "../userStore";
 import PostList from "../components/PostLists/PostList";
 import { Tabs } from "antd";
 
 function ApplyPost() {
-  const store = useStoreState();
+  const store = useUserState();
 
-  const { jwtToken } = store;
-  const headers = { Authorization: `JWT ${jwtToken}` };
+  const { accessToken } = store;
+  const headers = { Authorization: `Bearer ${accessToken.data}` };
   const postListArr = [
     {
       label: "농구",

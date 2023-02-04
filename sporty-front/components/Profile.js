@@ -2,9 +2,7 @@ import { memo } from "react";
 import { Avatar, Grid, Typography, Badge, Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import CameraAltOutlinedIcon from "@mui/icons-material/CameraAltOutlined";
-import { useUserState } from "../userStore";
 import Link from "next/link";
-
 //아바타 카메라 뱃지
 const SmallAvatar = styled(Avatar)(({ theme }) => ({
   width: 22,
@@ -18,10 +16,7 @@ const Item = styled(Box)(({ theme }) => ({
   marginRight: 5,
 }));
 
-function Profile() {
-  console.log("profile rendering");
-  const state = useUserState();
-  const { data: user } = state.user;
+function Profile({ user }) {
   return (
     <Grid
       container

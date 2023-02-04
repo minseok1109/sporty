@@ -16,3 +16,17 @@ function BasketPost() {
 }
 
 export default BasketPost;
+
+// export async function getServerSideProps({ req, res }) {
+//   const { cookies } = req;
+//   console.log(
+//     "🚀 ~ file: BasketPost.js:22 ~ getServerSideProps ~ cookies",
+//     cookies,
+//   );
+
+//   return {
+//     props: {
+//       data: null,
+//     },
+//   };
+// }

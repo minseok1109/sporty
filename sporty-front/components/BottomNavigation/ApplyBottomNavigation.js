@@ -1,8 +1,8 @@
 import { Paper, Button } from "@mui/material";
 import React from "react";
-import { useStoreState } from "../../store";
 import axios from "axios";
 import { useRouter } from "next/router";
+// import userStore from "../../store";
 
 function ApplyBottomNavigation({
   pid,
@@ -10,11 +10,11 @@ function ApplyBottomNavigation({
   isApplyDisabled,
   isLogInUserPost,
 }) {
-  const store = useStoreState();
-  const { jwtToken } = store;
+  // const accessToken = userStore((state) => state.accessToken);
+
   const router = useRouter();
   const handleApply = async () => {
-    const headers = { Authorization: `JWT ${jwtToken}` };
+    const headers = { Authorization: `Bearer ${accessToken}` };
     const apiUrl = `http://127.0.0.1:8000/api/${postUrl}/${pid}/apply/`;
     const method = isApplyDisabled ? "DELETE" : "POST";
 
