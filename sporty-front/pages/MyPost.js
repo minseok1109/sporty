@@ -1,10 +1,9 @@
 import React from "react";
 import PostList from "../components/PostLists/PostList";
+import { authOptions } from "../pages/api/auth/[...nextauth]";
+import { getServerSession } from "next-auth/next";
 import { Tabs } from "antd";
-import userStore from "../store";
-function MyPost() {
-  const accessToken = userStore((state) => state.accessToken);
-
+function MyPost({ accessToken }) {
   const headers = { Authorization: `Bearer ${accessToken}` };
   const postListArr = [
     {
@@ -38,5 +37,23 @@ function MyPost() {
     />
   );
 }
-
 export default MyPost;
+
+export async function getServerSideProps(ctx) {
+  const session = await getServerSession(ctx.req, ctx.res, authOptions);
+  if (session) {
+    const { accessToken } = await session;
+    return {
+      props: {
+        accessToken,
+      },
+    };
+  } else {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/account/login",
+      },
+    };
+  }
+}

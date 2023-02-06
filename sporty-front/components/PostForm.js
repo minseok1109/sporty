@@ -8,10 +8,10 @@ import {
   RadioGroup,
   TextField,
 } from "@mui/material";
-import userStore from "../store";
 import { useRouter } from "next/router";
 import axios from "axios";
 import { useForm, Controller } from "react-hook-form";
+import { useSession } from "next-auth/react";
 import dayjs from "dayjs";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { DatePicker } from "antd";
@@ -20,6 +20,12 @@ import * as Yup from "yup";
 
 export default function PostForm(props) {
   const router = useRouter();
+  const { data: session, status } = useSession();
+
+  let accessToken = null;
+  if (status === "authenticated") {
+    accessToken = session.accessToken;
+  }
 
   const baseSchema = Yup.object({
     date: Yup.string().required("날짜를 입력해주세요."),
@@ -53,7 +59,6 @@ export default function PostForm(props) {
     formState: { errors },
   } = useForm(formOptions);
 
-  const accessToken = userStore((state) => state.accessToken);
   const onSubmit = async (values) => {
     const headers = { Authorization: `Bearer ${accessToken}` };
 
