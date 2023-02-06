@@ -12,8 +12,8 @@ import axios from "axios";
 import dayjs from "dayjs";
 import DetailHeader from "../../../../components/DetailHeader";
 import ApplyBottomNavigation from "../../../../components/BottomNavigation/ApplyBottomNavigation";
-// import userStore from "../../../../store";
-
+import { authOptions } from "../../../api/auth/[...nextauth]";
+import { getServerSession } from "next-auth/next";
 function DetailPage({ data, applyUserData, pid, postUrl }) {
   //글 데이터
   //postUserId: 글 쓴  사람 아이디
@@ -166,27 +166,39 @@ function DetailPage({ data, applyUserData, pid, postUrl }) {
 }
 
 export async function getServerSideProps(context) {
-  const { pid, postUrl } = context.query;
+  const session = await getServerSession(context.req, context.res, authOptions);
+  if (session) {
+    const { pid, postUrl } = context.query;
 
-  let applyUserData = null;
+    let applyUserData = null;
 
-  const response = await axios({
-    url: `http://127.0.0.1:8000/api/${postUrl}/${pid}`,
-    method: "GET",
-  });
-  const data = await response.data;
-  const { apply_user_set } = await data;
+    const response = await axios({
+      url: `http://127.0.0.1:8000/api/${postUrl}/${pid}`,
+      method: "GET",
+    });
+    const data = await response.data;
+    const { apply_user_set } = await data;
 
-  if (apply_user_set.length) {
-    applyUserData = await Promise.all(
-      apply_user_set.map(async (id) => {
-        const response = await axios.get(
-          `http://127.0.0.1:8000/accounts/api/user/${id}`,
-        );
-        return response.data;
-      }),
-    );
+    if (apply_user_set.length) {
+      applyUserData = await Promise.all(
+        apply_user_set.map(async (id) => {
+          const response = await axios.get(
+            `http://127.0.0.1:8000/accounts/api/user/${id}`,
+          );
+          return response.data;
+        }),
+      );
+    }
+    return { props: { data, applyUserData, pid, postUrl } };
+  } else {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/account/login",
+      },
+      props: {},
+    };
   }
-  return { props: { data, applyUserData, pid, postUrl } };
 }
+
 export default DetailPage;

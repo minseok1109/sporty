@@ -1,13 +1,12 @@
-import React from "react";
-import { useUserState } from "../userStore";
+import React, { useState } from "react";
 import PostList from "../components/PostLists/PostList";
 import { Tabs } from "antd";
+import { authOptions } from "../pages/api/auth/[...nextauth]";
+import { getServerSession } from "next-auth/next";
 
-function ApplyPost() {
-  const store = useUserState();
+function ApplyPost({ accessToken }) {
+  const headers = { Authorization: `Bearer ${accessToken}` };
 
-  const { accessToken } = store;
-  const headers = { Authorization: `Bearer ${accessToken.data}` };
   const postListArr = [
     {
       label: "농구",
@@ -42,3 +41,23 @@ function ApplyPost() {
 }
 
 export default ApplyPost;
+
+export async function getServerSideProps(ctx) {
+  const session = await getServerSession(ctx.req, ctx.res, authOptions);
+  if (session) {
+    const { accessToken } = await session;
+    return {
+      props: {
+        accessToken,
+      },
+    };
+  } else {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/account/login",
+      },
+      props: {},
+    };
+  }
+}

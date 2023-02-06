@@ -2,14 +2,14 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useForm, Controller } from "react-hook-form";
 import { useSnackbar } from "notistack";
-import axios from "axios";
 import { Container, Typography, Button, TextField } from "@mui/material";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { authOptions } from "../../pages/api/auth/[...nextauth]";
+import { getServerSession } from "next-auth/next";
 import * as Yup from "yup";
-// import userStore from "../../store";
+
 import { signIn } from "next-auth/react";
 export default function Login() {
-  // const setAcessToken = userStore((state) => state.setAccessToken);
   const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();
   const onSubmit = async (data) => {
@@ -119,4 +119,20 @@ export default function Login() {
       </Typography>
     </Container>
   );
+}
+
+export async function getServerSideProps(context) {
+  const session = await getServerSession(context.req, context.res, authOptions);
+  if (session) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/",
+      },
+      props: {},
+    };
+  }
+  return {
+    props: {},
+  };
 }
