@@ -2,16 +2,14 @@ import { Paper, Button } from "@mui/material";
 import React from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
-// import userStore from "../../store";
 
 function ApplyBottomNavigation({
   pid,
   postUrl,
   isApplyDisabled,
   isLogInUserPost,
+  accessToken,
 }) {
-  // const accessToken = userStore((state) => state.accessToken);
-
   const router = useRouter();
   const handleApply = async () => {
     const headers = { Authorization: `Bearer ${accessToken}` };
