@@ -69,8 +69,12 @@ export default function PostForm(props) {
       start_date_time,
       ...values,
     };
-    await axios
-      .post(`http://localhost:8000/api/${props.toPost}/`, data, headers)
+    await axios({
+      url: `http://127.0.0.1:8000/api/${props.toPost}/`,
+      method: "POST",
+      data,
+      headers,
+    })
       .then(() => {
         router.push("http://localhost:3000/");
       })

@@ -14,7 +14,8 @@ import DetailHeader from "../../../../components/DetailHeader";
 import ApplyBottomNavigation from "../../../../components/BottomNavigation/ApplyBottomNavigation";
 import { authOptions } from "../../../api/auth/[...nextauth]";
 import { getServerSession } from "next-auth/next";
-function DetailPage({ data, applyUserData, pid, postUrl }) {
+
+function DetailPage({ data, applyUserData, pid, postUrl, accessToken, user }) {
   //글 데이터
   //postUserId: 글 쓴  사람 아이디
   const {
@@ -30,7 +31,6 @@ function DetailPage({ data, applyUserData, pid, postUrl }) {
     amountOfGym,
     isRunning,
   } = data;
-  // const user = userStore((state) => state.user);
   const createdDate = dayjs(created_at);
   const todayDate = dayjs(new Date());
   const subtractDate = dayjs(todayDate).diff(createdDate, "day");
@@ -44,12 +44,12 @@ function DetailPage({ data, applyUserData, pid, postUrl }) {
     borderLeftColor: "#14C57B",
   };
 
-  // let isApplyDisabled = apply_user_set.some(
-  //   (appluUser) => appluUser === user.id,
-  // );
-  // const isLogInUserPost = postUserId === user.id;
-  let isApplyDisabled = false;
-  let isLogInUserPost = false;
+  let isApplyDisabled = apply_user_set.some(
+    (appluUser) => appluUser === user.userId,
+  );
+  const isLogInUserPost = postUserId === user.userId;
+  // let isApplyDisabled = false;
+  // let isLogInUserPost = false;
   return (
     <>
       <DetailHeader location={location} start_date_time={start_date_time} />
@@ -160,6 +160,7 @@ function DetailPage({ data, applyUserData, pid, postUrl }) {
         postUrl={postUrl}
         isApplyDisabled={isApplyDisabled}
         isLogInUserPost={isLogInUserPost}
+        accessToken={accessToken}
       />
     </>
   );
@@ -169,7 +170,7 @@ export async function getServerSideProps(context) {
   const session = await getServerSession(context.req, context.res, authOptions);
   if (session) {
     const { pid, postUrl } = context.query;
-
+    const { accessToken, user } = session;
     let applyUserData = null;
 
     const response = await axios({
@@ -189,7 +190,16 @@ export async function getServerSideProps(context) {
         }),
       );
     }
-    return { props: { data, applyUserData, pid, postUrl } };
+    return {
+      props: {
+        data,
+        applyUserData,
+        pid,
+        postUrl,
+        accessToken,
+        user: JSON.parse(JSON.stringify(user)),
+      },
+    };
   } else {
     return {
       redirect: {

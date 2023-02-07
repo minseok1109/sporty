@@ -1,9 +1,8 @@
-import { BottomNavigation, Button, Paper } from "@mui/material";
-import Link from "next/link";
+import { Button, Paper } from "@mui/material";
 import { useRouter } from "next/router";
 import React from "react";
 
-function ApplyBottomNavgation() {
+function EditProfileBottomNavigation() {
   const router = useRouter();
   return (
     <Paper
@@ -39,4 +38,4 @@ function ApplyBottomNavgation() {
   );
 }
 
-export default ApplyBottomNavgation;
+export default EditProfileBottomNavigation;
