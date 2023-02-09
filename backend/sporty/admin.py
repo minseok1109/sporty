@@ -22,6 +22,12 @@ class FreePostAdmin(admin.ModelAdmin):
     list_display = ['start_date_time',
                     'location', 'cruit', 'amountOfGym', 'sex', 'description']
 
+
 @admin.register(BasketComment)
 class BasketCommentAdmin(admin.ModelAdmin):
-    pass
+    list_display = ['id',
+                    'created_at',
+                    'updated_at',
+                    'message',
+                    'author',
+                    'post']

@@ -4,6 +4,7 @@ import { authOptions } from "../pages/api/auth/[...nextauth]";
 import { getServerSession } from "next-auth/next";
 import FixedLogInBottomNavigation from "../components/BottomNavigation/FixedBottomNavigation";
 import NotLoginBottomNavigation from "../components/BottomNavigation/NotLoginBottomNavigation";
+import ComponentBottom from "../components/BottomNavigation/ComponentBottom";
 
 export default function Home({ isLoggedIn }) {
   const postListArr = [
@@ -37,11 +38,7 @@ export default function Home({ isLoggedIn }) {
           };
         })}
       />
-      {isLoggedIn ? (
-        <FixedLogInBottomNavigation />
-      ) : (
-        <NotLoginBottomNavigation />
-      )}
+      <ComponentBottom isLoggedIn={isLoggedIn} />
     </>
   );
 }
