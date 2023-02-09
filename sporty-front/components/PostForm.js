@@ -8,10 +8,10 @@ import {
   RadioGroup,
   TextField,
 } from "@mui/material";
-import { useStoreState } from "../store";
 import { useRouter } from "next/router";
 import axios from "axios";
 import { useForm, Controller } from "react-hook-form";
+import { useSession } from "next-auth/react";
 import dayjs from "dayjs";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { DatePicker } from "antd";
@@ -20,6 +20,12 @@ import * as Yup from "yup";
 
 export default function PostForm(props) {
   const router = useRouter();
+  const { data: session, status } = useSession();
+
+  let accessToken = null;
+  if (status === "authenticated") {
+    accessToken = session.accessToken;
+  }
 
   const baseSchema = Yup.object({
     date: Yup.string().required("날짜를 입력해주세요."),
@@ -53,10 +59,8 @@ export default function PostForm(props) {
     formState: { errors },
   } = useForm(formOptions);
 
-  const state = useStoreState();
-  const { jwtToken } = state;
   const onSubmit = async (values) => {
-    const headers = { Authorization: `JWT ${jwtToken}` };
+    const headers = { Authorization: `Bearer ${accessToken}` };
 
     const { date } = values;
     let start_date_time = dayjs(date).format("YYYY-MM-DD HH:mm");
@@ -65,8 +69,12 @@ export default function PostForm(props) {
       start_date_time,
       ...values,
     };
-    await axios
-      .post(`http://localhost:8000/api/${props.toPost}/`, data, { headers })
+    await axios({
+      url: `http://127.0.0.1:8000/api/${props.toPost}/`,
+      method: "POST",
+      data,
+      headers,
+    })
       .then(() => {
         router.push("http://localhost:3000/");
       })

@@ -1,12 +1,16 @@
 import React from "react";
 import { useTheme } from "@mui/material/styles";
-import { Box, Button, Link, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useRouter } from "next/router";
+import dayjs from "dayjs";
 
 function DetailHeader({ location, start_date_time }) {
   const theme = useTheme();
   const router = useRouter();
+  dayjs.locale("ko");
+  const startDate = dayjs(start_date_time);
+  const game_start = startDate.format("MM/DD(dd) a hh");
   return (
     <Box
       sx={{
@@ -20,7 +24,11 @@ function DetailHeader({ location, start_date_time }) {
         borderRadius: "0px 0px 30px 30px",
       }}
     >
-      <Button onClick={() => router.back()} color="white">
+      <Button
+        onClick={() => router.back()}
+        color="white"
+        sx={{ px: 0, justifyContent: "flex-start" }}
+      >
         <ArrowBackIcon />
       </Button>
       <Box
@@ -31,10 +39,10 @@ function DetailHeader({ location, start_date_time }) {
           flexDirection: "column",
         }}
       >
-        <Typography variant="h6" color="#ffff">
-          {start_date_time}
+        <Typography variant="h6" color="#ffff" fontWeight={700}>
+          {game_start}시
         </Typography>
-        <Typography variant="h5" color="#ffff">
+        <Typography variant="h5" color="#ffff" fontSize={18}>
           {location}
         </Typography>
       </Box>

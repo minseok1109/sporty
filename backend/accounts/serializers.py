@@ -26,7 +26,7 @@ class SignupSerializer(serializers.ModelSerializer):
                 fields=['username', 'nickname']
             )
         ]
-        fields = ['pk', 'username', 'password', 'nickname', 'school']
+        fields = ['id', 'username', 'password', 'nickname', 'school']
 
 
 class UserSerializer(serializers.ModelSerializer):

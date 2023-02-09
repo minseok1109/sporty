@@ -2,27 +2,25 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useForm, Controller } from "react-hook-form";
 import { useSnackbar } from "notistack";
-import axios from "axios";
 import { Container, Typography, Button, TextField } from "@mui/material";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { authOptions } from "../../pages/api/auth/[...nextauth]";
+import { getServerSession } from "next-auth/next";
 import * as Yup from "yup";
-import { setToken, useStoreDispatch } from "../../store";
 
+import { signIn } from "next-auth/react";
 export default function Login() {
   const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();
-  const dispatch = useStoreDispatch();
   const onSubmit = async (data) => {
     try {
-      const response = await axios.post(
-        "http://localhost:8000/accounts/token/",
-        data,
-      );
-      const {
-        data: { token: jwtToken },
-      } = response;
-      await dispatch(setToken(jwtToken));
-      await router.push("/");
+      const response = await signIn("credentials", {
+        redirect: false,
+        username: data.username,
+        password: data.password,
+        callbackUrl: "http://localhost:3000/",
+      });
+      await router.push(response.url);
     } catch (error) {
       const options = {
         preventDuplicate: true,
@@ -121,4 +119,20 @@ export default function Login() {
       </Typography>
     </Container>
   );
+}
+
+export async function getServerSideProps(context) {
+  const session = await getServerSession(context.req, context.res, authOptions);
+  if (session) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/",
+      },
+      props: {},
+    };
+  }
+  return {
+    props: {},
+  };
 }

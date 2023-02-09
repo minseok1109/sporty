@@ -1,15 +1,16 @@
 import { Avatar, Badge, Button, Grid, TextField } from "@mui/material";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { useRouter } from "next/router";
-import { useUserState } from "../userStore";
 import { styled } from "@mui/material/styles";
 import CameraAltOutlinedIcon from "@mui/icons-material/CameraAltOutlined";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { authOptions } from "../pages/api/auth/[...nextauth]";
+import { getServerSession } from "next-auth/next";
 import * as Yup from "yup";
 import React from "react";
 
-function UploadProfile() {
+function UploadProfile({ user }) {
   const formSchema = Yup.object().shape({
     nickname: Yup.string().required("닉네임 입력은 필수입니다."),
   });
@@ -26,8 +27,6 @@ function UploadProfile() {
   } = useForm(formOptions);
 
   const router = useRouter();
-  const state = useUserState();
-  const { data: user } = state.user;
 
   const SmallAvatar = styled(Avatar)(({ theme }) => ({
     width: 22,
@@ -127,3 +126,12 @@ function UploadProfile() {
 }
 
 export default UploadProfile;
+export async function getServerSideProps(ctx) {
+  const session = await getServerSession(ctx.req, ctx.res, authOptions);
+  const { username, nickname, avatar } = await session.user;
+  return {
+    props: {
+      user: { username, nickname, avatar },
+    },
+  };
+}

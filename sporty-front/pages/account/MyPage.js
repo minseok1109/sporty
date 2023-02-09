@@ -1,59 +1,33 @@
-import { List, ListItem, Divider, ListItemText, Grid } from "@mui/material";
-import React, { useEffect, useState, memo, useMemo } from "react";
+import {
+  List,
+  ListItem,
+  Divider,
+  ListItemText,
+  Grid,
+  ListItemButton,
+} from "@mui/material";
+import React, { memo, useMemo } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import Profile from "../../components/Profile";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import Link from "next/link";
-import axios from "axios";
-import { useStoreState } from "../../store";
 import { useRouter } from "next/router";
+import { signOut } from "next-auth/react";
+import { authOptions } from "../../pages/api/auth/[...nextauth]";
+import { getServerSession } from "next-auth/next";
+import axios from "axios";
 
-function MyPage() {
-  let [postList, setPostList] = useState({});
-  let [applyList, setApplyList] = useState({});
+function MyPage({ data, postData, applyData }) {
   const router = useRouter();
-
-  const store = useStoreState();
-  const { jwtToken } = store;
-
   const getListLength = (list) => {
-    return Object.values(list).reduce((acc, curr) => {
-      return (acc += curr.length);
+    return list.reduce((acc, curr) => {
+      return (acc += Object.values(curr).flat().length);
     }, 0);
   };
 
-  useEffect(() => {
-    const headers = { Authorization: `JWT ${jwtToken}` };
-    const getPostData = () => {
-      ["selfbasketposts", "selfworkposts", "selffreeposts"].map((url) => {
-        let apiUrl = `http://localhost:8000/api/${url}`;
-        return axios({ url: apiUrl, method: "GET", headers })
-          .then((res) => res.data)
-          .then((item) =>
-            setPostList((prev) => {
-              return { ...prev, [url]: item };
-            }),
-          );
-      });
-    };
-    const getApplyData = () => {
-      ["applybasketposts", "applyworkposts", "applyFreeposts"].map((url) => {
-        let apiUrl = `http://localhost:8000/api/${url}`;
-        return axios({ url: apiUrl, method: "GET", headers })
-          .then((res) => res.data)
-          .then((item) =>
-            setApplyList((prev) => {
-              return { ...prev, [url]: item };
-            }),
-          );
-      });
-    };
-    getPostData();
-    getApplyData();
-  }, []);
   //내가 쓴 글 갯수
-  let postListLength = useMemo(() => getListLength(postList), [postList]);
-  let applyListLength = useMemo(() => getListLength(applyList), [applyList]);
+  let postListLength = useMemo(() => getListLength(postData), [postData]);
+  let applyListLength = useMemo(() => getListLength(applyData), [applyData]);
   return (
     <>
       <Grid container direction="row" alignItems="baseline" mt={1} py={2}>
@@ -69,7 +43,7 @@ function MyPage() {
           내 프로필
         </Grid>
       </Grid>
-      <Profile />
+      <Profile user={data} />
       <List
         sx={{
           width: "100%",
@@ -99,14 +73,62 @@ function MyPage() {
           </ListItem>
         </Link>
         <Divider variant="fullWidth" component="li" />
-        <Link href="/account/logOut">
-          <ListItem alignItems="center">
-            <ListItemText primary="로그아웃" />
-          </ListItem>
-        </Link>
+        <ListItemButton
+          alignItems="center"
+          onClick={() => signOut({ callbackUrl: "http://localhost:3000/" })}
+        >
+          <ListItemText primary="로그아웃" />
+        </ListItemButton>
       </List>
     </>
   );
 }
-
 export default memo(MyPage);
+
+export async function getServerSideProps(ctx) {
+  const session = await getServerSession(ctx.req, ctx.res, authOptions);
+  if (session) {
+    const { username, nickname, avatar } = await session.user;
+    const { accessToken } = await session;
+    const headers = { Authorization: `Bearer ${accessToken}` };
+    let getPostData = await Promise.all(
+      ["selfbasketposts", "selfworkposts", "selffreeposts"].map(async (url) => {
+        const response = await axios({
+          url: `http://127.0.0.1:8000/api/${url}`,
+          method: "GET",
+          headers,
+        });
+        return { [url]: response.data };
+      }),
+    );
+
+    let getApplyData = await Promise.all(
+      ["applybasketposts", "applyworkposts", "applyFreeposts"].map(
+        async (url) => {
+          const response = await axios({
+            url: `http://127.0.0.1:8000/api/${url}`,
+            method: "GET",
+            headers,
+          });
+          return { [url]: response.data };
+        },
+      ),
+    );
+
+    return {
+      props: {
+        data: { username, nickname, avatar },
+        postData: getPostData,
+        applyData: getApplyData,
+      },
+    };
+  } else {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/account/login",
+      },
+      props: {},
+    };
+  }
+}
