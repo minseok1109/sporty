@@ -14,7 +14,6 @@ import ChatBubbleIcon from "@mui/icons-material/ChatBubble";
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/router";
-import ClickAwayListener from "@mui/base/ClickAwayListener";
 
 export default function FixedLogInBottomNavigation() {
   const router = useRouter();
@@ -58,66 +57,59 @@ export default function FixedLogInBottomNavigation() {
               color="green"
               sx={{ width: "48px", height: "48px" }}
             />
-            <ClickAwayListener
-              mouseEvent="onMouseDown"
-              touchEvent="onTouchStart"
-              onClickAway={() => {
-                setState({ bottom: false });
-              }}
+
+            <Drawer
+              PaperProps={{ square: false }}
+              anchor={"bottom"}
+              open={state.bottom}
+              onClose={toggleDrawer("bottom", false)}
+              // onOpen={toggleDrawer("bottom", true)}
             >
-              <Drawer
-                PaperProps={{ square: false }}
-                anchor={"bottom"}
-                open={state.bottom}
-                onClose={toggleDrawer("bottom", false)}
-                // onOpen={toggleDrawer("bottom", true)}
+              <Typography
+                textAlign="center"
+                fontWeight={700}
+                color="green"
+                mt={1}
               >
-                <Typography
-                  textAlign="center"
-                  fontWeight={700}
+                매치 글쓰기
+              </Typography>
+              <Box
+                role="presentation"
+                // onClick={toggleDrawer("bottom", false)}
+                // onKeyDown={toggleDrawer("bottom", false)}
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-evenly",
+                  alignItems: "center",
+                  height: 50,
+                }}
+              >
+                <Button
+                  sx={{ height: 30, borderRadius: 8 }}
+                  variant="outlined"
                   color="green"
-                  mt={1}
+                  onClick={() => router.push("/post/BasketPost")}
                 >
-                  매치 글쓰기
-                </Typography>
-                <Box
-                  role="presentation"
-                  onClick={toggleDrawer("bottom", false)}
-                  onKeyDown={toggleDrawer("bottom", false)}
-                  sx={{
-                    display: "flex",
-                    justifyContent: "space-evenly",
-                    alignItems: "center",
-                    height: 50,
-                  }}
+                  농구
+                </Button>
+                <Button
+                  sx={{ height: 30, borderRadius: 8 }}
+                  variant="outlined"
+                  color="green"
+                  onClick={() => router.push("/post/WalkPost")}
                 >
-                  <Button
-                    sx={{ height: 30, borderRadius: 8 }}
-                    variant="outlined"
-                    color="green"
-                    onClick={() => router.push("/post/BasketPost")}
-                  >
-                    농구
-                  </Button>
-                  <Button
-                    sx={{ height: 30, borderRadius: 8 }}
-                    variant="outlined"
-                    color="green"
-                    onClick={() => router.push("/post/WalkPost")}
-                  >
-                    산책
-                  </Button>
-                  <Button
-                    sx={{ height: 30, borderRadius: 8 }}
-                    variant="outlined"
-                    color="green"
-                    onClick={() => router.push("/post/FreePost")}
-                  >
-                    자유
-                  </Button>
-                </Box>
-              </Drawer>
-            </ClickAwayListener>
+                  산책
+                </Button>
+                <Button
+                  sx={{ height: 30, borderRadius: 8 }}
+                  variant="outlined"
+                  color="green"
+                  onClick={() => router.push("/post/FreePost")}
+                >
+                  자유
+                </Button>
+              </Box>
+            </Drawer>
           </IconButton>
         </Box>
         <Link href="chatting" legacyBehavior>
