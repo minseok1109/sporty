@@ -53,6 +53,7 @@ class SelfBasketPost(BasketPostViewSet):
         )
         return qs
 
+
 class ApplyBasketPost(BasketPostViewSet):
     queryset = BasketPost.objects.all()
     serializer_class = BasketPostSerializer
@@ -98,6 +99,7 @@ class SelfWorkPost(WorkPostViewSet):
             Q(author=self.request.user)
         )
         return qs
+
 
 class ApplyWorkPost(WorkPostViewSet):
     queryset = WorkPost.objects.all()
@@ -145,6 +147,7 @@ class SelfFreePost(FreePostViewSet):
         )
         return qs
 
+
 class ApplyFreePost(FreePostViewSet):
     queryset = FreePost.objects.all()
     serializer_class = FreePostSerializer
@@ -155,6 +158,7 @@ class ApplyFreePost(FreePostViewSet):
             Q(apply_user_set=self.request.user)
         )
         return qs
+
 
 class BasketCommentViewSet(ModelViewSet):
     queryset = BasketComment.objects.all()
@@ -174,6 +178,7 @@ class BasketCommentViewSet(ModelViewSet):
         serializer.save(author=self.request.user, post=post)
         return super().perform_create(serializer)
 
+
 class WorkCommentViewSet(ModelViewSet):
     queryset = WorkComment.objects.all()
     serializer_class = WorkCommentSerializer
@@ -188,9 +193,10 @@ class WorkCommentViewSet(ModelViewSet):
         return qs
 
     def perform_create(self, serializer):
-        post = get_object_or_404(BasketPost, pk=self.kwargs["post_pk"])
+        post = get_object_or_404(WorkPost, pk=self.kwargs["post_pk"])
         serializer.save(author=self.request.user, post=post)
         return super().perform_create(serializer)
+
 
 class FreeCommentViewSet(ModelViewSet):
     queryset = FreeComment.objects.all()
@@ -206,6 +212,6 @@ class FreeCommentViewSet(ModelViewSet):
         return qs
 
     def perform_create(self, serializer):
-        post = get_object_or_404(BasketPost, pk=self.kwargs["post_pk"])
+        post = get_object_or_404(FreePost, pk=self.kwargs["post_pk"])
         serializer.save(author=self.request.user, post=post)
         return super().perform_create(serializer)

@@ -18,6 +18,7 @@ function ApplyBottomNavigation({
   isLogInUserPost,
   accessToken,
   questionToApplyer,
+  overApplyCruit,
 }) {
   const router = useRouter();
   const headers = { Authorization: `Bearer ${accessToken}` };
@@ -92,6 +93,7 @@ function ApplyBottomNavigation({
         toggleDrawer={toggleDrawer}
         isLogInUserPost={isLogInUserPost}
         isApplyDisabled={isApplyDisabled}
+        overApplyCruit={overApplyCruit}
       />
 
       <Drawer
@@ -182,7 +184,12 @@ function ApplyBottomNavigation({
 
 export default ApplyBottomNavigation;
 
-function ApplyButton({ toggleDrawer, isLogInUserPost, isApplyDisabled }) {
+function ApplyButton({
+  toggleDrawer,
+  isLogInUserPost,
+  isApplyDisabled,
+  overApplyCruit,
+}) {
   return (
     <Button
       variant="contained"
@@ -190,24 +197,9 @@ function ApplyButton({ toggleDrawer, isLogInUserPost, isApplyDisabled }) {
       size="large"
       sx={{ m: 3 }}
       onClick={toggleDrawer("bottom", true)}
-      disabled={isLogInUserPost || isApplyDisabled}
+      disabled={isLogInUserPost || isApplyDisabled || overApplyCruit}
     >
       {"신청하기"}
-    </Button>
-  );
-}
-
-function CancelButton({ handleApply, isLogInUserPost }) {
-  return (
-    <Button
-      variant="contained"
-      color="green"
-      size="large"
-      sx={{ m: 3 }}
-      onClick={() => handleApply()}
-      disabled={isLogInUserPost}
-    >
-      {"취소하기"}
     </Button>
   );
 }

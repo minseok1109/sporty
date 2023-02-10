@@ -23,5 +23,9 @@ export async function getServerSideProps(context) {
         user: JSON.parse(JSON.stringify(user)),
       },
     };
+  } else {
+    return {
+      props: {},
+    };
   }
 }

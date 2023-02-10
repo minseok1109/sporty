@@ -83,7 +83,6 @@ export default function PostForm(props) {
         console.log(error);
       });
   };
-
   return (
     <>
       <SelectPostPage />
