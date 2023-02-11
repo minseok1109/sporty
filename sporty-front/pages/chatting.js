@@ -1,15 +1,21 @@
 import dynamic from "next/dynamic";
 import { authOptions } from "../pages/api/auth/[...nextauth]";
 import { getServerSession } from "next-auth/next";
+
+
 const DynamicAppWithNoSSR = dynamic(() => import("../components/Chat/Chat"), {
   ssr: false,
   loading: () => <p>로딩중입니다.</p>,
 });
 
+
 export default function Chatting({ user }) {
+
+
   return (
     <>
       <DynamicAppWithNoSSR user={user} />
+
     </>
   );
 }

@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
-from .models import BasketPost, BasketComment
+from .models import BasketPost, BasketComment, WorkComment, FreeComment
 from .models import WorkPost
 from .models import FreePost
 
@@ -25,6 +25,24 @@ class FreePostAdmin(admin.ModelAdmin):
 
 @admin.register(BasketComment)
 class BasketCommentAdmin(admin.ModelAdmin):
+    list_display = ['id',
+                    'created_at',
+                    'updated_at',
+                    'message',
+                    'author',
+                    'post']
+
+@admin.register(WorkComment)
+class WorkCommentAdmin(admin.ModelAdmin):
+    list_display = ['id',
+                    'created_at',
+                    'updated_at',
+                    'message',
+                    'author',
+                    'post']
+
+@admin.register(FreeComment)
+class FreeCommentAdmin(admin.ModelAdmin):
     list_display = ['id',
                     'created_at',
                     'updated_at',
