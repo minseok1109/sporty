@@ -7,19 +7,19 @@ from .models import FreePost
 
 @admin.register(BasketPost)
 class BasketPostAdmin(admin.ModelAdmin):
-    list_display = ['start_date_time',
+    list_display = ['id', 'start_date_time',
                     'location', 'level', 'cruit', 'sex', 'questionToApplyer', 'amountOfGym', 'description']
 
 
 @admin.register(WorkPost)
 class WorkPostAdmin(admin.ModelAdmin):
-    list_display = ['start_date_time', 'location',
+    list_display = ['id', 'start_date_time', 'location',
                     'isRunning', 'cruit', 'amountOfGym', 'sex', 'description', 'questionToApplyer']
 
 
 @admin.register(FreePost)
 class FreePostAdmin(admin.ModelAdmin):
-    list_display = ['start_date_time',
+    list_display = ['id', 'start_date_time',
                     'location', 'cruit', 'amountOfGym', 'sex', 'description']
 
 
@@ -32,6 +32,7 @@ class BasketCommentAdmin(admin.ModelAdmin):
                     'author',
                     'post']
 
+
 @admin.register(WorkComment)
 class WorkCommentAdmin(admin.ModelAdmin):
     list_display = ['id',
@@ -40,6 +41,7 @@ class WorkCommentAdmin(admin.ModelAdmin):
                     'message',
                     'author',
                     'post']
+
 
 @admin.register(FreeComment)
 class FreeCommentAdmin(admin.ModelAdmin):

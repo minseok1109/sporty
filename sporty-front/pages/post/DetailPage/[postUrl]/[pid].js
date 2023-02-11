@@ -32,10 +32,15 @@ function DetailPage({ data, pid, postUrl, accessToken, user, comments_data }) {
     isRunning,
     questionToApplyer,
   } = data;
-
   const createdDate = dayjs(created_at);
   const todayDate = dayjs(new Date());
   const subtractDate = dayjs(todayDate).diff(createdDate, "day");
+  console.log(questionToApplyer);
+  const kindOfArtile = {
+    basketposts: "농구",
+    freeposts: "자유",
+    workposts: "걷기",
+  };
 
   const paperStyle = {
     display: "flex",
@@ -50,9 +55,18 @@ function DetailPage({ data, pid, postUrl, accessToken, user, comments_data }) {
     (appluUser) => appluUser === user.userId,
   );
   const isLogInUserPost = postUserId === user.userId;
+  //신청인원 초과
+  let overApplyCruit = apply_user_set.length === cruit;
   return (
     <>
-      <DetailHeader location={location} start_date_time={start_date_time} />
+      <DetailHeader
+        location={location}
+        start_date_time={start_date_time}
+        kind={kindOfArtile[postUrl]}
+      />
+      <Typography variant="h4" m={2}>
+        주최자
+      </Typography>
       <Card sx={{ maxWidth: 345, margin: 2, borderRadius: 3 }} elevation={5}>
         <CardHeader
           avatar={
@@ -158,6 +172,9 @@ function DetailPage({ data, pid, postUrl, accessToken, user, comments_data }) {
           <Box component="span">{comments_data.length}명</Box> / {cruit}명
         </Box>
       </Box>
+      <Typography m={2} variant="h6" fontWeight={700}>
+        Q. {questionToApplyer}
+      </Typography>
       {/* 댓글 */}
       {comments_data &&
         Object.values(comments_data).map((comment_user) => {
@@ -217,6 +234,7 @@ function DetailPage({ data, pid, postUrl, accessToken, user, comments_data }) {
         isLogInUserPost={isLogInUserPost}
         accessToken={accessToken}
         questionToApplyer={questionToApplyer}
+        overApplyCruit={overApplyCruit}
       />
     </>
   );
@@ -235,6 +253,7 @@ export async function getServerSideProps(context) {
       method: "GET",
     });
     const data = await response.data;
+    console.log("🚀 ~ file: [pid].js:256 ~ getServerSideProps ~ data", data);
 
     const comment_response = await axios({
       url: `http://127.0.0.1:8000/api/${postUrl}/${pid}/comments/`,
@@ -243,6 +262,7 @@ export async function getServerSideProps(context) {
     });
 
     const comments_data = await comment_response.data;
+
     return {
       props: {
         data,

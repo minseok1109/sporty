@@ -19,7 +19,7 @@ export default function Home({ isLoggedIn }) {
       children: <PostList postListUrl={"workposts"} />,
     },
     {
-      label: "기타",
+      label: "자유",
       key: "3",
       children: <PostList postListUrl={"freeposts"} />,
     },

@@ -67,6 +67,8 @@ class FreePost(Timestampedmodel):
     amountOfGym = models.IntegerField(verbose_name="참가비", default=0)
     sex = models.CharField(verbose_name="성별", default='', max_length=5)
     description = models.CharField(verbose_name='설명', max_length=100)
+    questionToApplyer = models.CharField(
+        verbose_name="신청자한테 궁금한 점", max_length=50, default='')
     apply_user_set = models.ManyToManyField(
         settings.AUTH_USER_MODEL, blank=True, related_name="apply_freepost_set"
     )
@@ -77,24 +79,30 @@ class FreePost(Timestampedmodel):
     def is_apply_user(self, user):
         return self.apply_user_set.filter(pk=user.pk).exists()
 
+
 class BasketComment(Timestampedmodel):
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    author = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     post = models.ForeignKey(BasketPost, on_delete=models.CASCADE)
     message = models.TextField()
 
     class Meta:
         ordering = ["id"]
 
+
 class WorkComment(Timestampedmodel):
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    author = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     post = models.ForeignKey(WorkPost, on_delete=models.CASCADE)
     message = models.TextField()
 
     class Meta:
         ordering = ["id"]
 
+
 class FreeComment(Timestampedmodel):
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    author = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     post = models.ForeignKey(FreePost, on_delete=models.CASCADE)
     message = models.TextField()
 
