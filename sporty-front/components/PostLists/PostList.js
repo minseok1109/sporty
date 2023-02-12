@@ -14,7 +14,8 @@ export default function PostList({ postListUrl, headers }) {
   useEffect(() => {
     setLoading(true);
     axios({
-      url: `http://127.0.0.1:8000/api/${postListUrl}`,
+      // url: `http://127.0.0.1:8000/api/${postListUrl}`,
+      url: `http://3.39.254.159/api/${postListUrl}`,
       method: "GET",
       headers,
     })
