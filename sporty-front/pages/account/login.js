@@ -61,12 +61,12 @@ export default function Login() {
           my={5}
           sx={{ cursor: "pointer" }}
         >
-          sporty
+          SPORTY
         </Typography>
       </Link>
       <Typography sx={{ textAlign: "center", fontSize: 34 }}>로그인</Typography>
       <Typography sx={{ textAlign: "center", fontSize: 14 }}>
-        SPROTy에 오신 것을 환영합니다.
+        SPROTY에 오신 것을 환영합니다.
       </Typography>
       <form onSubmit={handleSubmit(onSubmit)} method="post">
         <Controller
