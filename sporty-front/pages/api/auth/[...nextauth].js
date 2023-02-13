@@ -1,7 +1,7 @@
 import jwt_decode from "jwt-decode";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-
+import { backend_api } from "../../../axiosInstance";
 export const authOptions = {
   providers: [
     CredentialsProvider({
@@ -11,19 +11,21 @@ export const authOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials, req) {
-        const res = await fetch("http://127.0.0.1:8000/accounts/token/", {
+        const res = await backend_api({
+          url: "/accounts/token/",
           method: "POST",
-          body: JSON.stringify(credentials),
+          data: {
+            username: credentials.username,
+            password: credentials.password,
+          },
           headers: { "Content-Type": "application/json" },
         });
-        const drf_access_token = await res.json();
+        const drf_access_token = await res.data;
 
-        if (res.ok && drf_access_token) {
+        if (res.statusText === "OK" && drf_access_token) {
           const { user_id } = jwt_decode(drf_access_token["access"]);
-          const user_res = await fetch(
-            `http://127.0.0.1:8000/accounts/api/user/${user_id}`,
-          );
-          const user = await user_res.json();
+          const user_res = await backend_api(`/accounts/api/user/${user_id}`);
+          const user = await user_res.data;
           user.accessToken = drf_access_token;
           return user;
         }

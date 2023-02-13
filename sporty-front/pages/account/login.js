@@ -32,7 +32,7 @@ export default function Login() {
         },
       };
       enqueueSnackbar("아이디와 비멀번호를 확인하세요", options);
-      console.log(error);
+      console.error(error);
     }
   };
 

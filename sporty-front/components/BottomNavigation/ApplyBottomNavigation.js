@@ -8,9 +8,8 @@ import {
   Divider,
 } from "@mui/material";
 import React, { useState } from "react";
-import axios from "axios";
 import { useRouter } from "next/router";
-
+import { backend_api } from "../../axiosInstance";
 function ApplyBottomNavigation({
   pid,
   postUrl,
@@ -45,11 +44,11 @@ function ApplyBottomNavigation({
   };
 
   const handleApply = async () => {
-    const apiUrl = `http://127.0.0.1:8000/api/${postUrl}/${pid}/apply/`;
+    const apiUrl = `/api/${postUrl}/${pid}/apply/`;
     const method = "POST";
 
     try {
-      await axios({
+      await backend_api({
         url: apiUrl,
         method,
         headers,
@@ -63,8 +62,8 @@ function ApplyBottomNavigation({
   const handleCommentSubmit = async (event) => {
     event.preventDefault();
     try {
-      await axios({
-        url: `http://127.0.0.1:8000/api/${postUrl}/${pid}/comments/`,
+      await backend_api({
+        url: `/api/${postUrl}/${pid}/comments/`,
         method: "POST",
         data: { message: comment },
         headers,
@@ -73,7 +72,7 @@ function ApplyBottomNavigation({
       await setState({ bottom: false });
       await router.push(`/post/DetailPage/${postUrl}/${pid}`);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 

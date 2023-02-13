@@ -15,7 +15,7 @@ import { useRouter } from "next/router";
 import { signOut } from "next-auth/react";
 import { authOptions } from "../../pages/api/auth/[...nextauth]";
 import { getServerSession } from "next-auth/next";
-import axios from "axios";
+import { backend_api } from "../../axiosInstance";
 
 function MyPage({ data, postData, applyData }) {
   const router = useRouter();
@@ -93,8 +93,8 @@ export async function getServerSideProps(ctx) {
     const headers = { Authorization: `Bearer ${accessToken}` };
     let getPostData = await Promise.all(
       ["selfbasketposts", "selfworkposts", "selffreeposts"].map(async (url) => {
-        const response = await axios({
-          url: `http://127.0.0.1:8000/api/${url}`,
+        const response = await backend_api({
+          url: `/api/${url}`,
           method: "GET",
           headers,
         });
@@ -105,8 +105,8 @@ export async function getServerSideProps(ctx) {
     let getApplyData = await Promise.all(
       ["applybasketposts", "applyworkposts", "applyFreeposts"].map(
         async (url) => {
-          const response = await axios({
-            url: `http://127.0.0.1:8000/api/${url}`,
+          const response = await backend_api({
+            url: `/api/${url}`,
             method: "GET",
             headers,
           });

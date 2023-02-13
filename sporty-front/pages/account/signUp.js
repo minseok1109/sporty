@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import Link from "next/link";
-import axios from "axios";
+import { backend_api } from "../../axiosInstance";
 import { Box, Container, Typography, Button, TextField } from "@mui/material";
 import { useSnackbar } from "notistack";
 import useUpdateEffect from "react-use/lib/useUpdateEffect";
@@ -14,12 +14,12 @@ export default function SignUp() {
   const { enqueueSnackbar } = useSnackbar();
   const [duplicatedError, setDuplicatedError] = useState({});
   const router = useRouter();
-  // 회원가입 작성 후 axios를 사용해서 벡엔드로 전송하는 함수
+  // 회원가입 작성 후 backend_api를 사용해서 벡엔드로 전송하는 함수
   const onSubmit = async (values) => {
     const { username, password, nickname, school } = values;
     const data = { username, password, nickname, school };
-    await axios
-      .post("http://127.0.0.1:8000/accounts/signup/", data)
+    await backend_api
+      .post("/accounts/signup/", data)
       .then(() => {
         // 회원가입 성공하면 바로 로그인페이지로
         router.push("http://localhost:3000/account/login");

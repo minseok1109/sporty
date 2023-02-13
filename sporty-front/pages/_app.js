@@ -7,7 +7,6 @@ import Header from "../components/Header";
 import { theme } from "../palette";
 import { Container } from "@mui/system";
 import { useRouter } from "next/router";
-// import ComponentBottom from "../components/BottomNavigation/ComponentBottom";
 import { ConfigProvider } from "antd";
 import { SessionProvider } from "next-auth/react";
 
@@ -17,6 +16,7 @@ function MyApp({
   ...appProps
 }) {
   const router = useRouter();
+
   let headerProps = {};
   let notShowHeader = [
     "/account/login",

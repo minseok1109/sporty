@@ -9,7 +9,6 @@ import {
   TextField,
 } from "@mui/material";
 import { useRouter } from "next/router";
-import axios from "axios";
 import { useForm, Controller } from "react-hook-form";
 import { useSession } from "next-auth/react";
 import dayjs from "dayjs";
@@ -17,6 +16,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { DatePicker } from "antd";
 import SelectPostPage from "./SelectPostPage";
 import * as Yup from "yup";
+import { backend_api } from "../axiosInstance";
 
 export default function PostForm(props) {
   const router = useRouter();
@@ -69,8 +69,8 @@ export default function PostForm(props) {
       start_date_time,
       ...values,
     };
-    await axios({
-      url: `http://127.0.0.1:8000/api/${props.toPost}/`,
+    await backend_api({
+      url: `/api/${props.toPost}/`,
       method: "POST",
       data,
       headers,
@@ -79,8 +79,8 @@ export default function PostForm(props) {
         router.push("http://localhost:3000/");
       })
       .catch((error) => {
-        console.log("failed");
-        console.log(error);
+        console.error("failed");
+        console.error(error);
       });
   };
   return (

@@ -8,7 +8,7 @@ import {
   Paper,
   Typography,
 } from "@mui/material";
-import axios from "axios";
+import { backend_api } from "../../../../axiosInstance";
 import dayjs from "dayjs";
 import DetailHeader from "../../../../components/DetailHeader";
 import ApplyBottomNavigation from "../../../../components/BottomNavigation/ApplyBottomNavigation";
@@ -35,7 +35,6 @@ function DetailPage({ data, pid, postUrl, accessToken, user, comments_data }) {
   const createdDate = dayjs(created_at);
   const todayDate = dayjs(new Date());
   const subtractDate = dayjs(todayDate).diff(createdDate, "day");
-  console.log(questionToApplyer);
   const kindOfArtile = {
     basketposts: "농구",
     freeposts: "자유",
@@ -245,18 +244,13 @@ export async function getServerSideProps(context) {
   if (session) {
     const { pid, postUrl } = context.query;
     const { accessToken, user } = session;
-    let applyUserData = null;
     const headers = { Authorization: `Bearer ${accessToken}` };
 
-    const response = await axios({
-      url: `http://127.0.0.1:8000/api/${postUrl}/${pid}`,
-      method: "GET",
-    });
+    const response = await backend_api.get(`/api/${postUrl}/${pid}`);
     const data = await response.data;
-    console.log("🚀 ~ file: [pid].js:256 ~ getServerSideProps ~ data", data);
 
-    const comment_response = await axios({
-      url: `http://127.0.0.1:8000/api/${postUrl}/${pid}/comments/`,
+    const comment_response = await backend_api({
+      url: `/api/${postUrl}/${pid}/comments/`,
       method: "GET",
       headers,
     });
