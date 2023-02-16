@@ -2,6 +2,7 @@ import jwt_decode from "jwt-decode";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { backend_api } from "../../../axiosInstance";
+
 export const authOptions = {
   providers: [
     CredentialsProvider({

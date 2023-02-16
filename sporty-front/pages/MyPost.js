@@ -4,6 +4,7 @@ import { authOptions } from "../pages/api/auth/[...nextauth]";
 import { getServerSession } from "next-auth/next";
 import { Tabs } from "antd";
 import ComponentBottom from "../components/BottomNavigation/ComponentBottom";
+import Head from "next/head";
 function MyPost({ accessToken, isLoggedIn }) {
   const headers = { Authorization: `Bearer ${accessToken}` };
   const postListArr = [
@@ -18,7 +19,7 @@ function MyPost({ accessToken, isLoggedIn }) {
       children: <PostList postListUrl={"selfworkposts"} headers={headers} />,
     },
     {
-      label: "기타",
+      label: "자유",
       key: "3",
       children: <PostList postListUrl={"selffreeposts"} headers={headers} />,
     },
@@ -26,6 +27,9 @@ function MyPost({ accessToken, isLoggedIn }) {
 
   return (
     <>
+      <Head>
+        <title>내가 쓴 글 | SPORTY</title>
+      </Head>
       <Tabs
         defaultActiveKey="1"
         centered

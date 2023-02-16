@@ -8,7 +8,6 @@ import dayjs from "dayjs";
 function DetailHeader({ location, start_date_time, kind }) {
   const theme = useTheme();
   const router = useRouter();
-  dayjs.locale("ko");
   const startDate = dayjs(start_date_time);
   const game_start = startDate.format("MM/DD(dd) a hh");
   return (

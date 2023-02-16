@@ -3,6 +3,7 @@ import { Tabs } from "antd";
 import { authOptions } from "../pages/api/auth/[...nextauth]";
 import { getServerSession } from "next-auth/next";
 import ComponentBottom from "../components/BottomNavigation/ComponentBottom";
+import Head from "next/head";
 
 export default function Home({ isLoggedIn }) {
   const postListArr = [
@@ -25,6 +26,9 @@ export default function Home({ isLoggedIn }) {
 
   return (
     <>
+      <Head>
+        <title>SPORTY</title>
+      </Head>
       <Tabs
         defaultActiveKey="1"
         centered

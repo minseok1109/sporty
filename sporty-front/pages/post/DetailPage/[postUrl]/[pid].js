@@ -14,6 +14,7 @@ import DetailHeader from "../../../../components/DetailHeader";
 import ApplyBottomNavigation from "../../../../components/BottomNavigation/ApplyBottomNavigation";
 import { authOptions } from "../../../api/auth/[...nextauth]";
 import { getServerSession } from "next-auth/next";
+import Head from "next/head";
 
 function DetailPage({ data, pid, postUrl, accessToken, user, comments_data }) {
   //글 데이터
@@ -58,6 +59,9 @@ function DetailPage({ data, pid, postUrl, accessToken, user, comments_data }) {
   let overApplyCruit = apply_user_set.length === cruit;
   return (
     <>
+      <Head>
+        <title>{`${kindOfArtile[postUrl]} ${pid} | SPORTY`}</title>
+      </Head>
       <DetailHeader
         location={location}
         start_date_time={start_date_time}

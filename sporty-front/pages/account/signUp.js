@@ -8,6 +8,7 @@ import { backend_api } from "../../axiosInstance";
 import { Box, Container, Typography, Button, TextField } from "@mui/material";
 import { useSnackbar } from "notistack";
 import useUpdateEffect from "react-use/lib/useUpdateEffect";
+import Head from "next/head";
 
 export default function SignUp() {
   const usernameInput = useRef(null);
@@ -83,6 +84,9 @@ export default function SignUp() {
 
   return (
     <Container maxWidth="sm">
+      <Head>
+        <title>Sign Up | SPORTY</title>
+      </Head>
       <Box
         sx={{
           display: "flex",

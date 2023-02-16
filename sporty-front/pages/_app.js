@@ -9,6 +9,7 @@ import { Container } from "@mui/system";
 import { useRouter } from "next/router";
 import { ConfigProvider } from "antd";
 import { SessionProvider } from "next-auth/react";
+import Head from "next/head";
 
 function MyApp({
   Component,
@@ -16,7 +17,6 @@ function MyApp({
   ...appProps
 }) {
   const router = useRouter();
-
   let headerProps = {};
   let notShowHeader = [
     "/account/login",
@@ -89,13 +89,22 @@ function MyApp({
                 },
               }}
             >
+              <Head>
+                <title>SPORTY</title>
+                <meta
+                  name="description"
+                  content="내 주변에서 운동할 사람을 찾아보세요! SPORTY"
+                />
+                <meta property="og:title" content="SPORTY" />
+                <meta property="og:type" content="website" />
+                <meta property="og:url" content="https://www.sporty.run" />
+              </Head>
               {!isShowHeader && <Header {...headerProps} />}
               <Container
                 disableGutters={!needContainerPadding}
                 sx={{ maxHeight: 1, pb: "60px" }}
               >
                 <Component {...pageProps} />
-                {/* <ComponentBottom /> */}
               </Container>
             </ConfigProvider>
           </ThemeProvider>

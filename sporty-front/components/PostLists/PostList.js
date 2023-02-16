@@ -9,6 +9,7 @@ export default function PostList({ postListUrl, headers }) {
   const [postList, setPostList] = useState([]);
   const [loading, setLoading] = useState(null);
   const [error, setError] = useState(null);
+
   useEffect(() => {
     setLoading(true);
     backend_api

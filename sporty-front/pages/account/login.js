@@ -7,8 +7,9 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { authOptions } from "../../pages/api/auth/[...nextauth]";
 import { getServerSession } from "next-auth/next";
 import * as Yup from "yup";
-
+import Head from "next/head";
 import { signIn } from "next-auth/react";
+
 export default function Login() {
   const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();
@@ -53,6 +54,9 @@ export default function Login() {
 
   return (
     <Container maxWidth="sm">
+      <Head>
+        <title>Log In | SPORTY</title>
+      </Head>
       <Link href="/">
         <Typography
           variant="h2"

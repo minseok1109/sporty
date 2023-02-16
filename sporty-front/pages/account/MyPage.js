@@ -16,6 +16,7 @@ import { signOut } from "next-auth/react";
 import { authOptions } from "../../pages/api/auth/[...nextauth]";
 import { getServerSession } from "next-auth/next";
 import { backend_api } from "../../axiosInstance";
+import Head from "next/head";
 
 function MyPage({ data, postData, applyData }) {
   const router = useRouter();
@@ -30,6 +31,9 @@ function MyPage({ data, postData, applyData }) {
   let applyListLength = useMemo(() => getListLength(applyData), [applyData]);
   return (
     <>
+      <Head>
+        <title>My Page | SPORTY</title>
+      </Head>
       <Grid container direction="row" alignItems="baseline" mt={1} py={2}>
         <Grid
           xs={2}
