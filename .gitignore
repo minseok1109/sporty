@@ -238,3 +238,4 @@ yarn-error.log*
 .vscode
 .idea
 sporty-front/package-lock.json
+sporty-front/.env.production
