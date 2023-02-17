@@ -1,8 +1,16 @@
 import PostForm from "../../components/PostForm";
 import { authOptions } from "../api/auth/[...nextauth]";
 import { getServerSession } from "next-auth/next";
+import Head from "next/head";
 export default function FreePostForm() {
-  return <PostForm toPost={"freeposts"}></PostForm>;
+  return (
+    <>
+      <Head>
+        <title>자유 | SPORTY</title>
+      </Head>
+      <PostForm toPost={"freeposts"}></PostForm>
+    </>
+  );
 }
 
 export async function getServerSideProps(context) {

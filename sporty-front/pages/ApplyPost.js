@@ -4,6 +4,7 @@ import { Tabs } from "antd";
 import { authOptions } from "../pages/api/auth/[...nextauth]";
 import { getServerSession } from "next-auth/next";
 import ComponentBottom from "../components/BottomNavigation/ComponentBottom";
+import Head from "next/head";
 
 function ApplyPost({ accessToken, isLoggedIn }) {
   const headers = { Authorization: `Bearer ${accessToken}` };
@@ -20,7 +21,7 @@ function ApplyPost({ accessToken, isLoggedIn }) {
       children: <PostList postListUrl={"applyworkposts"} headers={headers} />,
     },
     {
-      label: "기타",
+      label: "자유",
       key: "3",
       children: <PostList postListUrl={"applyFreeposts"} headers={headers} />,
     },
@@ -28,6 +29,9 @@ function ApplyPost({ accessToken, isLoggedIn }) {
 
   return (
     <>
+      <Head>
+        <title>내가 신청한 글 | SPORTY</title>
+      </Head>
       <Tabs
         defaultActiveKey="1"
         centered

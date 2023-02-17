@@ -4,15 +4,21 @@ import SelectLevel from "../../components/SelectLevel";
 import * as Yup from "yup";
 import { authOptions } from "../api/auth/[...nextauth]";
 import { getServerSession } from "next-auth/next";
+import Head from "next/head";
 function BasketPost() {
   const levelSchema = Yup.object({
     level: Yup.string().required("실력을 입력해주세요."),
   });
 
   return (
-    <PostForm extendSchema={levelSchema} toPost={"basketposts"}>
-      <SelectLevel />
-    </PostForm>
+    <>
+      <Head>
+        <title>농구 | SPORTY</title>
+      </Head>
+      <PostForm extendSchema={levelSchema} toPost={"basketposts"}>
+        <SelectLevel />
+      </PostForm>
+    </>
   );
 }
 

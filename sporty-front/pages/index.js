@@ -2,9 +2,8 @@ import PostList from "../components/PostLists/PostList";
 import { Tabs } from "antd";
 import { authOptions } from "../pages/api/auth/[...nextauth]";
 import { getServerSession } from "next-auth/next";
-import FixedLogInBottomNavigation from "../components/BottomNavigation/FixedBottomNavigation";
-import NotLoginBottomNavigation from "../components/BottomNavigation/NotLoginBottomNavigation";
 import ComponentBottom from "../components/BottomNavigation/ComponentBottom";
+import Head from "next/head";
 
 export default function Home({ isLoggedIn }) {
   const postListArr = [
@@ -27,6 +26,9 @@ export default function Home({ isLoggedIn }) {
 
   return (
     <>
+      <Head>
+        <title>SPORTY</title>
+      </Head>
       <Tabs
         defaultActiveKey="1"
         centered

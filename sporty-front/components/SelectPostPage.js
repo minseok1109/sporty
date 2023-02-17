@@ -9,7 +9,7 @@ export default function SelectPostPage() {
 
   const urlName = {
     "/post/BasketPost": "농구",
-    "/post/FreePost": "기타",
+    "/post/FreePost": "자유",
     "/post/WalkPost": "산책",
   };
 
@@ -24,7 +24,7 @@ export default function SelectPostPage() {
       >
         <MenuItem value="/post/BasketPost">농구</MenuItem>
         <MenuItem value="/post/WalkPost">산책</MenuItem>
-        <MenuItem value="/post/FreePost">기타</MenuItem>
+        <MenuItem value="/post/FreePost">자유</MenuItem>
       </Select>
     </Paper>
   );

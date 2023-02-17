@@ -8,12 +8,9 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
 module.exports = withBundleAnalyzer({
   reactStrictMode: true,
   swcMinify: true,
-  async rewrites() {
-    return [
-      {
-        source: "/api/login",
-        destination: "http://localhost:8000/accounts/token",
-      },
-    ];
+  compiler: {
+    removeConsole: {
+      exclude: ["error"],
+    },
   },
 });

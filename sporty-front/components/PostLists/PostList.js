@@ -1,10 +1,9 @@
-import useAxios from "axios-hooks";
 import PostCard from "./PostCard";
 import { useEffect, useState } from "react";
 import { Box } from "@mui/material";
 import Link from "next/link";
 import Loading from "../Loading";
-import axios from "axios";
+import { backend_api } from "../../axiosInstance";
 
 export default function PostList({ postListUrl, headers }) {
   const [postList, setPostList] = useState([]);
@@ -13,12 +12,10 @@ export default function PostList({ postListUrl, headers }) {
 
   useEffect(() => {
     setLoading(true);
-    axios({
-      // url: `http://127.0.0.1:8000/api/${postListUrl}`,
-      url: `http://3.39.254.159/api/${postListUrl}`,
-      method: "GET",
-      headers,
-    })
+    backend_api
+      .get(`/api/${postListUrl}`, {
+        headers,
+      })
       .then((res) => setPostList(res.data))
       .then(() => setLoading(false))
       .catch((e) => setError(e));

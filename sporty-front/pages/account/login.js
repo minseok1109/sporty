@@ -7,8 +7,9 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { authOptions } from "../../pages/api/auth/[...nextauth]";
 import { getServerSession } from "next-auth/next";
 import * as Yup from "yup";
-
+import Head from "next/head";
 import { signIn } from "next-auth/react";
+
 export default function Login() {
   const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();
@@ -32,7 +33,7 @@ export default function Login() {
         },
       };
       enqueueSnackbar("아이디와 비멀번호를 확인하세요", options);
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -53,6 +54,9 @@ export default function Login() {
 
   return (
     <Container maxWidth="sm">
+      <Head>
+        <title>Log In | SPORTY</title>
+      </Head>
       <Link href="/">
         <Typography
           variant="h2"
@@ -61,12 +65,12 @@ export default function Login() {
           my={5}
           sx={{ cursor: "pointer" }}
         >
-          sporty
+          SPORTY
         </Typography>
       </Link>
       <Typography sx={{ textAlign: "center", fontSize: 34 }}>로그인</Typography>
       <Typography sx={{ textAlign: "center", fontSize: 14 }}>
-        SPROTy에 오신 것을 환영합니다.
+        SPROTY에 오신 것을 환영합니다.
       </Typography>
       <form onSubmit={handleSubmit(onSubmit)} method="post">
         <Controller
