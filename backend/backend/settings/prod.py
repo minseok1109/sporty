@@ -12,6 +12,7 @@ DEFAULT_FILE_STORAGE = "backend.storages.MediaAzureStorage"
 AZURE_ACCOUNT_NAME = os.environ["AZURE_ACCOUNT_NAME"]
 AZURE_ACCOUNT_KEY = os.environ["AZURE_ACCOUNT_KEY"]
 
+CORS_ORIGIN_WHITELIST = os.environ.get("CORS_ORIGIN_WHITELIST", "").split(",")
 
 DATABASES = {
     'default': {
