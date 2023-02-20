@@ -239,3 +239,5 @@ yarn-error.log*
 .idea
 sporty-front/package-lock.json
 sporty-front/.env.production
+tt.txt
+sporty-front/sentry.properties
