@@ -98,7 +98,7 @@ export async function getServerSideProps(ctx) {
     let getPostData = await Promise.all(
       ["selfbasketposts", "selfworkposts", "selffreeposts"].map(async (url) => {
         const response = await backend_api({
-          url: `/api/${url}`,
+          url: `/api/${url}/`,
           method: "GET",
           headers,
         });
@@ -110,7 +110,7 @@ export async function getServerSideProps(ctx) {
       ["applybasketposts", "applyworkposts", "applyFreeposts"].map(
         async (url) => {
           const response = await backend_api({
-            url: `/api/${url}`,
+            url: `/api/${url}/`,
             method: "GET",
             headers,
           });

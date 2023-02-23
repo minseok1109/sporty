@@ -250,7 +250,7 @@ export async function getServerSideProps(context) {
     const { accessToken, user } = session;
     const headers = { Authorization: `Bearer ${accessToken}` };
 
-    const response = await backend_api.get(`/api/${postUrl}/${pid}`);
+    const response = await backend_api.get(`/api/${postUrl}/${pid}/`);
     const data = await response.data;
 
     const comment_response = await backend_api({

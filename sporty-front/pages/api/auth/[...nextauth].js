@@ -25,7 +25,7 @@ export const authOptions = {
 
         if (res.statusText === "OK" && drf_access_token) {
           const { user_id } = jwt_decode(drf_access_token["access"]);
-          const user_res = await backend_api(`/accounts/api/user/${user_id}`);
+          const user_res = await backend_api(`/accounts/api/user/${user_id}/`);
           const user = await user_res.data;
           user.accessToken = drf_access_token;
           return user;
