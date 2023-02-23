@@ -76,7 +76,7 @@ export default function PostForm(props) {
       headers,
     })
       .then(() => {
-        router.push("http://localhost:3000/");
+        router.push("/");
       })
       .catch((error) => {
         console.error("failed");

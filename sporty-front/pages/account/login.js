@@ -19,7 +19,7 @@ export default function Login() {
         redirect: false,
         username: data.username,
         password: data.password,
-        callbackUrl: "http://localhost:3000/",
+        callbackUrl: "/",
       });
       await router.push(response.url);
     } catch (error) {

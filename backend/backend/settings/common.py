@@ -147,5 +147,6 @@ SIMPLE_JWT = {
 
 }
 
-CORS_ALLOWED_ORIGINS = ['http://localhost:3000',
-                        'https://sporty-nwr5.vercel.app']
+# CORS_ALLOWED_ORIGINS = ['http://localhost:3000',
+#                         'https://sporty-nwr5.vercel.app', 'https://sporty.run']
+CORS_ALLOW_ALL_ORIGINS = True

@@ -13,7 +13,7 @@ export default function PostList({ postListUrl, headers }) {
   useEffect(() => {
     setLoading(true);
     backend_api
-      .get(`/api/${postListUrl}`, {
+      .get(`/api/${postListUrl}/`, {
         headers,
       })
       .then((res) => setPostList(res.data))

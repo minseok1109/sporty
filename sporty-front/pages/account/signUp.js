@@ -23,7 +23,7 @@ export default function SignUp() {
       .post("/accounts/signup/", data)
       .then(() => {
         // 회원가입 성공하면 바로 로그인페이지로
-        router.push("http://localhost:3000/account/login");
+        router.push("/account/login");
       })
       .catch((error) => {
         const {

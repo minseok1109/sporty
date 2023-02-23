@@ -1,6 +1,8 @@
 import os
 
 from .common import *
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
 
 DEBUG = False
 # DEBUG = os.environ.get('DEBUG') in ["1", "t", "true", "T", "True"]
@@ -12,7 +14,24 @@ DEFAULT_FILE_STORAGE = "backend.storages.MediaAzureStorage"
 AZURE_ACCOUNT_NAME = os.environ["AZURE_ACCOUNT_NAME"]
 AZURE_ACCOUNT_KEY = os.environ["AZURE_ACCOUNT_KEY"]
 
-CORS_ORIGIN_WHITELIST = os.environ.get("CORS_ORIGIN_WHITELIST", "").split(",")
+# CORS_ALLOWED_ORIGINS = os.environ.get("CORS_ALLOWED_ORIGINS", "").split(",")
+
+
+sentry_sdk.init(
+    dsn="https://f611670b85e247a4b5a7c87372597d5f@o4504704206831616.ingest.sentry.io/4504704210370560",
+    integrations=[
+        DjangoIntegration(),
+    ],
+
+    # Set traces_sample_rate to 1.0 to capture 100%
+    # of transactions for performance monitoring.
+    # We recommend adjusting this value in production.
+    traces_sample_rate=1.0,
+
+    # If you wish to associate users to errors (assuming you are using
+    # django.contrib.auth) you may enable sending PII data.
+    send_default_pii=True
+)
 
 DATABASES = {
     'default': {

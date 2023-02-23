@@ -2,7 +2,7 @@
 // with Sentry.
 // https://nextjs.org/docs/api-reference/next.config.js/introduction
 // https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/
-const { withSentryConfig } = require('@sentry/nextjs');
+const { withSentryConfig } = require("@sentry/nextjs");
 
 /**
  * @type {import('next').NextConfig}
@@ -19,6 +19,17 @@ module.exports = withBundleAnalyzer({
       exclude: ["error"],
     },
   },
+  // async rewrites() {
+  //   return [
+  //     {
+  //       source: "/api/:path*",
+  //       destination:
+  //         process.env.NODE_ENV === "production"
+  //           ? `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/:path*`
+  //           : "http://127.0.0.1:8000/:path*",
+  //     },
+  //   ];
+  // },
 });
 
 module.exports = withSentryConfig(
