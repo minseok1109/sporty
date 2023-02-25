@@ -15,14 +15,12 @@ module.exports = withBundleAnalyzer({
   reactStrictMode: true,
   swcMinify: true,
   compiler: {
-    removeConsole: {
-      exclude: ["error"],
-    },
+    removeConsole: process.env.NODE_ENV === "production",
   },
   // async rewrites() {
   //   return [
   //     {
-  //       source: "/api/:path*",
+  //       source: "/(^/api/(?!auth/).*$)/",
   //       destination:
   //         process.env.NODE_ENV === "production"
   //           ? `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/:path*`

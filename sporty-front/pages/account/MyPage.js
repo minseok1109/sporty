@@ -17,9 +17,11 @@ import { authOptions } from "../../pages/api/auth/[...nextauth]";
 import { getServerSession } from "next-auth/next";
 import { backend_api } from "../../axiosInstance";
 import Head from "next/head";
+import axios from "axios";
 
 function MyPage({ data, postData, applyData }) {
   const router = useRouter();
+
   const getListLength = (list) => {
     return list.reduce((acc, curr) => {
       return (acc += Object.values(curr).flat().length);
@@ -91,33 +93,47 @@ export default memo(MyPage);
 
 export async function getServerSideProps(ctx) {
   const session = await getServerSession(ctx.req, ctx.res, authOptions);
+  console.log(Object.keys(axios));
   if (session) {
     const { username, nickname, avatar } = await session.user;
     const { accessToken } = await session;
     const headers = { Authorization: `Bearer ${accessToken}` };
-    let getPostData = await Promise.all(
-      ["selfbasketposts", "selfworkposts", "selffreeposts"].map(async (url) => {
-        const response = await backend_api({
-          url: `/api/${url}/`,
-          method: "GET",
-          headers,
-        });
-        return { [url]: response.data };
-      }),
-    );
 
-    let getApplyData = await Promise.all(
-      ["applybasketposts", "applyworkposts", "applyFreeposts"].map(
-        async (url) => {
-          const response = await backend_api({
-            url: `/api/${url}/`,
-            method: "GET",
-            headers,
-          });
-          return { [url]: response.data };
-        },
-      ),
-    );
+    let getPostData = await axios
+      .all([
+        backend_api({ url: `/api/selfbasketposts/`, method: "GET", headers }),
+        backend_api({ url: `/api/selfworkposts/`, method: "GET", headers }),
+        backend_api({ url: `/api/selffreeposts/`, method: "GET", headers }),
+      ])
+      .then(
+        axios.spread((selfBasket, selfWalk, selfFree) => {
+          return [
+            {
+              selfBasket: selfBasket.data,
+              selfWalk: selfWalk.data,
+              selfFree: selfFree.data,
+            },
+          ];
+        }),
+      );
+
+    let getApplyData = await axios
+      .all([
+        backend_api({ url: `/api/applybasketposts/`, method: "GET", headers }),
+        backend_api({ url: `/api/applyworkposts/`, method: "GET", headers }),
+        backend_api({ url: `/api/applyFreeposts/`, method: "GET", headers }),
+      ])
+      .then(
+        axios.spread((applyBasket, applyWalk, applyFree) => {
+          return [
+            {
+              applyBasket: applyBasket.data,
+              applyWalk: applyWalk.data,
+              applyFree: applyFree.data,
+            },
+          ];
+        }),
+      );
 
     return {
       props: {

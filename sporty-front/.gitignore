@@ -39,3 +39,5 @@ yarn-error.log*
 
 # Sentry
 next.config.original.js
+
+/public/favicon_io/

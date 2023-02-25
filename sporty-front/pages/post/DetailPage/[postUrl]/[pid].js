@@ -9,14 +9,23 @@ import {
   Typography,
 } from "@mui/material";
 import { backend_api } from "../../../../axiosInstance";
-import dayjs from "dayjs";
 import DetailHeader from "../../../../components/DetailHeader";
 import ApplyBottomNavigation from "../../../../components/BottomNavigation/ApplyBottomNavigation";
 import { authOptions } from "../../../api/auth/[...nextauth]";
 import { getServerSession } from "next-auth/next";
 import Head from "next/head";
+import dayjs from "dayjs";
+import "dayjs/locale/ko";
+import axios from "axios";
 
-function DetailPage({ data, pid, postUrl, accessToken, user, comments_data }) {
+function DetailPage({
+  postData,
+  pid,
+  postUrl,
+  accessToken,
+  user,
+  commentsData,
+}) {
   //글 데이터
   //postUserId: 글 쓴  사람 아이디
   const {
@@ -32,7 +41,8 @@ function DetailPage({ data, pid, postUrl, accessToken, user, comments_data }) {
     amountOfGym,
     isRunning,
     questionToApplyer,
-  } = data;
+  } = postData;
+  dayjs.locale("ko");
   const createdDate = dayjs(created_at);
   const todayDate = dayjs(new Date());
   const subtractDate = dayjs(todayDate).diff(createdDate, "day");
@@ -172,15 +182,15 @@ function DetailPage({ data, pid, postUrl, accessToken, user, comments_data }) {
       <Box display="flex" alignItems="baseline" p={1}>
         <Typography variant="h4">신청자</Typography>
         <Box component="span" ml={1}>
-          <Box component="span">{comments_data.length}명</Box> / {cruit}명
+          <Box component="span">{commentsData.length}명</Box> / {cruit}명
         </Box>
       </Box>
       <Typography m={2} variant="h6" fontWeight={700}>
         Q. {questionToApplyer}
       </Typography>
       {/* 댓글 */}
-      {comments_data &&
-        Object.values(comments_data).map((comment_user) => {
+      {commentsData &&
+        Object.values(commentsData).map((comment_user) => {
           const {
             author: { avatar, nickname },
             message,
@@ -250,25 +260,29 @@ export async function getServerSideProps(context) {
     const { accessToken, user } = session;
     const headers = { Authorization: `Bearer ${accessToken}` };
 
-    const response = await backend_api.get(`/api/${postUrl}/${pid}/`);
-    const data = await response.data;
-
-    const comment_response = await backend_api({
-      url: `/api/${postUrl}/${pid}/comments/`,
-      method: "GET",
-      headers,
-    });
-
-    const comments_data = await comment_response.data;
+    let [postData, commentsData] = await axios
+      .all([
+        backend_api.get(`/api/${postUrl}/${pid}/`),
+        backend_api({
+          url: `/api/${postUrl}/${pid}/comments/`,
+          method: "GET",
+          headers,
+        }),
+      ])
+      .then(
+        axios.spread((post, comments) => {
+          return [post.data, comments.data];
+        }),
+      );
 
     return {
       props: {
-        data,
+        postData,
         pid,
         postUrl,
         accessToken,
         user: JSON.parse(JSON.stringify(user)),
-        comments_data,
+        commentsData,
       },
     };
   } else {

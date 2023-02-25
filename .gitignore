@@ -241,3 +241,4 @@ sporty-front/package-lock.json
 sporty-front/.env.production
 tt.txt
 sporty-front/sentry.properties
+sporty-front/public/og_image.png
